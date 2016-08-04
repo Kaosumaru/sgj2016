@@ -21,6 +21,7 @@
 #include "Script/MXScriptClassParser.h"
 
 #include "Game/GameInitializer.h"
+#include "Game/DebugCheats.h"
 
 namespace bs2 = boost::signals2;
 
@@ -30,12 +31,15 @@ using namespace std;
 
 TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().display()->size())
 {
+    _cheats = CreateCheats();
 	_visibility = -1;
 
 	MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_SPACE].connect(boost::bind(&TestManager::reloadScripts, this));
 	MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_r].connect(boost::bind(&TestManager::clearReloadScripts, this));
 
 	reloadScripts();
+
+    Context<BaseGraphicScene>::SetCurrent(*this);
 }
 
 void TestManager::AddSomething()
