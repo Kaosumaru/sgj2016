@@ -20,6 +20,8 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include "Game/GameInitializer.h"
+#include "Game/TestManager.h"
 
 #ifndef MX_PLATFORM_XCODE
 #include "windows.h"
@@ -78,7 +80,7 @@ protected:
 		using namespace ci::gl;
 
 		Sound::StreamManager::get().SetDefaultVolume(0.3f);
-		
+        BH::GameInitializer::Init();
 		//BH::GameGraphicManager::get().PrepareGL();
 
 #ifndef MX_PLATFORM_XCODE
@@ -107,7 +109,7 @@ protected:
 
 	void OnLoop()
 	{
-
+        BH::TestManager::get().Run();
 	}
 
 	void OnRender()
@@ -125,6 +127,7 @@ protected:
 		using namespace ci;
 		gl::clear(ci::Color(0.1f, 0.1f, 0.1f), false);
         
+        BH::TestManager::get().Draw();
 
 
 		Graphic::TextureRenderer::current().Flush();

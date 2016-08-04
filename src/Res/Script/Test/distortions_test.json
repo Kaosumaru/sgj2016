@@ -1,0 +1,66 @@
+{   
+    "Distortions.Test":
+    {
+		"Test2":
+		{
+			"Object": "Sprite.Image",
+			"Image": "&Game.Resources.Basic.Distortion",
+			"Geometry":
+			{
+				"Color": [1.0, 1.0, 1.0, 1.0],
+				"Scale": [3.0, 3.0],
+				"Angle": 1.57,
+			},
+			"On.Run":
+			[
+				{
+					"Object": "Command.Queue", "Commands":
+					[	
+						{"Object": "Command.Wait", "Time":3},							
+						{"Object": "Command.Unlink"},
+					]
+				},
+			],
+		},
+	
+	
+	
+		"Test1":
+		{
+						"Object": "Particles.SimpleSystem",
+						"Geometry":
+						{
+							"Color": [1,1,1,1],
+							"Angle": 0.0,					
+						},				
+						"Emitter":
+						{
+							"Object": "Particles.Emitter.Circle",
+							"Direction": [0.0, 1.0],
+							"Speed": [100.0, 400.0,],
+							"Life": [1.1, 2.5]
+							"Radius": 50,
+							
+						},
+						"Creator":
+						{
+							"Object": "Particles.Creator.Image",
+							"Start.Color": [1.0, 1.0, 1.0, 1.0],
+							"Start.Scale": [0.0, 0.0],
+							
+							"End.Color": [1.0, 1.0, 1.0, 0.3],
+							"End.Scale": [2.0, 2.0],
+							
+							"Image": "&Game.Resources.Basic.Light",
+						},
+						"Generator":
+						{
+							"Object": "Particles.Generator.AllAtOnce",
+							"ParticleNumber": 42,
+						},					
+		},
+
+
+	},
+}
+
