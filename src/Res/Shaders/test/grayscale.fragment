@@ -1,0 +1,17 @@
+#version 330
+
+// Interpolated values from the vertex shaders
+in vec2 UV;
+in vec4 color;
+
+// Values that stay constant for the whole mesh.
+uniform sampler2D tex0;
+
+layout(location=0) out vec4 pixel_color;
+
+void main()
+{
+	pixel_color = texture2D( tex0, UV ) * color;
+	vec4 grayscale = vec4(dot(pixel_color, vec4( 0.2125, 0.7154, 0.0721, 0 )));
+	pixel_color.rgb = grayscale.rgb;
+}

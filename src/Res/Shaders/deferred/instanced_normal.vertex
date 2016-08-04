@@ -1,0 +1,31 @@
+#version 330
+
+
+layout(location=0) in vec2 squareVertices;
+layout(location=1) in vec4 xywh; // Position of the center of the particule and size of the square
+layout(location=2) in vec4 instance_color;
+layout(location=3) in float instance_angle;
+layout(location=4) in vec2 instance_center;
+layout(location=5) in vec4 instance_uv;
+
+
+uniform mat4 MVP;
+
+// Output data ; will be interpolated for each fragment.
+out vec2 UV;
+out vec4 color;
+out float angle_cos;
+out float angle_sin;
+
+#include <instanced_vertex.glsl>
+
+void main()
+{
+	angle_sin = sin(instance_angle);
+	angle_cos = cos(instance_angle);
+	
+	
+	mx_glposition_instanced_vertex();
+
+	color = instance_color;
+}

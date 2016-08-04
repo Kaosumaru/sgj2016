@@ -1,0 +1,30 @@
+#version 330
+
+// Interpolated values from the vertex shaders
+in vec2 UV;
+in vec4 color;
+in float angle_cos;
+in float angle_sin;
+
+// Values that stay constant for the whole mesh.
+uniform sampler2D tex0;
+
+layout(location=0) out vec4 pixel_color; 
+
+void main(){
+
+	mat3 rotation_matrix = mat3(
+							vec3( angle_cos, -angle_sin, 0.0),
+							vec3(angle_sin, angle_cos, 0.0),
+							vec3( 0.0, 0.0, 1.0)
+							);
+	
+	vec3 normal = texture2D( tex0, UV ).rgb;
+
+	normal = normal * 2.0 - 1.0;
+	normal = normal * rotation_matrix;
+	normal = (normal + 1.0) / 2.0;
+	
+	pixel_color = vec4(normal.rgb, texture2D( tex0, UV ).a * color.a);
+
+}

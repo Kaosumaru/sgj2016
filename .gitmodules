@@ -1,0 +1,3 @@
+[submodule "MXLib_Cinder"]
+	path = MXLib_Cinder
+	url = https://github.com/Kaosumaru/MXLib_Cinder.git

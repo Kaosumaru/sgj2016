@@ -1,0 +1,36 @@
+#version 330
+
+// Interpolated values from the vertex shaders
+in vec2 UV;
+in vec4 color;
+in float angle_cos;
+in float angle_sin;
+
+// Values that stay constant for the whole mesh.
+uniform sampler2D tex0;
+
+layout(location=0) out vec4 pixel_color; 
+
+void main(){	
+	vec4 distortion_fragment = texture2D( tex0, UV );
+	
+	//distortion_fragment = vec4(0.1,0,0.1,0);
+	
+	
+	vec2 ds;
+	ds.x = distortion_fragment.g - distortion_fragment.r;
+	ds.y = distortion_fragment.b - distortion_fragment.a;
+
+	
+	ds = vec2(ds.x * angle_cos - ds.y * angle_sin, ds.x * angle_sin + ds.y * angle_cos);
+	
+	//if negative, 
+	distortion_fragment.r = -min(ds.x, 0.0);
+	distortion_fragment.g = max(ds.x, 0.0);
+	distortion_fragment.a = -min(ds.y, 0.0);
+	distortion_fragment.b = max(ds.y, 0.0);
+	
+	
+	pixel_color = distortion_fragment * color;
+
+}

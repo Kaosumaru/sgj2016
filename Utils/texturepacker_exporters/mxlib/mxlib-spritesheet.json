@@ -1,0 +1,20 @@
+{
+	"Resources":
+	{
+		"Settings":
+		{
+			"Mipmap": true,
+		},
+		"Frames":
+		[{% for sprite in allSprites %}
+			{
+				"Name": "{{sprite.trimmedName}}",
+				"Rect": [{{sprite.frameRect.x}}, {{sprite.frameRect.y}}, {{sprite.frameRect.width}}, {{sprite.frameRect.height}}],
+				{% if sprite.trimmed %}				
+				"OriginalRect": [{{sprite.cornerOffset.x}}, {{sprite.cornerOffset.y}}, {{sprite.untrimmedSize.width}}, {{sprite.untrimmedSize.height}}],
+				"OriginalSize": [{{sprite.untrimmedSize.width}}, {{sprite.untrimmedSize.height}}],
+				{% endif %}				
+			},{% endfor %}
+		]
+	}
+}
