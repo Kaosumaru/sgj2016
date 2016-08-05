@@ -34,6 +34,8 @@ public:
 
         _actionKeys.push_back(ci::app::KeyEvent::KEY_z);
         _actionKeys.push_back(ci::app::KeyEvent::KEY_x);
+        _actionKeys.push_back(ci::app::KeyEvent::KEY_c);
+        _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
     }
 
     Selector::Direction wantsDirection() override
@@ -77,6 +79,7 @@ Player::Player()
 
     _actions.Add(std::make_shared<SwapGemsAction>());
     _actions.Add(std::make_shared<DestroyGemAction>());
+    _actions.Add(std::make_shared<FireballAction>());
 }
 
 void Player::Update()

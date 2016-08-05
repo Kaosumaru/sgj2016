@@ -110,6 +110,27 @@ namespace BH
         }
     };
 
+    class FireballAction : public Action
+    {
+    public:
+        bool onDo() override
+        {
+            auto pos = selectorPosition();
+
+            for(int x = -1; x < 2; x ++)
+            for (int y = -1; y < 2; y++)
+            {
+                glm::ivec2 delta = { x, y };
+                auto p = pos + delta;
+
+                if (!levelContainsPosition(p))
+                    continue;
+                level().DestroyGem(p);
+            }
+            return true;
+        }
+    };
+
     class ActionList
     {
     public:
