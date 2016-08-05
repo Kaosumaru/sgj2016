@@ -60,16 +60,19 @@ public:
 
         addButton("Button.Game")->onClicked.connect([&]() { OnGame(); });
         addButton("Button.Exit")->onClicked.connect([&]() { OnExit(); });
+
     }
 
-
-protected:
-
-    void OnGame()
+    void OnGame(bool animate = true)
     {
         auto game = std::make_shared<MainGame>();
-        SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
+
+        if (animate)
+            SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
+        else
+            SpriteSceneStackManager::manager_of(this)->PushScene(game, nullptr);
     }
+protected:
 
     void OnExit()
     {
@@ -89,7 +92,9 @@ GuiManager::GuiManager()
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_u].connect(boost::bind(&GuiManager::reloadScripts, this));
 #endif
 
-	PushScene(MX::make_shared<MMenuScene>());
+    auto menu = MX::make_shared<MMenuScene>();
+	PushScene(menu);
+    menu->OnGame(false);
 }
 
 

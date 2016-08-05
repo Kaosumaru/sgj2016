@@ -1,0 +1,18 @@
+{
+	Game.Level:
+	{
+		Drawer: Drawer.Composite.Layouter( Size: [384,768] )
+		[
+			Drawer.Color() { Color:[0 0 1 1] }
+		]
+
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(Level).Drawer
+			)
+		[
+
+		]
+
+	}
+}

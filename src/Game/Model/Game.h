@@ -1,0 +1,28 @@
+#ifndef BHXGAME
+#define BHXGAME
+#include<memory>
+#include "Scene/Sprites/MXSpriteScene.h"
+#include "Scene/Managers/MXSceneManager.h"
+#include "Utils/MXUtils.h"
+#include <memory> 
+#include "Player.h"
+
+namespace BH
+{
+    class Game
+    {
+    public:
+        using pointer = std::shared_ptr<Game>;
+
+        Game(int players = 2);
+
+        auto &players() { return _players; }
+
+        void Update();
+    protected:
+        std::vector<std::shared_ptr<Player>> _players;
+    };
+}
+
+
+#endif

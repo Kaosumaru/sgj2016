@@ -1,0 +1,36 @@
+{
+	Game.Gem:
+	{
+		Graphic:
+		[
+			{ Class: Image.Image, Path: Gems/0.png	}
+			{ Class: Image.Image, Path: Gems/1.png	}
+			{ Class: Image.Image, Path: Gems/2.png	}
+			{ Class: Image.Image, Path: Gems/3.png	}
+			{ Class: Image.Image, Path: Gems/4.png	}
+		]
+
+		Drawer: Drawer.Composite.Layouter( Size: [64,64] )
+		[
+			Drawer.Composite.Switch(
+					Condition:"=Widget.Property('GemType')"
+				)
+			[
+				[0 Drawer.StretchedImage( Image:&(Gem).Graphic.0 ) ]
+				[1 Drawer.StretchedImage( Image:&(Gem).Graphic.1 ) ]
+				[2 Drawer.StretchedImage( Image:&(Gem).Graphic.2 ) ]
+				[3 Drawer.StretchedImage( Image:&(Gem).Graphic.3 ) ]
+				[4 Drawer.StretchedImage( Image:&(Gem).Graphic.4 ) ]
+			]
+		]
+
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(Gem).Drawer
+			)
+		[
+
+		]
+
+	}
+}
