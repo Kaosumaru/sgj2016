@@ -21,13 +21,21 @@
 #include "cinder/gl/gl.h"
 
 #include "Game/GameInitializer.h"
-#include "Game/TestManager.h"
+
 
 #ifndef MX_PLATFORM_XCODE
 #include "windows.h"
 #include "mmsystem.h"
 
 #pragma comment(lib, "winmm.lib")
+#endif
+
+#if 0
+#include "Game/TestManager.h"
+using CurrentManager = BH::TestManager;
+#else
+#include "Game/Interface/GUIManager.h"
+using CurrentManager = BH::GuiManager;
 #endif
 
 unsigned _width = 1280, _height = 800;
@@ -109,7 +117,7 @@ protected:
 
 	void OnLoop()
 	{
-        BH::TestManager::get().Run();
+        CurrentManager::get().Run();
 	}
 
 	void OnRender()
@@ -125,10 +133,9 @@ protected:
 
 
 		using namespace ci;
-		gl::clear(ci::Color(0.1f, 0.1f, 0.1f), false);
+		gl::clear(ci::Color(0.0f, 0.0f, 0.0f), false);
         
-        BH::TestManager::get().Draw();
-
+        CurrentManager::get().Draw();
 
 		Graphic::TextureRenderer::current().Flush();
 		MX::DebugGUIManager::get().Draw();
@@ -137,7 +144,7 @@ protected:
 	void RenderFirstFrame()
 	{
 		using namespace ci;
-		gl::clear(ci::Color(0.1f, 0.1f, 0.1f), false);
+        gl::clear(ci::Color(0.0f, 0.0f, 0.0f), false);
 	}
 
 

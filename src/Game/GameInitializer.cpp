@@ -54,10 +54,11 @@ void BH::GameInitializer::ReloadScripts(bool reset)
 {
 
 #ifndef MX_GAME_RELEASE
-    static  std::list<std::string> p = { "Script/English", "Script/Resources", "Script/Test", "c:/" MX_APPLICATION_NAME "/" };
+    static  std::list<std::string> p = { "Script/Game", "Script/Resources", "Script/Test", "c:/" MX_APPLICATION_NAME "/" };
 #else
-    static  std::list<std::string> p = { "Script/English", "Script/Resources", "Script/Test" };
+    static  std::list<std::string> p = { "Script/Game", "Script/Resources", "Script/Test" };
 #endif
 
     Script::ParseDirs(p, reset);
+    AfterScriptParse();
 }

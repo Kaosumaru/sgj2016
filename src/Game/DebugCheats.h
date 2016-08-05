@@ -7,7 +7,7 @@
 
 namespace BH
 {
-    struct CheatObject
+    struct CheatObject : public bs2::trackable
     {
         virtual ~CheatObject() {}
     };
