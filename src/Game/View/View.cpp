@@ -45,6 +45,13 @@ GemView::GemView(const Gem::pointer& gem)
             OnMoving(newPos, oldPos);
         }
     );
+
+    _gem->onDestroyed.connect(
+        [&]()
+        {
+            Unlink();
+        }
+    );
 }
 
 void GemView::OnMoving(glm::ivec2 newPos, glm::ivec2 oldPos)

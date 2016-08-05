@@ -33,6 +33,7 @@ public:
         _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
 
         _actionKeys.push_back(ci::app::KeyEvent::KEY_z);
+        _actionKeys.push_back(ci::app::KeyEvent::KEY_x);
     }
 
     Selector::Direction wantsDirection() override
@@ -75,6 +76,7 @@ Player::Player()
     _controller = std::make_shared<KeyboardController>();
 
     _actions.Add(std::make_shared<SwapGemsAction>());
+    _actions.Add(std::make_shared<DestroyGemAction>());
 }
 
 void Player::Update()
@@ -85,4 +87,5 @@ void Player::Update()
     if (!_controller->wantsToUseAction())
         _level->selector()->Move(_controller->wantsDirection());
     _controller->Update();
+    _level->Update();
 }

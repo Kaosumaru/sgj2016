@@ -1,4 +1,4 @@
-#include "Gem.h"
+#include "Rule.h"
 #include "Game/Resources/MXPaths.h"
 #include "Game/Resources/MXResources.h"
 #include "Script/MXScript.h"
@@ -11,18 +11,7 @@
 
 #include "HTML/MXHTMLRendererCairo.h"
 #include "Game.h"
+#include <numeric>
 
 namespace bs2 = boost::signals2;
 using namespace BH;
-
-Gem::Gem(int type)
-{
-    _type = type;
-}
-
-
-Gem::pointer Gem::random()
-{
-    int randomType = Random::randomInt(0, maxType-1);
-    return std::make_shared<Gem>(randomType);
-}

@@ -9,6 +9,7 @@
 
 namespace BH
 {
+    class ActionList;
     class Selector
     {
     public:
@@ -41,6 +42,8 @@ namespace BH
 
         bool Move(Direction direction);
 
+    protected:
+        Direction _lastDirection = Direction::None;
         MX::Time::ManualStopWatchAbsolute   _moveCooldown;
     };
 
@@ -53,11 +56,17 @@ namespace BH
 
         bool InsertGem(const glm::ivec2& pos, const Gem::pointer& gem);
         bool SwapGems(const glm::ivec2& pos1, const glm::ivec2& pos2);
+        void DestroyGem(const glm::ivec2& pos);
 
         void RandomizeAll();
 
+        void Update();
+
         auto& at(const glm::ivec2& pos)
         {
+            static Gem::pointer gem;
+            if (!containsPosition(pos))
+                return gem;
             return _gems[pos.x + pos.y * _width];
         }
 
@@ -76,10 +85,13 @@ namespace BH
             return true;
         }
     protected:
+        void InsertRandomNonExplodingGem(glm::ivec2 pos);
+
         int _width = 6;
         int _height = 12;
         std::vector<Gem::pointer> _gems;
         Selector::pointer _selector = std::make_shared<Selector>();
+        std::shared_ptr<ActionList> _rules;
     };
 }
 
