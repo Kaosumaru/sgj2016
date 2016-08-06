@@ -54,20 +54,25 @@ namespace BH
             return true;
         }
 
+        float animationSpeed()
+        {
+            return 0.3f;
+        }
+
         float explosionPercent()
         {
             if (_exploding == 0.0f)
                 return 0.0f;
-            float max = 0.2f;
+            float max = animationSpeed();
 
-            return (max - _exploding) / max;
+            return sin((max - _exploding) / max);
         }
 
         void QueueDestruction()
         {
             if (_exploding > 0.0f)
                 return;
-            _exploding = 0.2f;
+            _exploding = animationSpeed();
         }
     protected:
         void SetPosition(glm::ivec2 pos)
