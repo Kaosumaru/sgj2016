@@ -179,7 +179,7 @@ namespace BH
 
             //dont allow to swap up/down with empty spaces
             {
-                if (direction == Selector::Direction::Up || direction == Selector::Direction::Down)
+                if (/*direction == Selector::Direction::Up ||*/ direction == Selector::Direction::Down)
                 {
                     if (!gem1 || !gem2)
                         return false;
