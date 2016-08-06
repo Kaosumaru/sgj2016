@@ -81,7 +81,7 @@ protected:
         auto parent = SpriteSceneStackManager::manager_of(this)->scenesStack().top();
 
         auto pos = this->absolute_position();
-        cloned->geometry.position = pos;
+        cloned->geometry.position = pos + this->dimensions() / 2.0f;
 
         parent->AddActor(cloned);
     }
