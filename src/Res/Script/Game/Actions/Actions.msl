@@ -3,7 +3,7 @@
 	{
 		Swap:
 		{
-			Cooldown: 0.1
+			Cooldown: 0.2
 			Events:
 			[
 				Event.PlaySound()

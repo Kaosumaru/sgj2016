@@ -17,6 +17,7 @@
 #include "Devices/MXKeyboard.h"
 #include "Application/MXWindow.h"
 #include "Graphic/MXDisplay.h"
+#include "Sound/MXStream.h"
 
 #include "Script/MXScriptClassParser.h"
 
@@ -80,6 +81,14 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
         //MX::Graphic::Display::
         //MX::Window::current().display()->ChangeResolution(_currentMode);
     });
+
+    PlayGameMusic();
+}
+
+void MainGame::PlayGameMusic()
+{
+    auto musicPath = "audio/Music/InfiniteDescent.ogg";
+    MX::Sound::StreamManager::get().SetCurrent(Resources::get().loadStream(musicPath));
 }
 
 void MainGame::Run()
@@ -108,6 +117,7 @@ void MainGame::onGameWon(int r)
 
 void MainGame::onExit()
 {
+    MX::Sound::StreamManager::get().SetCurrent(nullptr);
     SpriteSceneStackManager::manager_of(this)->PopScene(std::make_shared<MoveBitmapTransition>(false));
 }
 

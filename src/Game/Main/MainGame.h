@@ -19,6 +19,7 @@ namespace BH
 
         void Run() override;
     protected:
+        void PlayGameMusic();
         void onGameWon(int r);
         void onExit();
 
