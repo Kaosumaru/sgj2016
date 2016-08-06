@@ -70,7 +70,20 @@ protected:
 
     void OnStartedExploding()
     {
+        static std::shared_ptr<MX::SpriteActor> actor;
+        if (!actor)
+        {
+            ScriptObjectString script("Game.Effects");
+            script.load_property(actor, "NeonExplosion");
+        }
 
+        auto cloned = actor->clone();
+        auto parent = SpriteSceneStackManager::manager_of(this)->scenesStack().top();
+
+        auto pos = this->absolute_position();
+        cloned->geometry.position = pos;
+
+        parent->AddActor(cloned);
     }
 
     void OnMoving(glm::ivec2 newPos, glm::ivec2 oldPos)
