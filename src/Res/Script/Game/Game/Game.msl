@@ -13,6 +13,8 @@
 		[
 			Layout( n:Player1.Level p:7 )
 			Layout( n:Player2.Level p:9 )
+
+			Layout( n:Victory p:5 )
 		]
 
 	}

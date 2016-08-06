@@ -26,6 +26,32 @@ Game::Game(int players)
 
 void Game::Update()
 {
+    if (_end)
+        return;
     for (auto& player : _players)
         player->Update();
+
+    bool lostFirst = false;
+    bool lostSecond = false;
+
+    if (_players.size() > 0)
+        lostFirst = _players[0]->_lost;
+
+    if (_players.size() > 1)
+        lostSecond = _players[1]->_lost;
+
+    if (!lostFirst && !lostSecond)
+        return;
+
+    _end = true;
+
+    int result = 0;
+    if (lostFirst)
+        result = 1;
+    if (lostSecond)
+        result = 0;
+    if (lostSecond && lostFirst)
+        result = -1;
+    onGameWon(result);
+
 }

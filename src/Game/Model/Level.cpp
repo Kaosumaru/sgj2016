@@ -130,6 +130,9 @@ void Level::RandomizeHalf()
 
 void Level::Update()
 {
+    if (_startTime == -1)
+        _startTime = Context<MX::Time::Timer>::current().total_seconds();
+
     _rules->UseAll();
 }
 

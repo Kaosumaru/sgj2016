@@ -152,6 +152,22 @@ namespace BH
 
         }
 
+        float calculateSpeed()
+        {
+            float max = 0.5;
+            float min = 6.0f;
+            float game_time = 2 * 60.0f;
+
+            float current_time = Context<MX::Time::Timer>::current().total_seconds();
+            float elapsed_time = current_time - level().startTime();
+
+            float p = elapsed_time / game_time;
+            if (p > 1.0f)
+                p = 1.0f;
+
+            return lerp_pair({ min, max }, p);
+
+        }
 
         bool onDo() override
         {
@@ -162,6 +178,7 @@ namespace BH
             }
 
             MoveUp();
+            _cooldown = calculateSpeed();
             return true;
         }
 

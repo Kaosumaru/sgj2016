@@ -45,6 +45,7 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
     Context<BaseGraphicScene>::SetCurrent(*this);
     
     auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+    _bg = bg;
     {
         bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
         bg->SetLayouter("Game.Layouter");
@@ -65,7 +66,7 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
         bg->AddNamedWidget("Player2.Level", levelView);
     }
 
-
+    _game->onGameWon.connect([&](int r) { onGameWon(r); });
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MainGame::onExit, this));
 }
 
@@ -75,6 +76,12 @@ void MainGame::Run()
         _game->Update();
     MX::DisplaySceneTimer::Run();
 }
+
+void MainGame::onGameWon(int r)
+{
+
+}
+
 
 void MainGame::onExit()
 {

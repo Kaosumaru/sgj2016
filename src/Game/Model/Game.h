@@ -19,7 +19,10 @@ namespace BH
         auto &players() { return _players; }
 
         void Update();
+
+        MX::Signal<void(int)> onGameWon;
     protected:
+        bool _end = false;
         std::vector<std::shared_ptr<Player>> _players;
     };
 }

@@ -97,8 +97,10 @@ namespace BH
         void InsertRandomNonExplodingGem(glm::ivec2 pos);
 
         MX::Signal<void(const Gem::pointer&)> onCreatedGem;
+
+        float startTime() { return _startTime; }
     protected:
-        
+        float _startTime = -1;
 
         int _width = 6;
         int _height = 13;
