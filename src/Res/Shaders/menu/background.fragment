@@ -37,7 +37,7 @@ void main(void)
 {
 	const float speed = 0.7;
 	const float ySpread = 1.6;
-	const int numBlocks = 20;
+	const int numBlocks = 30;
 
 	float pulse = sampleMusic();
 
@@ -62,10 +62,10 @@ void main(void)
 		float b = box(uv-pos, size, 0.01);
 		float dust = z*smoothstep(0.22, 0.0, b)*pulse*0.5;
 		float block = 0.2*z*smoothstep(0.002, 0.0, b);
-		float shine = 0.6*z*pulse*smoothstep(-0.002, b, 0.007);
+		float shine = 0.6*z*pulse*smoothstep(-0.003, b, 0.005);
 		color += dust*baseColor + block*z + shine;
 	}
 
 	pixel_color.rgb = color * 0.6;
-	pixel_color.a = 0.5;
+	pixel_color.a = 0.375;
 }
