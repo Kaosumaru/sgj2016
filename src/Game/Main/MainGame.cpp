@@ -74,6 +74,12 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
 
     _game->onGameWon.connect([&](int r) { onGameWon(r); });
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MainGame::onExit, this));
+
+    MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_F1].connect([&]() 
+    {
+        //MX::Graphic::Display::
+        //MX::Window::current().display()->ChangeResolution(_currentMode);
+    });
 }
 
 void MainGame::Run()

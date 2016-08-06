@@ -157,8 +157,8 @@ namespace BH
         float calculateSpeed()
         {
             float max = 0.5;
-            float min = 6.0f;
-            float game_time = 2 * 60.0f;
+            float min = 8.0f;
+            float game_time = 4 * 60.0f;
 
             float current_time = Context<MX::Time::Timer>::current().total_seconds();
             float elapsed_time = current_time - level().startTime();
