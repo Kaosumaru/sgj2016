@@ -115,7 +115,7 @@ Player::Player(int number)
 
     _controller = std::make_shared<KeyboardController>(number);
 
-    _actions.Add(std::make_shared<SwapGemsAction>());
+    _actions.Add(ActionCreator::createSwap());
     //_actions.Add(std::make_shared<DestroyGemAction>());
     _actions.Add(ActionCreator::createFireball());
     _actions.Add(ActionCreator::createFrostbolt());

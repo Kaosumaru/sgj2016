@@ -99,10 +99,8 @@ bool ActionList::UseAction(int index)
 class FireballAction : public Action
 {
 public:
-    FireballAction() : Action(0.1f)
+    FireballAction(const std::string& objectName) : Action(objectName)
     {
-        _manaCost = 7;
-        SetManaSource(2);
     }
 
     bool onDo() override
@@ -122,10 +120,9 @@ public:
 class FrostboltAction : public Action
 {
 public:
-    FrostboltAction() : Action(0.1f)
+    FrostboltAction(const std::string& objectName) : Action(objectName)
     {
-        _manaCost = 7;
-        SetManaSource(0);
+
     }
 
     bool onDo() override
@@ -174,14 +171,17 @@ public:
     }
 };
 
-
+std::shared_ptr<Action> ActionCreator::createSwap()
+{
+    return std::make_shared<SwapGemsAction>("Actions.Swap");
+}
 
 std::shared_ptr<Action> ActionCreator::createFireball()
 {
-    return std::make_shared<FireballAction>();
+    return std::make_shared<FireballAction>("Actions.Fireball");
 }
 
 std::shared_ptr<Action> ActionCreator::createFrostbolt()
 {
-    return std::make_shared<FrostboltAction>();
+    return std::make_shared<FrostboltAction>("Actions.Frostbolt");
 }
