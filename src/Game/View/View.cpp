@@ -7,6 +7,45 @@ using namespace MX;
 using namespace BH;
 using namespace std;
 
+class ActionView : public MX::Widgets::ScriptLayouterWidget
+{
+public:
+    ActionView(const Action::pointer& action)
+    {
+        _action = action;
+        SetLayouter("Game.Action.Layouter");
+    }
+
+    void Run() override
+    {
+        properties().SetValue("Progress", _action->costProgress());
+        MX::Widgets::ScriptLayouterWidget::Run();
+    }
+
+protected:
+    Action::pointer _action;
+};
+
+ActionsView::ActionsView(const Player::pointer& player)
+{
+    _player = player;
+    SetLayouter("Game.Actions.Layouter");
+
+    bool first = true;
+    for (auto& action : player->actions().list())
+    {
+        if (first)
+        {
+            first = false;
+            continue;
+        }
+
+        auto view = std::make_shared<ActionView>(action);
+        AddNamedWidget("Action", view);
+    }
+}
+
+
 LevelView::LevelView(const Level::pointer& level)
 {
     _level = level;

@@ -57,6 +57,9 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
         auto player = _game->players()[0];
         auto levelView = std::make_shared<LevelView>(player->level());
         bg->AddNamedWidget("Player1.Level", levelView);
+
+        auto actionsView = std::make_shared<ActionsView>(player);
+        bg->AddNamedWidget("Player1.Actions", actionsView);
     }
 
     if (players > 1)
@@ -64,6 +67,9 @@ MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().displa
         auto player = _game->players()[1];
         auto levelView = std::make_shared<LevelView>(player->level());
         bg->AddNamedWidget("Player2.Level", levelView);
+
+        auto actionsView = std::make_shared<ActionsView>(player);
+        bg->AddNamedWidget("Player2.Actions", actionsView);
     }
 
     _game->onGameWon.connect([&](int r) { onGameWon(r); });

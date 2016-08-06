@@ -11,9 +11,26 @@
 			Drawer: &Game.Drawer
 			)
 		[
-			Layout( n:Player1.Level p:7 )
-			Layout( n:Player2.Level p:9 )
-
+			Table()
+			[
+				td( w:384 )
+				[
+					Layout( n:Player1.Level p:7 )
+				]
+				td()
+				[
+					Layout( n:Player1.Actions )
+				]
+				td()[]
+				td()
+				[
+					Layout( n:Player2.Actions )
+				]
+				td( w:384 )
+				[
+					Layout( n:Player2.Level p:7 )
+				]
+			]
 			Layout( n:Victory p:5 )
 		]
 

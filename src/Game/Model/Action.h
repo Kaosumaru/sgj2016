@@ -38,6 +38,16 @@ namespace BH
             return Context<Level>::current();
         }
 
+        float costProgress()
+        {
+            if (!_manaSource || _manaCost == 0.0f)
+                return 1.0f;
+            float p = _manaSource->_current / _manaCost;
+            if (p > 1.0f)
+                p = 1.0f;
+            return p;
+        }
+
         Selector::Direction wantsDirection();
         glm::ivec2 wantsDelta();
 
