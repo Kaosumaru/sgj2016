@@ -7,6 +7,7 @@
 #include "Utils/MXUtils.h"
 #include "Level.h"
 #include "Mana.h"
+#include "Utils/MXRandom.h"
 
 namespace BH
 {
@@ -72,6 +73,37 @@ namespace BH
 
         auto& cooldownTImer() { return _cooldownTimer; }
 
+
+        template<typename T>
+        void enumerateBlocks3x3(const glm::ivec2& pos, T cb, bool enemy = false)
+        {
+            auto &l = enemy ? enemyLevel() : level();
+            for (int x = -1; x < 2; x++)
+                for (int y = -1; y < 2; y++)
+                {
+                    glm::ivec2 delta = { x, y };
+                    auto p = pos + delta;
+
+                    if (!levelContainsPosition(p))
+                        continue;
+                    auto gem = l.at(p);
+                    cb(l, p, gem);
+                }
+        }
+
+        template<typename T>
+        void enumerateEnemyBlocks3x3(const glm::ivec2& pos, T cb)
+        {
+            return enumerateBlocks3x3(pos, cb, true);
+        }
+
+        glm::ivec2 randomPosition(int margin = 0)
+        {
+            glm::ivec2 r;
+            r.x = Random::randomInt(margin, level().width() - 1 - margin);
+            r.y = Random::randomInt(margin, level().height() - 1 - margin);
+            return r;
+        }
 
     protected:
         virtual bool onDo()
@@ -169,60 +201,10 @@ namespace BH
         }
     };
 
-    class FireballAction : public Action
+    struct ActionCreator
     {
-    public:
-        FireballAction()
-        {
-            _manaCost = 7;
-            SetManaSource(2);
-        }
-
-        bool onDo() override
-        {
-            auto pos = selectorPosition();
-
-            for(int x = -1; x < 2; x ++)
-            for (int y = -1; y < 2; y++)
-            {
-                glm::ivec2 delta = { x, y };
-                auto p = pos + delta;
-
-                if (!levelContainsPosition(p))
-                    continue;
-                level().DestroyGem(p);
-            }
-            return true;
-        }
-    };
-
-    class FrostboltAction : public Action
-    {
-    public:
-        FrostboltAction()
-        {
-            _manaCost = 7;
-            SetManaSource(0);
-        }
-
-        bool onDo() override
-        {
-            auto pos = selectorPosition();
-
-            for (int x = -1; x < 2; x++)
-                for (int y = -1; y < 2; y++)
-                {
-                    glm::ivec2 delta = { x, y };
-                    auto p = pos + delta;
-                    auto &gem = enemyLevel().at(p);
-
-                    if (!gem)
-                        continue;
-                    
-                    gem->_frozen = true;
-                }
-            return true;
-        }
+        static std::shared_ptr<Action> createFireball();
+        static std::shared_ptr<Action> createFrostbolt();
     };
 
     class ActionList

@@ -117,8 +117,9 @@ Player::Player(int number)
 
     _actions.Add(std::make_shared<SwapGemsAction>());
     //_actions.Add(std::make_shared<DestroyGemAction>());
-    _actions.Add(std::make_shared<FireballAction>());
-    _actions.Add(std::make_shared<FrostboltAction>());
+    _actions.Add(ActionCreator::createFireball());
+    _actions.Add(ActionCreator::createFrostbolt());
+
 
     //SwapGems
     //Fireball

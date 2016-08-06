@@ -80,9 +80,9 @@ bool ActionList::UseAction(int index)
 {
     auto &player = Context<Player>::current();
 
-    float cooldown = 0.05f;
-    if (!_actionCooldown.Tick())
-        return false;
+    float cooldown = 0.1f;
+    //if (!_actionCooldown.Tick())
+    //    return false;
 
     if (index < (int)list().size())
     {
@@ -96,3 +96,91 @@ bool ActionList::UseAction(int index)
     return false;
 }
 
+class FireballAction : public Action
+{
+public:
+    FireballAction() : Action(0.1f)
+    {
+        _manaCost = 7;
+        SetManaSource(2);
+    }
+
+    bool onDo() override
+    {
+        auto pos = selectorPosition();
+
+        enumerateBlocks3x3(pos, [&](auto &level, auto& pos, auto &gem)
+        {
+            level.DestroyGem(pos);
+        });
+
+        return true;
+    }
+};
+
+class FrostboltAction : public Action
+{
+public:
+    FrostboltAction() : Action(0.1f)
+    {
+        _manaCost = 7;
+        SetManaSource(0);
+    }
+
+    bool onDo() override
+    {
+        //auto pos = selectorPosition();
+        auto pos = bestPoint();
+        freezeAt(pos);
+        return true;
+    }
+
+    glm::ivec2 bestPoint()
+    {
+        int maxPoints = -1;
+        glm::ivec2 res = selectorPosition();
+        int count = 20;
+
+        for (int i = 0; i < count; i++)
+        {
+            glm::ivec2 p = randomPosition(1);
+            int points = calculatePoints(p);
+            if (points <= maxPoints)
+                continue;
+            maxPoints = points;
+            res = p;
+        }
+        return res;
+    }
+
+    void freezeAt(const glm::ivec2& pos)
+    {
+        enumerateEnemyBlocks3x3(pos, [](auto &level, auto& pos, auto &gem)
+        {
+            if (gem)
+                gem->_frozen = true;
+        });
+    }
+
+    int calculatePoints(const glm::ivec2& pos)
+    {
+        int points = 0;
+        enumerateEnemyBlocks3x3(pos, [&](auto &level, auto& pos, auto &gem)
+        {
+            points += gem && !gem->_frozen ? 1 : 0;
+        });
+        return points;
+    }
+};
+
+
+
+std::shared_ptr<Action> ActionCreator::createFireball()
+{
+    return std::make_shared<FireballAction>();
+}
+
+std::shared_ptr<Action> ActionCreator::createFrostbolt()
+{
+    return std::make_shared<FrostboltAction>();
+}
