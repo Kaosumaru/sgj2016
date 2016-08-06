@@ -25,17 +25,42 @@ bool Controller::UseAction(int index)
 class KeyboardController : public Controller
 {
 public:
-    KeyboardController()
+    KeyboardController(int number)
     {
-        _directionKeys[ci::app::KeyEvent::KEY_UP] = Selector::Direction::Up;
-        _directionKeys[ci::app::KeyEvent::KEY_DOWN] = Selector::Direction::Down;
-        _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
-        _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
+        if (number == 0)
+        {
+            _directionKeys[ci::app::KeyEvent::KEY_w] = Selector::Direction::Up;
+            _directionKeys[ci::app::KeyEvent::KEY_s] = Selector::Direction::Down;
+            _directionKeys[ci::app::KeyEvent::KEY_a] = Selector::Direction::Left;
+            _directionKeys[ci::app::KeyEvent::KEY_d] = Selector::Direction::Right;
 
-        _actionKeys.push_back(ci::app::KeyEvent::KEY_z);
-        _actionKeys.push_back(ci::app::KeyEvent::KEY_x);
-        _actionKeys.push_back(ci::app::KeyEvent::KEY_c);
-        _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_SPACE);
+        }
+
+        if (number == 1)
+        {
+            _directionKeys[ci::app::KeyEvent::KEY_UP] = Selector::Direction::Up;
+            _directionKeys[ci::app::KeyEvent::KEY_DOWN] = Selector::Direction::Down;
+            _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
+            _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
+
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_PERIOD);
+        }
+
+
+        if (number == 3)
+        {
+            _directionKeys[ci::app::KeyEvent::KEY_UP] = Selector::Direction::Up;
+            _directionKeys[ci::app::KeyEvent::KEY_DOWN] = Selector::Direction::Down;
+            _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
+            _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
+
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_z);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_x);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_c);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
+        }
+
     }
 
     Selector::Direction wantsDirection() override
@@ -59,24 +84,38 @@ public:
 
     void Update() override
     {
+        auto dir = wantsDirection();
+
+        if (_lastDirection == Selector::Direction::None && dir != Selector::Direction::None)
+        {
+            _directionChanged = true;
+        }
+
+        _directionChanged = true;
 
         int index = 0;
         for (auto actionKey : _actionKeys)
         {
             if (MX::Window::current().keyboard()->key(actionKey))
-                UseAction(index);
+                if (!UseAction(index))
+                {
+                    _directionChanged = false;
+                }
             index++;
         }
+
+        _lastDirection = dir;
     }
 
+    Selector::Direction _lastDirection = Selector::Direction::None;
     std::map<int, Selector::Direction> _directionKeys;
     std::vector<int> _actionKeys;
 };
 
 
-Player::Player()
+Player::Player(int number)
 {
-    _controller = std::make_shared<KeyboardController>();
+    _controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(std::make_shared<SwapGemsAction>());
     _actions.Add(std::make_shared<DestroyGemAction>());

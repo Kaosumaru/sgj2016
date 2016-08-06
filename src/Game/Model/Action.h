@@ -20,6 +20,7 @@ namespace BH
 
         using pointer = std::shared_ptr<Action>;
 
+        bool directionChanged();
         glm::ivec2 selectorPosition();
         bool levelContainsPosition(const glm::ivec2& pos);
 
@@ -72,8 +73,13 @@ namespace BH
             if (!levelContainsPosition(pos1) || !levelContainsPosition(pos2))
                 return false;
 
+
+            if (!directionChanged())
+                return false;
+
             if (wantsDirection() == Selector::Direction::None)
                 return false;
+
 
             auto gem1 = level().at(pos1);
             auto gem2 = level().at(pos2);

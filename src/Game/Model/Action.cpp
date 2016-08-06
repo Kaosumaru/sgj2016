@@ -17,6 +17,12 @@
 using namespace BH;
 namespace bs2 = boost::signals2;
 
+bool Action::directionChanged()
+{
+    auto &player = Context<Player>::current();
+    return player.controller()->directionChanged();
+}
+
 glm::ivec2 Action::selectorPosition()
 {
     auto &player = Context<Player>::current();

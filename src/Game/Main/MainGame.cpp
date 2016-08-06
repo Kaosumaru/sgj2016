@@ -38,8 +38,9 @@ using namespace MX;
 using namespace BH;
 using namespace std;
 
-MainGame::MainGame() : DisplaySceneTimer(MX::Window::current().display()->size())
+MainGame::MainGame(int players) : DisplaySceneTimer(MX::Window::current().display()->size())
 {
+    _game = std::make_shared<Game>(players);
     _cheats = CreateCheats();
     Context<BaseGraphicScene>::SetCurrent(*this);
     
@@ -50,11 +51,20 @@ MainGame::MainGame() : DisplaySceneTimer(MX::Window::current().display()->size()
         AddActor(bg);
     }
 
+    if (players > 0)
     {
         auto player = _game->players()[0];
         auto levelView = std::make_shared<LevelView>(player->level());
         bg->AddNamedWidget("Player1.Level", levelView);
     }
+
+    if (players > 1)
+    {
+        auto player = _game->players()[1];
+        auto levelView = std::make_shared<LevelView>(player->level());
+        bg->AddNamedWidget("Player2.Level", levelView);
+    }
+
 
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MainGame::onExit, this));
 }

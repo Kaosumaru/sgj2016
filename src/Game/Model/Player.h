@@ -25,7 +25,9 @@ namespace BH
         virtual bool wantsToUseAction() { return false; };
         bool UseAction(int index);
 
-
+        bool directionChanged() { return _directionChanged; }
+    protected:
+        bool _directionChanged = false;
     };
 
     class Player
@@ -33,7 +35,7 @@ namespace BH
     public:
         using pointer = std::shared_ptr<Player>;
 
-        Player();
+        Player(int number);
 
         auto &actions() { return _actions; }
         auto &level() { return _level; }

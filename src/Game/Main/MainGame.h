@@ -14,14 +14,14 @@ namespace BH
     class MainGame : public MX::DisplaySceneTimer, public bs2::trackable
     {
     public:
-        MainGame();
+        MainGame(int players);
 
         void Run() override;
     protected:
         void onExit();
 
         std::shared_ptr<struct CheatObject> _cheats;
-        Game::pointer _game = std::make_shared<Game>();
+        Game::pointer _game;
     };
     
 }

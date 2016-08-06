@@ -19,7 +19,7 @@ Game::Game(int players)
 {
     for (int i = 0; i < players; i++)
     {
-        auto player = std::make_shared<Player>();
+        auto player = std::make_shared<Player>(players == 1 ? 3 : i);
         _players.push_back(player);
     }
 }

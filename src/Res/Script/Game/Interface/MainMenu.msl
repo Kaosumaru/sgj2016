@@ -48,12 +48,13 @@
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(MainMenu).Drawer
-			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Exit]] ]
+			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Game2 Button.Exit]] ]
 			)
 		[
 			Table()
 			[
 				Layout( n:Button.Game p:1 )
+				Layout( n:Button.Game2 p:2 )
 				Layout( n:Button.Exit p:3 )
 			]
 		]

@@ -58,14 +58,15 @@ public:
             return button;
         };
 
-        addButton("Button.Game")->onClicked.connect([&]() { OnGame(); });
+        addButton("Button.Game")->onClicked.connect([&]() { OnGame(1); });
+        addButton("Button.Game2")->onClicked.connect([&]() { OnGame(2); });
         addButton("Button.Exit")->onClicked.connect([&]() { OnExit(); });
 
     }
 
-    void OnGame(bool animate = true)
+    void OnGame(int players, bool animate = true)
     {
-        auto game = std::make_shared<MainGame>();
+        auto game = std::make_shared<MainGame>(players);
 
         if (animate)
             SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
@@ -94,7 +95,7 @@ GuiManager::GuiManager()
 
     auto menu = MX::make_shared<MMenuScene>();
 	PushScene(menu);
-    menu->OnGame(false);
+    menu->OnGame(1, false);
 }
 
 
