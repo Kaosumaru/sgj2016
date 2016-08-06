@@ -147,7 +147,7 @@ namespace BH
     class LevelMovement : public Rule
     {
     public:
-        LevelMovement() : Rule(12.0f)
+        LevelMovement() : Rule(6.0f)
         {
 
         }

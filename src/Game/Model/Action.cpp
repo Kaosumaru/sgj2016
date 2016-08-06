@@ -17,12 +17,6 @@
 using namespace BH;
 namespace bs2 = boost::signals2;
 
-bool Action::directionChanged()
-{
-    auto &player = Context<Player>::current();
-    return player.controller()->directionChanged();
-}
-
 glm::ivec2 Action::selectorPosition()
 {
     auto &player = Context<Player>::current();
@@ -56,7 +50,7 @@ bool ActionList::UseAction(int index)
 {
     auto &player = Context<Player>::current();
 
-    float cooldown = 0.1f;
+    float cooldown = 0.05f;
     if (!_actionCooldown.Tick())
         return false;
 

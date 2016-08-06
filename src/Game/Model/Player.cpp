@@ -86,28 +86,19 @@ public:
     {
         auto dir = wantsDirection();
 
-        if (_lastDirection == Selector::Direction::None && dir != Selector::Direction::None)
-        {
-            _directionChanged = true;
-        }
-
-        _directionChanged = true;
-
         int index = 0;
         for (auto actionKey : _actionKeys)
         {
             if (MX::Window::current().keyboard()->key(actionKey))
                 if (!UseAction(index))
                 {
-                    _directionChanged = false;
+                    
                 }
             index++;
         }
 
-        _lastDirection = dir;
     }
 
-    Selector::Direction _lastDirection = Selector::Direction::None;
     std::map<int, Selector::Direction> _directionKeys;
     std::vector<int> _actionKeys;
 };

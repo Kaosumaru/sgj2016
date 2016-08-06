@@ -20,7 +20,6 @@ namespace BH
 
         using pointer = std::shared_ptr<Action>;
 
-        bool directionChanged();
         glm::ivec2 selectorPosition();
         bool levelContainsPosition(const glm::ivec2& pos);
 
@@ -64,6 +63,28 @@ namespace BH
     class SwapGemsAction : public Action
     {
     public:
+        SwapGemsAction() : Action(0.1f) {}
+
+        bool Do()
+        {
+            {
+                auto pos1 = selectorPosition();
+                auto direction = wantsDirection();
+
+                if (pos1 != _lastPosition || direction != _lastDirection)
+                {
+                    if (onDo())
+                    {
+                        _cooldownTimer.Start(_cooldown);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+            return Action::Do();
+        }
+
         bool onDo() override
         {
             auto pos1 = selectorPosition();
@@ -73,11 +94,9 @@ namespace BH
             if (!levelContainsPosition(pos1) || !levelContainsPosition(pos2))
                 return false;
 
+            auto direction = wantsDirection();
 
-            if (!directionChanged())
-                return false;
-
-            if (wantsDirection() == Selector::Direction::None)
+            if (direction == Selector::Direction::None)
                 return false;
 
 
@@ -91,7 +110,7 @@ namespace BH
 
             //dont allow to swap up/down with empty spaces
             {
-                if (wantsDirection() == Selector::Direction::Up || wantsDirection() == Selector::Direction::Down)
+                if (direction == Selector::Direction::Up || direction == Selector::Direction::Down)
                 {
                     if (!gem1 || !gem2)
                         return false;
@@ -101,8 +120,14 @@ namespace BH
 
             level().SwapGems(pos1, pos2);
 
+            _lastDirection = direction;
+            _lastPosition = pos1;
+
             return true;
         }
+
+        glm::ivec2 _lastPosition = { -1,-1 };
+        Selector::Direction _lastDirection = Selector::Direction::None;
     };
 
     class DestroyGemAction : public Action

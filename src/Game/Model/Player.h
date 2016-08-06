@@ -25,9 +25,9 @@ namespace BH
         virtual bool wantsToUseAction() { return false; };
         bool UseAction(int index);
 
-        bool directionChanged() { return _directionChanged; }
+
     protected:
-        bool _directionChanged = false;
+
     };
 
     class Player
