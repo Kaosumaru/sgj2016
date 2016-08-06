@@ -29,8 +29,13 @@ public:
             [&]()
         {
             Unlink();
-        }
-        );
+        });
+
+        _gem->onStartedExploding.connect(
+            [&]()
+        {
+            OnStartedExploding();
+        });
 
         _gem->_frozen.onValueChanged.connect([&](const bool &v, const bool & old)
         {
@@ -62,6 +67,11 @@ public:
     }
 
 protected:
+
+    void OnStartedExploding()
+    {
+
+    }
 
     void OnMoving(glm::ivec2 newPos, glm::ivec2 oldPos)
     {

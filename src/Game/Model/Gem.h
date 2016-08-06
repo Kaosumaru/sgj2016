@@ -26,6 +26,8 @@ namespace BH
         auto& type() { return _type; }
 
         MX::Signal<void(void)> onDestroyed;
+        MX::Signal<void(void)> onStartedExploding;
+
         SignalizingVariable<bool> _falling = false;
         SignalizingVariable<bool> _frozen = false;
         SignalizingVariable<float> _exploding = 0.0f;
@@ -73,6 +75,7 @@ namespace BH
             if (_exploding > 0.0f)
                 return;
             _exploding = animationSpeed();
+            onStartedExploding();
         }
     protected:
         void SetPosition(glm::ivec2 pos)
