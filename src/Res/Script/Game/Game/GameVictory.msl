@@ -1,0 +1,23 @@
+{
+	Game.Victory.Screen:
+	{
+
+		Player1.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		[
+			Drawer.Color() { Color:[1 0 0 1] }
+		]
+
+		Player2.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		[
+			Drawer.Color() { Color:[0 0 1 1] }
+		]
+
+		Tie.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		[
+			Drawer.Color() { Color:[1 1 1 1] }
+		]
+
+
+
+	}
+}

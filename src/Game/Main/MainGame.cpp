@@ -79,7 +79,18 @@ void MainGame::Run()
 
 void MainGame::onGameWon(int r)
 {
+    std::string path;
+    if (r == 0)
+        path = "Game.Victory.Screen.Player1.Drawer";
+    else if (r == 1)
+        path = "Game.Victory.Screen.Player2.Drawer";
+    else
+        path = "Game.Victory.Screen.Tie.Drawer";
 
+    auto widget = std::make_shared<MX::Widgets::Widget>();
+    auto slotSetDrawer = MX::Widgets::DrawerManager::drawer(path);
+    widget->SetDrawer(slotSetDrawer);
+    _bg->AddNamedWidget("Victory", widget);
 }
 
 
