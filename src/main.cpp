@@ -30,7 +30,7 @@
 #pragma comment(lib, "winmm.lib")
 #endif
 
-#if 0
+#if 1
 #include "Game/TestManager.h"
 using CurrentManager = BH::TestManager;
 #else

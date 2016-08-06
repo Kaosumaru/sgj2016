@@ -1,7 +1,7 @@
 {
   Test.Scene.Actors:
   [
-    &Test.NewConcept
+    &Game.Effects.NeonExplosion
   ]
 
 
