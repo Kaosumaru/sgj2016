@@ -10,6 +10,8 @@
 			{ Class: Image.Image, Path: Gems/4.png	}
 		]
 
+		Frost: { Class: Image.Image, Path: Effects/frost.png	}
+
 		Drawer: Drawer.Composite.Layouter( Size: [64,64] )
 		[
 			Drawer.Composite.Switch(
@@ -21,6 +23,11 @@
 				[2 Drawer.StretchedImage( Image:&(Gem).Graphic.2 ) ]
 				[3 Drawer.StretchedImage( Image:&(Gem).Graphic.3 ) ]
 				[4 Drawer.StretchedImage( Image:&(Gem).Graphic.4 ) ]
+			]
+
+			Drawer.Composite.If( Condition:"=Widget.Property('Frozen') == 1" )
+			[
+				Drawer.Image( Image:&(Gem).Frost p:5 )
 			]
 		]
 

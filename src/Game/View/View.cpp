@@ -7,6 +7,63 @@ using namespace MX;
 using namespace BH;
 using namespace std;
 
+class GemView : public MX::Widgets::ScriptLayouterWidget
+{
+public:
+    GemView::GemView(const Gem::pointer& gem)
+    {
+        _gem = gem;
+        SetLayouter("Game.Gem.Layouter");
+        SetPosition(positionFromGem(gem));
+
+        properties().SetValue("GemType", _gem->type());
+
+        _gem->pos().onValueChanged.connect(
+            [&](const glm::ivec2 &newPos, const glm::ivec2 &oldPos)
+        {
+            OnMoving(newPos, oldPos);
+        }
+        );
+
+        _gem->onDestroyed.connect(
+            [&]()
+        {
+            Unlink();
+        }
+        );
+
+        _gem->_frozen.onValueChanged.connect([&](const bool &v, const bool & old)
+        {
+            properties().SetValue("Frozen", v ? 1.0f : 0.0f);
+        });
+    }
+
+    static auto from(const Gem::pointer& gem)
+    {
+        return std::make_shared<GemView>(gem);
+    }
+
+    MX::Vector2 positionFromGem(const Gem::pointer& gem)
+    {
+        return{ gem->position().x * 64.0f, gem->position().y * 64.0f };
+    }
+
+    void Run() override
+    {
+
+        MX::Widgets::ScriptLayouterWidget::Run();
+    }
+
+protected:
+
+    void OnMoving(glm::ivec2 newPos, glm::ivec2 oldPos)
+    {
+        SetPosition(positionFromGem(_gem));
+    }
+
+    Gem::pointer _gem;
+};
+
 class ActionView : public MX::Widgets::ScriptLayouterWidget
 {
 public:
@@ -86,38 +143,11 @@ void LevelView::onNewLevel()
 
 }
 
-GemView::GemView(const Gem::pointer& gem)
-{
-    _gem = gem;
-    SetLayouter("Game.Gem.Layouter");
-    SetPosition(positionFromGem(gem));
 
-    properties().SetValue("GemType", _gem->type());
 
-    _gem->pos().onValueChanged.connect(
-        [&](const glm::ivec2 &newPos, const glm::ivec2 &oldPos)
-        {
-            OnMoving(newPos, oldPos);
-        }
-    );
 
-    _gem->onDestroyed.connect(
-        [&]()
-        {
-            Unlink();
-        }
-    );
-}
 
-void GemView::OnMoving(glm::ivec2 newPos, glm::ivec2 oldPos)
-{
-    SetPosition(positionFromGem(_gem));
-}
 
-MX::Vector2 GemView::positionFromGem(const Gem::pointer& gem)
-{
-    return { gem->position().x * 64.0f, gem->position().y * 64.0f };
-}
 
 SelectorView::SelectorView(const Selector::pointer& selector)
 {

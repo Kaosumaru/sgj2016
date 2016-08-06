@@ -34,7 +34,9 @@ public:
             _directionKeys[ci::app::KeyEvent::KEY_a] = Selector::Direction::Left;
             _directionKeys[ci::app::KeyEvent::KEY_d] = Selector::Direction::Right;
 
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_SPACE);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_b);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_n);
         }
 
         if (number == 1)
@@ -44,7 +46,9 @@ public:
             _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
             _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
 
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_COMMA);
             _actionKeys.push_back(ci::app::KeyEvent::KEY_PERIOD);
+            _actionKeys.push_back(ci::app::KeyEvent::KEY_SLASH);
         }
 
 
@@ -112,8 +116,9 @@ Player::Player(int number)
     _controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(std::make_shared<SwapGemsAction>());
-    _actions.Add(std::make_shared<DestroyGemAction>());
+    //_actions.Add(std::make_shared<DestroyGemAction>());
     _actions.Add(std::make_shared<FireballAction>());
+    _actions.Add(std::make_shared<FrostboltAction>());
 
     //SwapGems
     //Fireball

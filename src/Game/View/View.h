@@ -32,22 +32,7 @@ namespace BH
         Level::pointer _level;
     };
 
-    class GemView : public MX::Widgets::ScriptLayouterWidget
-    {
-    public:
-        GemView(const Gem::pointer& gem);
 
-        static auto from(const Gem::pointer& gem)
-        {
-            return std::make_shared<GemView>(gem);
-        }
-
-        static MX::Vector2 positionFromGem(const Gem::pointer& gem);
-    protected:
-        void OnMoving(glm::ivec2 newPos, glm::ivec2 );
-
-        Gem::pointer _gem;
-    };
 
     class SelectorView : public MX::Widgets::ScriptLayouterWidget
     {

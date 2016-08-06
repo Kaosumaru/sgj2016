@@ -22,10 +22,18 @@ Game::Game(int players)
         auto player = std::make_shared<Player>(players == 1 ? 3 : i);
         _players.push_back(player);
     }
+
+    if (players == 1)
+    {
+        auto &player = _players.front();
+        for (auto &m : player->stats().manas())
+            m->Gain(100.0f);
+    }
 }
 
 void Game::Update()
 {
+    auto g1 = Context<Game>::Lock(this);
     if (_end)
         return;
     for (auto& player : _players)

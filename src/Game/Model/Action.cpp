@@ -17,6 +17,24 @@
 using namespace BH;
 namespace bs2 = boost::signals2;
 
+Player& Action::enemyPlayer()
+{
+    auto &game = Context<Game>::current();
+
+    auto &current = Context<Player>::current();;
+
+    for (auto &player : game.players())
+    {
+        if (&current != player.get())
+            return *player;
+    }
+    return current;
+}
+Level &Action::enemyLevel()
+{
+    return *(enemyPlayer().level());
+}
+
 void Action::SetManaSource(int i)
 {
     auto &player = Context<Player>::current();

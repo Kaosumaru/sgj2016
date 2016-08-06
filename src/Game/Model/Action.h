@@ -28,6 +28,9 @@ namespace BH
 
         using pointer = std::shared_ptr<Action>;
 
+        Player& enemyPlayer();
+        Level &enemyLevel();
+
         glm::ivec2 selectorPosition();
         bool levelContainsPosition(const glm::ivec2& pos);
         void destroyedGems(int color, int size);
@@ -189,6 +192,35 @@ namespace BH
                     continue;
                 level().DestroyGem(p);
             }
+            return true;
+        }
+    };
+
+    class FrostboltAction : public Action
+    {
+    public:
+        FrostboltAction()
+        {
+            _manaCost = 7;
+            SetManaSource(0);
+        }
+
+        bool onDo() override
+        {
+            auto pos = selectorPosition();
+
+            for (int x = -1; x < 2; x++)
+                for (int y = -1; y < 2; y++)
+                {
+                    glm::ivec2 delta = { x, y };
+                    auto p = pos + delta;
+                    auto &gem = enemyLevel().at(p);
+
+                    if (!gem)
+                        continue;
+                    
+                    gem->_frozen = true;
+                }
             return true;
         }
     };

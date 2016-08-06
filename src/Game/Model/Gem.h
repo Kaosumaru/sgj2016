@@ -27,12 +27,12 @@ namespace BH
 
         MX::Signal<void(void)> onDestroyed;
         SignalizingVariable<bool> _falling = false;
-        SignalizingVariable<bool> _freezed = false;
+        SignalizingVariable<bool> _frozen = false;
         SignalizingVariable<bool> _exploding = false;
 
         bool canBeMovedByPlayer()
         {
-            return !_falling && !_freezed;
+            return !_falling && !_frozen;
         }
     protected:
         void SetPosition(glm::ivec2 pos)
