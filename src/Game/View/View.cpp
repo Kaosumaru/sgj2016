@@ -1,5 +1,5 @@
 #include "View.h"
-
+#include "Game/Model/Rule.h"
 
 namespace bs2 = boost::signals2;
 
@@ -16,6 +16,22 @@ LevelView::LevelView(const Level::pointer& level)
     AddNamedWidget("Selector", selectorView);
 
     onNewLevel();
+
+    _level->onCreatedGem.connect([&]
+    (const Gem::pointer& gem) 
+    {
+        if (!gem)
+            return;
+        auto gemView = GemView::from(gem);
+        AddNamedWidget("Gem", gemView);
+    });
+}
+
+void LevelView::Run()
+{
+    int scroll = _level->movementRule()->cooldownTImer().percent() * 64.0f;
+    SetVerticalScroll(scroll);
+    MX::Widgets::ScriptLayouterWidget::Run();
 }
 
 void LevelView::onNewLevel()

@@ -28,6 +28,8 @@ bool Selector::Move(Direction direction)
 
     static const float speed = 0.10f;
 
+
+    if (_lastDirection != Selector::Direction::None)
     if (!_moveCooldown.Tick())
         return false;
 
@@ -36,6 +38,9 @@ bool Selector::Move(Direction direction)
 
     auto &level = Context<Level>::current();
     if (!level.containsPosition(new_position))
+        return false;
+
+    if (new_position.y == 0 || new_position.y == level.height() - 1)
         return false;
 
     position = new_position;
@@ -49,20 +54,37 @@ bool Selector::Move(Direction direction)
     return true;
 }
 
+void Selector::ForceMove(Direction direction)
+{
+    auto delta = deltaFromDirection(direction);
+    auto new_position = pos() + delta;
+
+    auto &level = Context<Level>::current();
+    if (!level.containsPosition(new_position))
+        return;
+    position = new_position;
+    return;
+}
+
 Level::Level()
 {
     _rules = std::make_shared<ActionList>();
     _rules->Add(std::make_shared<GravityRule>());
     _rules->Add(std::make_shared<Match3Rule>());
 
+    _movementRule = std::make_shared<LevelMovement>();
+    _rules->Add(_movementRule);
+
     _gems.resize(_width * _height);
-    RandomizeAll();
+    //RandomizeAll();
+    RandomizeHalf();
 }
 
 bool Level::InsertGem(const glm::ivec2& pos, const Gem::pointer& gem)
 {
     gem->SetPosition(pos);
     at(pos) = gem;
+    onCreatedGem(gem);
     return true;
 }
 
@@ -94,11 +116,16 @@ void Level::DestroyGem(const glm::ivec2& pos)
 
 void Level::RandomizeAll()
 {
+
+}
+
+void Level::RandomizeHalf()
+{
     for (int x = 0; x < _width; x++)
-    for (int y = 0; y < _height; y++)
+    for (int y = _height/2; y < _height; y++)
     {
         InsertRandomNonExplodingGem({ x, y });
-    } 
+    }
 }
 
 void Level::Update()

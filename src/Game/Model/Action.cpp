@@ -29,6 +29,12 @@ bool Action::levelContainsPosition(const glm::ivec2& pos)
     return level.containsPosition(pos);
 }
 
+void Action::reportPlayerLost()
+{
+    auto& player = Context<Player>::current();
+    player._lost = true;
+}
+
 Selector::Direction Action::wantsDirection()
 {
     auto &player = Context<Player>::current();
@@ -59,3 +65,4 @@ bool ActionList::UseAction(int index)
     }
     return false;
 }
+

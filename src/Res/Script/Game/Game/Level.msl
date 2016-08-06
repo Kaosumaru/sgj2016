@@ -1,10 +1,16 @@
 {
 	Game.Level:
 	{
-		Drawer: Drawer.Composite.Layouter( Size: [384,768] )
+		Drawer2: Drawer.Composite.Layouter( Size: [384,768] )
 		[
 			Drawer.Color() { Color:[0 0 1 1] }
 		]
+
+		Drawer:  Drawer.Proxy.Surface()
+		{
+			Drawer: &(Level).Drawer2
+			InhibitNormalDrawing: true
+		}
 
 
 		Layouter: Layouter.Drawer(

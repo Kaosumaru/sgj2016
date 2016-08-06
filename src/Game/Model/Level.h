@@ -38,14 +38,17 @@ namespace BH
         }
 
         auto pos() { return (glm::ivec2) position; }
-        SignalizingVariable<glm::ivec2> position;
+        SignalizingVariable<glm::ivec2> position = glm::ivec2{ 0,6 };
 
         bool Move(Direction direction);
+        void ForceMove(Direction direction);
 
     protected:
         Direction _lastDirection = Direction::None;
         MX::Time::ManualStopWatchAbsolute   _moveCooldown;
     };
+
+
 
     class Level
     {
@@ -59,6 +62,7 @@ namespace BH
         void DestroyGem(const glm::ivec2& pos);
 
         void RandomizeAll();
+        void RandomizeHalf();
 
         void Update();
 
@@ -84,14 +88,24 @@ namespace BH
                 return false;
             return true;
         }
-    protected:
+
+        auto& movementRule()
+        {
+            return _movementRule;
+        }
+
         void InsertRandomNonExplodingGem(glm::ivec2 pos);
 
+        MX::Signal<void(const Gem::pointer&)> onCreatedGem;
+    protected:
+        
+
         int _width = 6;
-        int _height = 12;
+        int _height = 13;
         std::vector<Gem::pointer> _gems;
         Selector::pointer _selector = std::make_shared<Selector>();
         std::shared_ptr<ActionList> _rules;
+        std::shared_ptr<class LevelMovement> _movementRule;
     };
 }
 

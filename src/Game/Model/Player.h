@@ -45,6 +45,8 @@ namespace BH
         }
 
         void Update();
+
+        SignalizingVariable<bool> _lost = false;
     protected:
         
 

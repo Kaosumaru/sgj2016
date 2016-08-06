@@ -22,6 +22,8 @@ namespace BH
 
         glm::ivec2 selectorPosition();
         bool levelContainsPosition(const glm::ivec2& pos);
+
+        void reportPlayerLost();
         auto &level()
         {
             return Context<Level>::current();
@@ -47,6 +49,7 @@ namespace BH
             return false;
         }
 
+        auto& cooldownTImer() { return _cooldownTimer; }
     protected:
         virtual bool onDo()
         {

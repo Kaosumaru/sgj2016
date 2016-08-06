@@ -17,6 +17,7 @@ namespace BH
     public:
         LevelView(const Level::pointer& level);
 
+        void Run() override;
     protected:
         void onNewLevel();
 

@@ -142,6 +142,74 @@ namespace BH
             return true;
         }
     };
+
+
+    class LevelMovement : public Rule
+    {
+    public:
+        LevelMovement() : Rule(3.0f)
+        {
+
+        }
+
+
+        bool onDo() override
+        {
+            if (first)
+            {
+                first = false;
+                return true;
+            }
+
+            MoveUp();
+            return true;
+        }
+
+        void MoveUp()
+        {
+            auto &l = level();
+
+            {
+                int y = 1;
+                for (int x = 0; x < level().width(); x++)
+                {
+                    glm::ivec2 pos = { x, y };
+                    auto gem = l.at(pos);
+                    if (!gem)
+                        continue;
+
+                    reportPlayerLost();
+                }
+            }
+
+
+            for (int y = 1; y < level().height(); y++)
+            {
+                for (int x = 0; x < level().width(); x++)
+                {
+                    glm::ivec2 pos = { x, y };
+                    glm::ivec2 upper_pos = { x, y-1 };
+                    l.SwapGems(pos, upper_pos);
+                }
+            }
+            FillRow(level().height()-1);
+            l.selector()->ForceMove(Selector::Direction::Up);
+        }
+
+        void FillRow(int row)
+        {
+            auto &l = level();
+            for (int x = 0; x < level().width(); x++)
+            {
+                glm::ivec2 pos = { x, row };
+                l.InsertRandomNonExplodingGem(pos);
+            }
+
+        }
+
+
+        bool first = true;
+    };
 }
 
 
