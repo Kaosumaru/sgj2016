@@ -133,6 +133,17 @@ void Level::Update()
     if (_startTime == -1)
         _startTime = Context<MX::Time::Timer>::current().total_seconds();
 
+    for (auto &gem : _gems)
+    {
+        if (!gem)
+            continue;
+
+        if (gem->Update())
+            continue;
+
+        DestroyGem(gem->pos());
+    }
+
     _rules->UseAll();
 }
 

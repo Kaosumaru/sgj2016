@@ -11,7 +11,7 @@
 #include "Graphic/Effects/MXEffectActors.h"
 #include "Graphic/Particles/MXParticles.h"
 #include "Scene/Script/MXEvent.h"
-
+#include "Game/Model/Gem.h"
 #include "Script/MXScriptClassParser.h"
 
 
@@ -47,7 +47,14 @@ void BH::GameInitializer::Init()
 
 void BH::GameInitializer::AfterScriptParse()
 {
-
+    auto &script = Script::get();
+    script.SetPairFunctor("Gem.Exploding", []()-> float { return Context<Gem>::current()._exploding; });
+    script.SetPairFunctor("Gem.ExplosionPercent", []()-> float 
+    { 
+        if (!Context<Gem>::isCurrent())
+            return 0.0f;
+        return Context<Gem>::current().explosionPercent(); 
+    });
 }
 
 void BH::GameInitializer::ReloadScripts(bool reset)

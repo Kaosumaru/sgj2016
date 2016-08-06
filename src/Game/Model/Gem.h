@@ -28,11 +28,46 @@ namespace BH
         MX::Signal<void(void)> onDestroyed;
         SignalizingVariable<bool> _falling = false;
         SignalizingVariable<bool> _frozen = false;
-        SignalizingVariable<bool> _exploding = false;
+        SignalizingVariable<float> _exploding = 0.0f;
+        bool _wantToExplode = false;
+
+        bool canBeMovedByAnything()
+        {
+            return _exploding == 0.0f;
+        }
 
         bool canBeMovedByPlayer()
         {
-            return !_falling && !_frozen;
+            return !_falling && !_frozen && _exploding == 0.0f;
+        }
+
+        bool Update()
+        {
+            if (_exploding > 0)
+            {
+                _exploding = _exploding - MX::Time::Timer::current().elapsed_seconds();
+                if (_exploding <= 0.0f)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        float explosionPercent()
+        {
+            if (_exploding == 0.0f)
+                return 0.0f;
+            float max = 0.2f;
+
+            return (max - _exploding) / max;
+        }
+
+        void QueueDestruction()
+        {
+            if (_exploding > 0.0f)
+                return;
+            _exploding = 0.2f;
         }
     protected:
         void SetPosition(glm::ivec2 pos)

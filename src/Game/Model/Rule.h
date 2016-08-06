@@ -33,7 +33,7 @@ namespace BH
                     auto currentGem = l.at({ x,y });
                     auto upperGem = l.at({ x,y-1 });
 
-                    if (currentGem || !upperGem)
+                    if (currentGem || !upperGem || (upperGem && !upperGem->canBeMovedByAnything()))
                     {
                         if (upperGem)
                             upperGem->_falling = false;
@@ -76,7 +76,7 @@ namespace BH
 
                 for (int i = 0; i < size; i++)
                 {
-                    l.at(start)->_exploding = true;
+                    l.at(start)->_wantToExplode = true;
                     start += d;
                 }
 
@@ -94,7 +94,7 @@ namespace BH
                         auto gem = l.at({ x,y });
                         int color = gem ? gem->type() : -1;
 
-                        if (gem && gem->_falling)
+                        if (gem && (gem->_falling || !gem->canBeMovedByAnything()))
                             color = -1;
 
                         if (color == prevColor)
@@ -138,8 +138,8 @@ namespace BH
 
             for (auto &gem : l.gems())
             {
-                if (gem && gem->_exploding)
-                    l.DestroyGem(gem->pos());
+                if (gem && gem->_wantToExplode)
+                    gem->QueueDestruction();
             }
             return true;
         }

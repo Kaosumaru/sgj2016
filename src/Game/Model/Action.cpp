@@ -111,7 +111,8 @@ public:
 
         enumerateBlocks3x3(pos, [&](auto &level, auto& pos, auto &gem)
         {
-            level.DestroyGem(pos);
+            if (gem)
+                gem->QueueDestruction();
         });
 
         return true;

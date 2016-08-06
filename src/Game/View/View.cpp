@@ -36,6 +36,7 @@ public:
         {
             properties().SetValue("Frozen", v ? 1.0f : 0.0f);
         });
+
     }
 
     static auto from(const Gem::pointer& gem)
@@ -50,8 +51,14 @@ public:
 
     void Run() override
     {
-
+        auto g1 = Context<Gem>::Lock(_gem);
         MX::Widgets::ScriptLayouterWidget::Run();
+    }
+
+    void Draw(float x, float y) override
+    {
+        auto g1 = Context<Gem>::Lock(_gem);
+        MX::Widgets::ScriptLayouterWidget::Draw(x, y);
     }
 
 protected:

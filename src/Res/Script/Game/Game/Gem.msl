@@ -14,6 +14,8 @@
 
 		Drawer: Drawer.Composite.Layouter( Size: [64,64] )
 		[
+			Drawer.Color() { Color:[1 0 0 "=&Gem.ExplosionPercent"] }
+
 			Drawer.Composite.Switch(
 					Condition:"=Widget.Property('GemType')"
 				)
