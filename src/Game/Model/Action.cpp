@@ -17,10 +17,22 @@
 using namespace BH;
 namespace bs2 = boost::signals2;
 
+void Action::SetManaSource(int i)
+{
+    auto &player = Context<Player>::current();
+    SetManaSource(player.stats().manas()[i]);
+}
+
 glm::ivec2 Action::selectorPosition()
 {
     auto &player = Context<Player>::current();
     return player.selectorPosition();
+}
+
+void Action::destroyedGems(int color, int size)
+{
+    auto &player = Context<Player>::current();
+    player.stats().manas()[color]->onDestroyedGems(size);
 }
 
 bool Action::levelContainsPosition(const glm::ivec2& pos)

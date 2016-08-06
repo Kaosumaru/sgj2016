@@ -6,6 +6,7 @@
 #include "Scene/Managers/MXSceneManager.h"
 #include "Utils/MXUtils.h"
 #include "Level.h"
+#include "Mana.h"
 
 namespace BH
 {
@@ -18,10 +19,18 @@ namespace BH
             _cooldown = cooldown;
         }
 
+        void SetManaSource(const Mana::pointer& manaSource)
+        {
+            _manaSource = manaSource;
+        }
+
+        void SetManaSource(int i);
+
         using pointer = std::shared_ptr<Action>;
 
         glm::ivec2 selectorPosition();
         bool levelContainsPosition(const glm::ivec2& pos);
+        void destroyedGems(int color, int size);
 
         void reportPlayerLost();
         auto &level()
@@ -34,28 +43,31 @@ namespace BH
 
         virtual bool Do() 
         {
-            if (_cooldown == 0.0f)
-            {
-                return onDo();
-            }
+            if (_manaSource && !_manaSource->Pay(_manaCost))
+                return false;
 
             if (!_cooldownTimer.Tick())
                 return false;
             if (onDo())
             {
-                _cooldownTimer.Start(_cooldown);
+                if (_cooldown != 0.0f)
+                    _cooldownTimer.Start(_cooldown);
                 return true;
             }
             return false;
         }
 
         auto& cooldownTImer() { return _cooldownTimer; }
+
+
     protected:
         virtual bool onDo()
         {
             return true;
         }
 
+        Mana::pointer _manaSource;
+        float _manaCost = 0.0f;
         float _cooldown;
         MX::Time::ManualStopWatchAbsolute   _cooldownTimer;
     };
@@ -147,6 +159,12 @@ namespace BH
     class FireballAction : public Action
     {
     public:
+        FireballAction()
+        {
+            _manaCost = 7;
+            SetManaSource(2);
+        }
+
         bool onDo() override
         {
             auto pos = selectorPosition();

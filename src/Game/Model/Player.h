@@ -6,6 +6,7 @@
 #include "Utils/MXUtils.h"
 #include "Action.h"
 #include "Level.h"
+#include "Mana.h"
 
 namespace BH
 {
@@ -40,6 +41,7 @@ namespace BH
         auto &actions() { return _actions; }
         auto &level() { return _level; }
         auto &controller() { return _controller; }
+        auto &stats() { return _stats; }
 
         auto selectorPosition()
         {
@@ -51,7 +53,7 @@ namespace BH
         SignalizingVariable<bool> _lost = false;
     protected:
         
-
+        Stats               _stats;
         Controller::pointer _controller;
         Level::pointer _level = std::make_shared<Level>();
         ActionList _actions;

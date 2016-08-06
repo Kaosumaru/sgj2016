@@ -79,6 +79,8 @@ namespace BH
                     l.at(start)->_exploding = true;
                     start += d;
                 }
+
+                destroyedGems(color, size);
             };
 
             {

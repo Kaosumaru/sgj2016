@@ -106,11 +106,20 @@ public:
 
 Player::Player(int number)
 {
+    auto g1 = Context<Player>::Lock(this);
+    auto g12 = Context<Level>::Lock(_level);
+
     _controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(std::make_shared<SwapGemsAction>());
     _actions.Add(std::make_shared<DestroyGemAction>());
     _actions.Add(std::make_shared<FireballAction>());
+
+    //SwapGems
+    //Fireball
+    //Freezeball
+    //Confuse
+    //SlowTime - passive
 }
 
 void Player::Update()
