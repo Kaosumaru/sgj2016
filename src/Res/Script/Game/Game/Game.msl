@@ -1,9 +1,30 @@
 {
 	Game:
 	{
+		ShaderDrawer: Drawer.Color.Shader()
+		{
+			Shader: Shader.Uniform.Timed()
+			{
+				VertexPath: Shaders/instanced.vertex
+				FragmentPath: Shaders/menu/background.fragment
+
+				Name: BackShader
+
+				Defines:
+				[
+				]
+
+				Debug: true
+				Debug.Uniforms:
+				[
+					GL.Uniform.Float( n:time_m v:1 step:0.01)
+				]
+			}
+		}
+
 		Drawer: Drawer.Composite.Layouter()
 		[
-			//Drawer.Color() { Color:[0 0 1 1] }
+			&(Game).ShaderDrawer
 		]
 
 
@@ -11,7 +32,7 @@
 			Drawer: &Game.Drawer
 			)
 		[
-			Table()
+			Table( x1:60 x2:-60 y1:10 )
 			[
 				td( w:384 )
 				[
@@ -24,7 +45,7 @@
 				td()[]
 				td()
 				[
-					Layout( n:Player2.Actions )
+					Layout( n:Player2.Actions p:9 )
 				]
 				td( w:384 )
 				[
