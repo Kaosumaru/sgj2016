@@ -8,16 +8,25 @@
 #include "Level.h"
 #include "Mana.h"
 #include "Utils/MXRandom.h"
+#include "Script/MXScriptObject.h"
+#include "Scene/Script/MXEvent.h"
 
 namespace BH
 {
     class Player;
-    class Action
+    class Action : public MX::ScriptObjectString
     {
     public:
-        Action(float cooldown = 0.0f)
+        Action(const std::string& objectName) : MX::ScriptObjectString(objectName)
         {
-            _cooldown = cooldown;
+            load_property(_cooldown, "Cooldown");
+            load_property(_manaCost, "ManaCost");
+            load_property(_doEvents, "Events");
+
+            int manaSource = -1;
+            load_property(manaSource, "ManaSource");
+            if (manaSource != -1)
+                SetManaSource(manaSource);
         }
 
         void SetManaSource(const Mana::pointer& manaSource)
@@ -64,6 +73,7 @@ namespace BH
                 return false;
             if (onDo())
             {
+                _doEvents.Do();
                 if (_cooldown != 0.0f)
                     _cooldownTimer.Start(_cooldown);
                 return true;
@@ -113,14 +123,15 @@ namespace BH
 
         Mana::pointer _manaSource;
         float _manaCost = 0.0f;
-        float _cooldown;
+        float _cooldown = 0.0f;
         MX::Time::ManualStopWatchAbsolute   _cooldownTimer;
+        MX::EventHolder   _doEvents;
     };
 
     class SwapGemsAction : public Action
     {
     public:
-        SwapGemsAction() : Action(0.1f) {}
+        SwapGemsAction(const std::string& objectName) : Action(objectName) {}
 
         bool Do()
         {
@@ -133,6 +144,7 @@ namespace BH
                     if (onDo())
                     {
                         _cooldownTimer.Start(_cooldown);
+                        _doEvents.Do();
                         return true;
                     }
                     return false;
@@ -203,6 +215,7 @@ namespace BH
 
     struct ActionCreator
     {
+        static std::shared_ptr<Action> createSwap();
         static std::shared_ptr<Action> createFireball();
         static std::shared_ptr<Action> createFrostbolt();
     };

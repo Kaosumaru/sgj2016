@@ -12,7 +12,11 @@ namespace BH
     class Rule : public Action
     {
     public:
-        using Action::Action;
+        Rule() : Action("Rule") {}
+        Rule(float cooldown) : Action("Rule")
+        {
+            _cooldown = cooldown;
+        }
     };
 
     class GravityRule : public Rule

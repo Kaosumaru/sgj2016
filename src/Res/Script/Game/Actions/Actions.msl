@@ -1,0 +1,31 @@
+{
+	Actions:
+	{
+		Swap:
+		{
+			Cooldown: 0.1
+			Events:
+			[
+				Event.PlaySound()
+				[
+					Sound.Sample()[ "Sounds/swap.ogg" ]
+				]
+			]
+		}
+
+		Fireball:
+		{
+			Cooldown: 0.1
+			ManaCost: 7
+			ManaSource: 2
+		}
+
+		Frostbolt:
+		{
+			Cooldown: 0.1
+			ManaCost: 7
+			ManaSource: 0
+		}
+
+	}
+}
