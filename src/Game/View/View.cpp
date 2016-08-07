@@ -10,7 +10,7 @@ using namespace std;
 class GemView : public MX::Widgets::ScriptLayouterWidget
 {
 public:
-    GemView::GemView(const Gem::pointer& gem)
+    GemView(const Gem::pointer& gem)
     {
         _gem = gem;
         SetLayouter("Game.Gem.Layouter");
@@ -97,8 +97,9 @@ protected:
 class ActionView : public MX::Widgets::ScriptLayouterWidget
 {
 public:
-    ActionView(const Action::pointer& action)
+    ActionView(const Player::pointer& player, const Action::pointer& action)
     {
+        _player = player;
         _action = action;
         SetLayouter("Game.Action.Layouter");
     }
@@ -111,6 +112,8 @@ public:
 
     void Draw(float x, float y) override
     {
+        auto g2 = Context<Player>::Lock(_player);
+        auto g1 = Context<Action>::Lock(_action);
         if (_action->drawer())
         {
             auto g = Context<Widgets::Drawer>::Lock(_action->drawer());
@@ -122,6 +125,7 @@ public:
 
 protected:
     Action::pointer _action;
+    Player::pointer _player;
 };
 
 ActionsView::ActionsView(const Player::pointer& player)
@@ -138,7 +142,7 @@ ActionsView::ActionsView(const Player::pointer& player)
             continue;
         }
 
-        auto view = std::make_shared<ActionView>(action);
+        auto view = std::make_shared<ActionView>(_player, action);
         AddNamedWidget("Action", view);
     }
 }
