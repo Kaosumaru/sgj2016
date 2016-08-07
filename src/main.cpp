@@ -38,8 +38,15 @@ using CurrentManager = BH::TestManager;
 using CurrentManager = BH::GuiManager;
 #endif
 
-unsigned _width = 1280, _height = 800;
+
+unsigned _width = 1980, _height = 1080;
+
+#ifndef MX_GAME_RELEASE
 bool _fullscreen = false;
+#else
+bool _fullscreen = true;
+#endif
+
 
 using namespace std;
 using namespace MX;
@@ -101,8 +108,8 @@ protected:
 			throw std::exception("Instancing not supported!");
 		
 #ifdef MX_GAME_RELEASE
-		auto cursor = MX::Resources::get().loadCenteredImage(15.0f, 15.0f, "Misc/Crosshair.png");
-		SetCursor(cursor);
+		//auto cursor = MX::Resources::get().loadCenteredImage(15.0f, 15.0f, "Misc/Crosshair.png");
+		//SetCursor(cursor);
 #endif
 		return true;
 	}
@@ -138,7 +145,9 @@ protected:
         CurrentManager::get().Draw();
 
 		Graphic::TextureRenderer::current().Flush();
+#ifndef MX_GAME_RELEASE
 		MX::DebugGUIManager::get().Draw();
+#endif
 	}
 
 	void RenderFirstFrame()

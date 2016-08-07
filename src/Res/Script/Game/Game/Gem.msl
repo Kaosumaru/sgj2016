@@ -30,7 +30,7 @@
 			Color: [1 1 1 "=&Gem.ExplosionPercent"]
 		}
 
-		Frost: { Class: Image.Image, Path: Effects/frost.png	}
+		Frost: { Class: Image.Image, Path: Effects/freeze.png	}
 
 		Drawer: Drawer.Composite.Layouter( Size: [64,64] )
 		[

@@ -23,16 +23,18 @@ Game::Game(int players)
         _players.push_back(player);
     }
 
+#ifndef MX_GAME_RELEASE
     if (players == 1)
     {
         auto &player = _players.front();
         for (auto &m : player->stats().manas())
         {
-            m->_max = 100.0f;
-            m->Gain(100.0f);
+            m->_max = 10000.0f;
+            m->Gain(10000.0f);
         }
             
     }
+#endif
 }
 
 void Game::Update()
