@@ -1,0 +1,15 @@
+{
+	Rule:
+	{
+		Match3:
+		{
+			OnMatch.Events:
+			[
+				Event.PlaySound()
+				[
+					Sound.Sample()[ "Sounds/match3.ogg" ]
+				]
+			]
+		}
+	}
+}

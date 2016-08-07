@@ -13,6 +13,7 @@ namespace BH
     {
     public:
         Rule() : Action("Rule") {}
+        Rule(const std::string& objectName) : Action(objectName) {}
         Rule(float cooldown) : Action("Rule")
         {
             _cooldown = cooldown;
@@ -66,6 +67,10 @@ namespace BH
     class Match3Rule : public Rule
     {
     public:
+        Match3Rule() : Rule("Rule.Match3")
+        {
+            load_property(_matchEvents, "OnMatch.Events");
+        }
 
         bool onDo() override
         {
@@ -124,7 +129,7 @@ namespace BH
                         auto gem = l.at({ x,y });
                         int color = gem ? gem->type() : -1;
 
-                        if (gem && gem->_falling)
+                        if (gem && (gem->_falling || !gem->canBeMovedByAnything()))
                             color = -1;
 
                         if (color == prevColor)
@@ -139,14 +144,26 @@ namespace BH
                 }
             }
 
-
+            bool found = false;
             for (auto &gem : l.gems())
             {
                 if (gem && gem->_wantToExplode)
-                    gem->QueueDestruction();
+                {
+                    if (gem->QueueDestruction())
+                        found = true;
+                }
+                    
             }
+
+            if (found)
+            {
+                _matchEvents.Do();
+            }
+
             return true;
         }
+    protected:
+        MX::EventHolder   _matchEvents;
     };
 
 
