@@ -1,0 +1,6 @@
+- tło w 1920x1080
+- ikonki actions
+- particle spelli
+- ready, set, go
+- punkty
+- spell confusion

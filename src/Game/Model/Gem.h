@@ -70,12 +70,13 @@ namespace BH
             return sin((max - _exploding) / max);
         }
 
-        void QueueDestruction()
+        bool QueueDestruction()
         {
             if (_exploding > 0.0f)
-                return;
+                return false;
             _exploding = animationSpeed();
             onStartedExploding();
+            return true;
         }
     protected:
         void SetPosition(glm::ivec2 pos)
