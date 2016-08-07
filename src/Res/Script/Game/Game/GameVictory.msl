@@ -2,17 +2,17 @@
 	Game.Victory.Screen:
 	{
 
-		Player1.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		Player1.Drawer: Drawer.Composite.Layouter( Size: [450,225] )
 		[
-			Drawer.Color() { Color:[1 0 0 1] }
+			Drawer.Image() [ { Class: Image.Image, Path: Interface/PlayerOneWon.png	} ]
 		]
 
-		Player2.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		Player2.Drawer: Drawer.Composite.Layouter( Size: [450,225] )
 		[
-			Drawer.Color() { Color:[0 0 1 1] }
+			Drawer.Color() [ { Class: Image.Image, Path: Interface/PlayerTwoWon.png	} ]
 		]
 
-		Tie.Drawer: Drawer.Composite.Layouter( Size: [300,100] )
+		Tie.Drawer: Drawer.Composite.Layouter( Size: [450,225] )
 		[
 			Drawer.Color() { Color:[1 1 1 1] }
 		]
