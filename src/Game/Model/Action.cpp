@@ -32,6 +32,23 @@ Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectNam
         SetManaSource(manaSource);
 }
 
+bool Action::Do()
+{
+    if (_manaSource && !_manaSource->Pay(_manaCost))
+        return false;
+
+    if (!_cooldownTimer.Tick())
+        return false;
+    if (onDo())
+    {
+        _doEvents.Do();
+        if (_cooldown != 0.0f)
+            _cooldownTimer.Start(_cooldown);
+        return true;
+    }
+    return false;
+}
+
 Player& Action::enemyPlayer()
 {
     auto &game = Context<Game>::current();

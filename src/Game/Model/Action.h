@@ -69,22 +69,7 @@ namespace BH
         Selector::Direction wantsDirection();
         glm::ivec2 wantsDelta();
 
-        virtual bool Do() 
-        {
-            if (_manaSource && !_manaSource->Pay(_manaCost))
-                return false;
-
-            if (!_cooldownTimer.Tick())
-                return false;
-            if (onDo())
-            {
-                _doEvents.Do();
-                if (_cooldown != 0.0f)
-                    _cooldownTimer.Start(_cooldown);
-                return true;
-            }
-            return false;
-        }
+        virtual bool Do();
 
         auto& cooldownTImer() { return _cooldownTimer; }
 
