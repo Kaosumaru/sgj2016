@@ -38,6 +38,7 @@
 				[
 					Layout( n:Player1.Level p:7 )
 				]
+				td( w:20 )
 				td()
 				[
 					Layout( n:Player1.Actions )
@@ -47,6 +48,7 @@
 				[
 					Layout( n:Player2.Actions p:9 )
 				]
+				td( w:20 )
 				td( w:384 )
 				[
 					Layout( n:Player2.Level p:7 )
