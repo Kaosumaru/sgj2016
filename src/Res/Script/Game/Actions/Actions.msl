@@ -18,6 +18,14 @@
 			Cooldown: 0.1
 			ManaCost: 7
 			ManaSource: 2
+
+			Events:
+			[
+				Event.PlaySound()
+				[
+					Sound.Sample()[ "Sounds/Explosion.ogg" ]
+				]
+			]
 		}
 
 		Frostbolt:
@@ -25,6 +33,14 @@
 			Cooldown: 0.1
 			ManaCost: 7
 			ManaSource: 0
+
+			Events:
+			[
+				Event.PlaySound()
+				[
+					Sound.Sample()[ "Sounds/Freeze.ogg" ]
+				]
+			]
 		}
 
 	}
