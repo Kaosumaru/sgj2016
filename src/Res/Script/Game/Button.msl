@@ -1,0 +1,8 @@
+{
+	Button:
+	{
+		Game: "Single player"
+		Game2: "Multi player"
+		Exit: "Exit"
+	}
+}

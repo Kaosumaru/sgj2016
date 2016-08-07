@@ -108,8 +108,8 @@ protected:
 			throw std::exception("Instancing not supported!");
 		
 #ifdef MX_GAME_RELEASE
-		auto cursor = MX::Resources::get().loadCenteredImage(15.0f, 15.0f, "Misc/Crosshair.png");
-		SetCursor(cursor);
+		//auto cursor = MX::Resources::get().loadCenteredImage(15.0f, 15.0f, "Misc/Crosshair.png");
+		//SetCursor(cursor);
 #endif
 		return true;
 	}
@@ -145,7 +145,9 @@ protected:
         CurrentManager::get().Draw();
 
 		Graphic::TextureRenderer::current().Flush();
+#ifndef MX_GAME_RELEASE
 		MX::DebugGUIManager::get().Draw();
+#endif
 	}
 
 	void RenderFirstFrame()

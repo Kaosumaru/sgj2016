@@ -77,7 +77,7 @@ protected:
 
     void OnExit()
     {
-
+        MX::App::current().Quit();
     }
 
 };
