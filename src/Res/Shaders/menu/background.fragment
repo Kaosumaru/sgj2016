@@ -67,5 +67,5 @@ void main(void)
 	}
 
 	pixel_color.rgb = color * 0.6;
-	pixel_color.a = 1.0;
+	pixel_color.a = 0.8;
 }
