@@ -59,6 +59,13 @@ namespace BH
             return p;
         }
 
+        bool canPay()
+        {
+            if (!_manaSource || _manaCost == 0.0f)
+                return true;
+            return _manaSource->_current >= _manaCost;
+        }
+
         Selector::Direction wantsDirection();
         glm::ivec2 wantsDelta();
 

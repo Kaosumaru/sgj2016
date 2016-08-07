@@ -20,10 +20,10 @@
 			ManaSource: 2
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image()[ { Class: Image.Image, Path: Interface/ExplosionIconBlue.png	} ]
+					Default: Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image()[ { Class: Image.Image, Path: Interface/ExplosionIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconRed.png	} ] ]
 			]
 
 			Events:
@@ -43,10 +43,10 @@
 
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image()[ { Class: Image.Image, Path: Interface/FreezeIconBlue.png	} ]
+					Default: Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image()[ { Class: Image.Image, Path: Interface/FreezeIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconRed.png	} ] ]
 			]
 
 			Events:

@@ -63,6 +63,13 @@ void BH::GameInitializer::AfterScriptParse()
             return 0.0f;
         return Context<Player>::current().number();
     });
+
+    script.SetPairFunctor("Action.CanPay", []()-> float
+    {
+        if (!Context<Action>::isCurrent())
+            return 0.0f;
+        return Context<Action>::current().canPay() ? 1.0f : 0.0f;
+    });
 }
 
 void BH::GameInitializer::ReloadScripts(bool reset)
