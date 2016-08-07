@@ -95,7 +95,10 @@ GuiManager::GuiManager()
 
     auto menu = MX::make_shared<MMenuScene>();
 	PushScene(menu);
+
+#ifndef MX_GAME_RELEASE
     menu->OnGame(1, false);
+#endif
 }
 
 

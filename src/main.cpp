@@ -38,8 +38,8 @@ using CurrentManager = BH::TestManager;
 using CurrentManager = BH::GuiManager;
 #endif
 
-unsigned _width = 1280, _height = 800;
-bool _fullscreen = false;
+unsigned _width = 1980, _height = 1080;
+bool _fullscreen = true;
 
 using namespace std;
 using namespace MX;

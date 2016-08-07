@@ -32,27 +32,41 @@
 			Drawer: &Game.Drawer
 			)
 		[
-			Table( x1:60 x2:-60 y1:10 )
+			Table( x1:60 x2:-60 )
 			[
-				td( w:384 )
+				tr()[]
+				tr( h:768 )
 				[
-					Layout( n:Player1.Level p:7 )
+					td()
+					[
+						td()[]
+						td( w:384 )
+						[
+							Layout( n:Player1.Level p:7 )
+						]
+						td( w:20 )
+						td( w:264 )
+						[
+							Layout( n:Player1.Actions )
+						]
+						td()[]
+					]
+					td()
+					[
+						td()[]
+						td( w:264 )
+						[
+							Layout( n:Player2.Actions p:9 )
+						]
+						td( w:20 )
+						td( w:384 )
+						[
+							Layout( n:Player2.Level p:7 )
+						]
+						td()[]
+					]
 				]
-				td( w:20 )
-				td()
-				[
-					Layout( n:Player1.Actions )
-				]
-				td()[]
-				td()
-				[
-					Layout( n:Player2.Actions p:9 )
-				]
-				td( w:20 )
-				td( w:384 )
-				[
-					Layout( n:Player2.Level p:7 )
-				]
+				tr()[]
 			]
 			Layout( n:Victory p:5 )
 		]
