@@ -112,11 +112,17 @@ namespace BH
             return true;
         }
 
+
+        glm::ivec2 _selectedGemPos = { -1,-1 };
+        bool _selectedGemPosAtEnemy = false;
+
         Mana::pointer _manaSource;
         float _manaCost = 0.0f;
         float _cooldown = 0.0f;
         MX::Time::ManualStopWatchAbsolute   _cooldownTimer;
         MX::EventHolder   _doEvents;
+        MX::EventHolder   _gemEvents;
+
         std::shared_ptr<MX::Widgets::Drawer> _drawer;
     };
 

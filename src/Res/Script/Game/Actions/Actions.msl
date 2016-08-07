@@ -15,7 +15,7 @@
 
 		Fireball:
 		{
-			Cooldown: 0.1
+			Cooldown: 0.5
 			ManaCost: 7
 			ManaSource: 2
 			Drawer:	Drawer.Composite.Switch(
@@ -33,11 +33,19 @@
 					Sound.Sample()[ "Sounds/Explosion.ogg" ]
 				]
 			]
+
+			Gem.Events:
+			[
+				Event.Sprite.CreateSprite()
+				{
+					Sprite: &Game.Effects.Fireball
+				}
+			]
 		}
 
 		Frostbolt:
 		{
-			Cooldown: 0.1
+			Cooldown: 0.5
 			ManaCost: 7
 			ManaSource: 0
 
@@ -56,6 +64,15 @@
 					Sound.Sample()[ "Sounds/Freeze.ogg" ]
 				]
 			]
+
+			Gem.Events:
+			[
+				Event.Sprite.CreateSprite()
+				{
+					Sprite: &Game.Effects.Freeze
+				}
+			]
+
 		}
 
 	}

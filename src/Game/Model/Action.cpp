@@ -24,6 +24,7 @@ Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectNam
     load_property(_cooldown, "Cooldown");
     load_property(_manaCost, "ManaCost");
     load_property(_doEvents, "Events");
+    load_property(_gemEvents, "Gem.Events");
     load_property(_drawer, "Drawer");
 
     int manaSource = -1;
@@ -34,14 +35,24 @@ Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectNam
 
 bool Action::Do()
 {
+    if (!_cooldownTimer.Tick())
+        return false;
     if (_manaSource && !_manaSource->Pay(_manaCost))
         return false;
 
-    if (!_cooldownTimer.Tick())
-        return false;
     if (onDo())
     {
         _doEvents.Do();
+
+        if (_selectedGemPos.x != -1)
+        {
+            if (_selectedGemPosAtEnemy)
+                enemyLevel().onEvent(_selectedGemPos, _gemEvents);
+            else
+                level().onEvent(_selectedGemPos, _gemEvents);
+        }
+            
+
         if (_cooldown != 0.0f)
             _cooldownTimer.Start(_cooldown);
         return true;
@@ -138,7 +149,7 @@ public:
     bool onDo() override
     {
         auto pos = selectorPosition();
-
+        _selectedGemPos = pos;
         enumerateBlocks3x3(pos, [&](auto &level, auto& pos, auto &gem)
         {
             if (gem)
@@ -185,6 +196,9 @@ public:
 
     void freezeAt(const glm::ivec2& pos)
     {
+        _selectedGemPos = pos;
+        _selectedGemPosAtEnemy = true;
+
         enumerateEnemyBlocks3x3(pos, [](auto &level, auto& pos, auto &gem)
         {
             if (gem)

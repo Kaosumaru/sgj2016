@@ -6,6 +6,7 @@
 #include "Utils/MXUtils.h"
 #include "Gem.h"
 #include "Utils/MXSignalizingVariable.h"
+#include "Scene/Script/MXEvent.h"
 
 namespace BH
 {
@@ -99,6 +100,8 @@ namespace BH
         MX::Signal<void(const Gem::pointer&)> onCreatedGem;
 
         float startTime() { return _startTime; }
+
+        MX::Signal<void(glm::ivec2 pos, MX::EventHolder &e)> onEvent;
     protected:
         float _startTime = -1;
 

@@ -38,8 +38,15 @@ using CurrentManager = BH::TestManager;
 using CurrentManager = BH::GuiManager;
 #endif
 
+
 unsigned _width = 1980, _height = 1080;
+
+#ifndef MX_GAME_RELEASE
+bool _fullscreen = false;
+#else
 bool _fullscreen = true;
+#endif
+
 
 using namespace std;
 using namespace MX;

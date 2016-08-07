@@ -1,5 +1,6 @@
 #include "View.h"
 #include "Game/Model/Rule.h"
+#include "Scene/Sprites/MXScriptableSpriteActor.h"
 
 namespace bs2 = boost::signals2;
 
@@ -166,6 +167,28 @@ LevelView::LevelView(const Player::pointer& player, const Level::pointer& level)
             return;
         auto gemView = GemView::from(gem);
         AddNamedWidget("Gem", gemView);
+    });
+
+    level->onEvent.connect([&]
+    (glm::ivec2 pos, MX::EventHolder &e)
+    {
+        auto target = std::make_shared<MX::ScriptableSpriteActor>();
+
+        target->geometry.position = absolute_position();
+        target->geometry.position.x += pos.x * 64.0f + 32.0f;
+        target->geometry.position.y += pos.y * 64.0f + 32.0f;
+        target->geometry.position.y -= this->scroll().y;
+
+
+        Context<BaseGraphicScene>::current().AddActor(target);
+
+        {
+            auto guard = Context<ScriptableSpriteActor>::Lock(target);
+            e.Do();
+        }
+
+
+        target->Unlink();
     });
 }
 
