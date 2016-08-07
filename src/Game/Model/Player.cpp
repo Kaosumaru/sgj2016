@@ -117,9 +117,20 @@ Player::Player(int number)
     _controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(ActionCreator::createSwap());
-    //_actions.Add(std::make_shared<DestroyGemAction>());
     _actions.Add(ActionCreator::createFireball());
-    _actions.Add(ActionCreator::createFrostbolt());
+
+    if (number < 3)
+    {
+        _actions.Add(ActionCreator::createFrostbolt());
+        _actions.Add(ActionCreator::createGemRain());
+    }
+    else
+    {
+#ifdef _DEBUG
+        //_actions.Add(ActionCreator::createGemRain());
+#endif
+    }
+    
 
 
     //SwapGems
@@ -136,6 +147,7 @@ void Player::Update()
 
     auto g1 = Context<Player>::Lock(this);
     auto g12 = Context<Level>::Lock(_level);
+    _actions.Update();
 
     if (!_controller->wantsToUseAction())
         _level->selector()->Move(_controller->wantsDirection());

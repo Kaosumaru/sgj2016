@@ -147,7 +147,7 @@ void Level::Update()
     _rules->UseAll();
 }
 
-void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
+int Level::nonExplodingColorAt(glm::ivec2 pos)
 {
     static std::vector<int> allColors;
     if (allColors.empty())
@@ -160,11 +160,11 @@ void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
 
 
 
-    static std::vector<std::pair<int,int>> deltas = 
+    static std::vector<std::pair<int, int>> deltas =
     {
-        {-2, -1},
-        {-1, 1},
-        {1, 2}
+        { -2, -1 },
+        { -1, 1 },
+        { 1, 2 }
     };
 
     auto compareGems = [&](const Gem::pointer &g1, const Gem::pointer &g2)
@@ -173,7 +173,7 @@ void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
             return;
         if (g1->type() != g2->type())
             return;
-        
+
         auto &vec = availableColors;
         auto color = g1->type();
         vec.erase(std::remove(vec.begin(), vec.end(), color), vec.end());
@@ -182,7 +182,7 @@ void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
     {
         for (auto &x : deltas)
         {
-            auto gem1 = at(pos + glm::ivec2{ x.first, 0});
+            auto gem1 = at(pos + glm::ivec2{ x.first, 0 });
             auto gem2 = at(pos + glm::ivec2{ x.second, 0 });
             compareGems(gem1, gem2);
         }
@@ -199,6 +199,12 @@ void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
 
     assert(!availableColors.empty());
     auto color = Random::randomFrom(availableColors);
+    return color;
+}
+
+void Level::InsertRandomNonExplodingGem(glm::ivec2 pos)
+{
+    auto color = nonExplodingColorAt(pos);
     auto gem = std::make_shared<Gem>(color);
     InsertGem(pos, gem);
 }

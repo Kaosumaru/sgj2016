@@ -70,6 +70,11 @@ namespace BH
         glm::ivec2 wantsDelta();
 
         virtual bool Do();
+        void Update()
+        {
+            if (_passive)
+                Do();
+        }
 
         auto& cooldownTImer() { return _cooldownTimer; }
 
@@ -106,13 +111,14 @@ namespace BH
         }
 
         auto& drawer() { return _drawer; }
+        bool passive() { return _passive; }
     protected:
         virtual bool onDo()
         {
             return true;
         }
 
-
+        bool _passive = false;
         glm::ivec2 _selectedGemPos = { -1,-1 };
         bool _selectedGemPosAtEnemy = false;
 
@@ -216,6 +222,7 @@ namespace BH
         static std::shared_ptr<Action> createSwap();
         static std::shared_ptr<Action> createFireball();
         static std::shared_ptr<Action> createFrostbolt();
+        static std::shared_ptr<Action> createGemRain();
     };
 
     class ActionList
@@ -234,6 +241,12 @@ namespace BH
         {
             for (auto& action : _list)
                 action->Do();
+        }
+
+        void Update()
+        {
+            for (auto& action : _list)
+                action->Update();
         }
     protected:
         std::vector<Action::pointer> _list;

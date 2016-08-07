@@ -21,6 +21,7 @@ namespace bs2 = boost::signals2;
 
 Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectName)
 {
+    load_property(_passive, "Passive");
     load_property(_cooldown, "Cooldown");
     load_property(_manaCost, "ManaCost");
     load_property(_doEvents, "Events");
@@ -217,6 +218,76 @@ public:
     }
 };
 
+
+class GemRainAction : public Action
+{
+public:
+    GemRainAction(const std::string& objectName) : Action(objectName)
+    {
+
+    }
+
+    bool Do() override
+    {
+        return Action::Do();
+    }
+
+    bool onDo() override
+    {
+        auto depths = getDepths();
+        std::sort(depths.begin(), depths.end(), []( auto &a, auto &b)
+        {
+            return a.y > b.y;
+        });
+
+        auto gemsToCreate = _createGems;
+
+        for (auto &d : depths)
+        {
+            if (d.y <= 1)
+                break;
+            if (gemsToCreate == 0)
+                break;
+
+            createGemAtRow(d.x, d.y - 1);
+
+            gemsToCreate--;
+        }
+
+        return true;
+    }
+
+    void createGemAtRow(int x, int y)
+    {
+        auto color = enemyLevel().nonExplodingColorAt({ x, y });
+        auto gem = std::make_shared<Gem>(color);
+        enemyLevel().InsertGem({ x, 0 }, gem);
+    }
+
+    std::vector<glm::ivec2> getDepths()
+    {
+        std::vector<glm::ivec2> result;
+
+        for (int x = 0; x < enemyLevel().width(); x++)
+            result.push_back({x, depthForColumn(x)});
+
+        return result;
+    }
+
+    int depthForColumn(int x)
+    {
+        int y = 0;
+        int depth = 0;
+
+        while (enemyLevel().at({ x, y++ }) == nullptr)
+            depth++;
+
+        return depth;
+    }
+protected:
+    int _createGems = 3;
+};
+
 std::shared_ptr<Action> ActionCreator::createSwap()
 {
     return std::make_shared<SwapGemsAction>("Actions.Swap");
@@ -230,4 +301,9 @@ std::shared_ptr<Action> ActionCreator::createFireball()
 std::shared_ptr<Action> ActionCreator::createFrostbolt()
 {
     return std::make_shared<FrostboltAction>("Actions.Frostbolt");
+}
+
+std::shared_ptr<Action> ActionCreator::createGemRain()
+{
+    return std::make_shared<GemRainAction>("Actions.GemRain");
 }

@@ -218,6 +218,10 @@ namespace BH
                     if (!gem)
                         continue;
 
+                    auto gem2 = l.at({ x, y+1 });
+                    if (!gem2)
+                        continue;
+
                     reportPlayerLost();
                 }
             }

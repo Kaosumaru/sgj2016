@@ -143,6 +143,9 @@ ActionsView::ActionsView(const Player::pointer& player)
             continue;
         }
 
+        if (action && action->passive())
+            continue;
+
         auto view = std::make_shared<ActionView>(_player, action);
         AddNamedWidget("Action", view);
     }

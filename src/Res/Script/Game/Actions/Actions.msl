@@ -13,6 +13,8 @@
 			]
 		}
 
+		Flashing: "= 1 + if( &Action.CanPay, math.abs( math.sin( time.now()*6 ) ) * 0.5, 0 )"
+
 		Fireball:
 		{
 			Cooldown: 0.5
@@ -20,10 +22,10 @@
 			ManaSource: 2
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconBlue.png	} ]
+					Default: Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/ExplosionIconRed.png	} ] ]
 			]
 
 			Events:
@@ -51,10 +53,10 @@
 
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconBlue.png	} ]
+					Default: Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image( Color:[1 1 1 "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: Interface/FreezeIconRed.png	} ] ]
 			]
 
 			Events:
@@ -73,6 +75,14 @@
 				}
 			]
 
+		}
+
+		GemRain:
+		{
+			Cooldown: 2
+			ManaCost: 4
+			ManaSource: 3
+			Passive: true
 		}
 
 	}

@@ -95,6 +95,7 @@ namespace BH
             return _movementRule;
         }
 
+        int nonExplodingColorAt(glm::ivec2 pos);
         void InsertRandomNonExplodingGem(glm::ivec2 pos);
 
         MX::Signal<void(const Gem::pointer&)> onCreatedGem;
