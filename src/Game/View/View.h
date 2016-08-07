@@ -23,13 +23,15 @@ namespace BH
     class LevelView : public MX::Widgets::ScriptLayouterWidget
     {
     public:
-        LevelView(const Level::pointer& level);
+        LevelView(const Player::pointer& player, const Level::pointer& level);
 
         void Run() override;
+        void Draw(float x, float y) override;
     protected:
         void onNewLevel();
 
         Level::pointer _level;
+        Player::pointer _player;
     };
 
 

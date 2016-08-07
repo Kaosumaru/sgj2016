@@ -109,6 +109,17 @@ public:
         MX::Widgets::ScriptLayouterWidget::Run();
     }
 
+    void Draw(float x, float y) override
+    {
+        if (_action->drawer())
+        {
+            auto g = Context<Widgets::Drawer>::Lock(_action->drawer());
+            MX::Widgets::ScriptLayouterWidget::Draw(x, y);
+        }
+        else
+            MX::Widgets::ScriptLayouterWidget::Draw(x, y);
+    }
+
 protected:
     Action::pointer _action;
 };
@@ -133,8 +144,9 @@ ActionsView::ActionsView(const Player::pointer& player)
 }
 
 
-LevelView::LevelView(const Level::pointer& level)
+LevelView::LevelView(const Player::pointer& player, const Level::pointer& level)
 {
+    _player = player;
     _level = level;
     SetLayouter("Game.Level.Layouter");
 
@@ -151,6 +163,12 @@ LevelView::LevelView(const Level::pointer& level)
         auto gemView = GemView::from(gem);
         AddNamedWidget("Gem", gemView);
     });
+}
+
+void LevelView::Draw(float x, float y)
+{
+    auto g1 = Context<Player>::Lock(_player);
+    MX::Widgets::ScriptLayouterWidget::Draw(x, y);
 }
 
 void LevelView::Run()
