@@ -1,7 +1,8 @@
 {
   Test.Scene.Actors:
   [
-    &Test.NewConcept
+    &Game.Effects.Freeze
+	&Game.Effects.Fireball
   ]
 
 
