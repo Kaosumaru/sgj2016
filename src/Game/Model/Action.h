@@ -11,23 +11,21 @@
 #include "Script/MXScriptObject.h"
 #include "Scene/Script/MXEvent.h"
 
+namespace MX
+{
+    namespace Widgets
+    {
+        class Drawer;
+    }
+};
+
 namespace BH
 {
     class Player;
     class Action : public MX::ScriptObjectString
     {
     public:
-        Action(const std::string& objectName) : MX::ScriptObjectString(objectName)
-        {
-            load_property(_cooldown, "Cooldown");
-            load_property(_manaCost, "ManaCost");
-            load_property(_doEvents, "Events");
-
-            int manaSource = -1;
-            load_property(manaSource, "ManaSource");
-            if (manaSource != -1)
-                SetManaSource(manaSource);
-        }
+        Action(const std::string& objectName);
 
         void SetManaSource(const Mana::pointer& manaSource)
         {
@@ -115,6 +113,7 @@ namespace BH
             return r;
         }
 
+        auto& drawer() { return _drawer; }
     protected:
         virtual bool onDo()
         {
@@ -126,6 +125,7 @@ namespace BH
         float _cooldown = 0.0f;
         MX::Time::ManualStopWatchAbsolute   _cooldownTimer;
         MX::EventHolder   _doEvents;
+        std::shared_ptr<MX::Widgets::Drawer> _drawer;
     };
 
     class SwapGemsAction : public Action

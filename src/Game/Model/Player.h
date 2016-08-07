@@ -51,8 +51,10 @@ namespace BH
         void Update();
 
         SignalizingVariable<bool> _lost = false;
+
+        int number() { return _number; }
     protected:
-        
+        int                 _number = 0;
         Stats               _stats;
         Controller::pointer _controller;
         Level::pointer _level = std::make_shared<Level>();

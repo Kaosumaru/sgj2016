@@ -12,6 +12,7 @@
 #include "Graphic/Particles/MXParticles.h"
 #include "Scene/Script/MXEvent.h"
 #include "Game/Model/Gem.h"
+#include "Game/Model/Player.h"
 #include "Script/MXScriptClassParser.h"
 
 
@@ -54,6 +55,13 @@ void BH::GameInitializer::AfterScriptParse()
         if (!Context<Gem>::isCurrent())
             return 0.0f;
         return Context<Gem>::current().explosionPercent(); 
+    });
+
+    script.SetPairFunctor("Player.Number", []()-> float
+    {
+        if (!Context<Player>::isCurrent())
+            return 0.0f;
+        return Context<Player>::current().number();
     });
 }
 

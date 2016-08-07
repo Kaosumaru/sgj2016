@@ -12,10 +12,25 @@
 #include "HTML/MXHTMLRendererCairo.h"
 #include "Game.h"
 #include "Player.h"
-
+#include "Widgets/MXWidget.h"
+#include "Widgets/Drawers/MXDrawer.h"
 
 using namespace BH;
 namespace bs2 = boost::signals2;
+
+
+Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectName)
+{
+    load_property(_cooldown, "Cooldown");
+    load_property(_manaCost, "ManaCost");
+    load_property(_doEvents, "Events");
+    load_property(_drawer, "Drawer");
+
+    int manaSource = -1;
+    load_property(manaSource, "ManaSource");
+    if (manaSource != -1)
+        SetManaSource(manaSource);
+}
 
 Player& Action::enemyPlayer()
 {

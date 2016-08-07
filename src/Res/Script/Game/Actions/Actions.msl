@@ -18,6 +18,13 @@
 			Cooldown: 0.1
 			ManaCost: 7
 			ManaSource: 2
+			Drawer:	Drawer.Composite.Switch(
+					Condition:"=&Player.Number"
+					Default: Drawer.Image()[ { Class: Image.Image, Path: Interface/ExplosionIconBlue.png	} ]
+				)
+			[
+				[1 Drawer.Image()[ { Class: Image.Image, Path: Interface/ExplosionIconRed.png	} ] ]
+			]
 
 			Events:
 			[
@@ -33,6 +40,14 @@
 			Cooldown: 0.1
 			ManaCost: 7
 			ManaSource: 0
+
+			Drawer:	Drawer.Composite.Switch(
+					Condition:"=&Player.Number"
+					Default: Drawer.Image()[ { Class: Image.Image, Path: Interface/FreezeIconBlue.png	} ]
+				)
+			[
+				[1 Drawer.Image()[ { Class: Image.Image, Path: Interface/FreezeIconRed.png	} ] ]
+			]
 
 			Events:
 			[

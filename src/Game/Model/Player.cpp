@@ -110,6 +110,7 @@ public:
 
 Player::Player(int number)
 {
+    _number = number;
     auto g1 = Context<Player>::Lock(this);
     auto g12 = Context<Level>::Lock(_level);
 
