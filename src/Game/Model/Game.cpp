@@ -23,6 +23,7 @@ Game::Game(int players)
         _players.push_back(player);
     }
 
+#ifndef MX_GAME_RELEASE
     if (players == 1)
     {
         auto &player = _players.front();
@@ -33,6 +34,7 @@ Game::Game(int players)
         }
             
     }
+#endif
 }
 
 void Game::Update()
