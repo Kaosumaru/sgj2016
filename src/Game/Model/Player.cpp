@@ -8,11 +8,21 @@
 #include "Utils/MXQuad.h"
 #include "Script/Class/MXScriptSoundClass.h"
 #include "Devices/MXKeyboard.h"
+#include "Game/ControlSchema/ControlSchema.h"
+
 
 #include "HTML/MXHTMLRendererCairo.h"
 #include "Game.h"
 using namespace BH;
 namespace bs2 = boost::signals2;
+
+
+class PlayerControlSchema : public MX::Game::ControlSchema
+{
+    MX::Game::TargetDirection direction;
+    MX::Game::ActionList useSkill;
+};
+
 
 bool Controller::UseAction(int index)
 {
