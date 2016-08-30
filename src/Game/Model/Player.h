@@ -19,29 +19,8 @@ namespace BH
 
         void SetupForPlayer(int number);
 
-        MX::Game::TargetDirection<glm::ivec2> direction{ this };
+        MX::Game::TickingTargetDirection<glm::ivec2> direction{ this, 0.1f };
         MX::Game::ActionList<MX::Game::Action, 4> useSkill{ this };
-    };
-
-    class Controller
-    {
-    public:
-        using pointer = std::shared_ptr<Controller>;
-
-        virtual Selector::Direction wantsDirection() { return Selector::Direction::None; }
-        auto wantsDelta()
-        {
-            return Selector::deltaFromDirection(wantsDirection());
-        }
-
-        virtual void Update() {};
-
-        virtual bool wantsToUseAction() { return false; };
-        bool UseAction(int index);
-
-
-    protected:
-
     };
 
     class Player
@@ -53,7 +32,6 @@ namespace BH
 
         auto &actions() { return _actions; }
         auto &level() { return _level; }
-        //auto &controller() { return _controller; }
         auto &schema() { return _controlSchema; }
         auto &stats() { return _stats; }
 
@@ -70,12 +48,10 @@ namespace BH
     protected:
         int                 _number = 0;
         Stats               _stats;
-        //Controller::pointer _controller;
         
         Level::pointer _level = std::make_shared<Level>();
         ActionList _actions;
-        MX::FunctorsQueue _queue;
-        PlayerControlSchema _controlSchema{ &_queue };
+        PlayerControlSchema _controlSchema;
     };
 }
 

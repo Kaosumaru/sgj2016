@@ -20,6 +20,8 @@ namespace bs2 = boost::signals2;
 void PlayerControlSchema::SetupForPlayer(int number)
 {
     using namespace MX::Game;
+    direction.SetFirstTickMultiplier(1.3f);
+
     if (number == 0)
     {
         direction.bindKeys(ci::app::KeyEvent::KEY_w, ci::app::KeyEvent::KEY_s, ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_d);
@@ -47,102 +49,6 @@ void PlayerControlSchema::SetupForPlayer(int number)
     }
 }
 
-
-
-bool Controller::UseAction(int index)
-{
-    auto &player = Context<Player>::current();
-
-    return player.actions().UseAction(index);
-
-}
-
-class KeyboardController : public Controller
-{
-public:
-    KeyboardController(int number)
-    {
-        if (number == 0)
-        {
-            _directionKeys[ci::app::KeyEvent::KEY_w] = Selector::Direction::Up;
-            _directionKeys[ci::app::KeyEvent::KEY_s] = Selector::Direction::Down;
-            _directionKeys[ci::app::KeyEvent::KEY_a] = Selector::Direction::Left;
-            _directionKeys[ci::app::KeyEvent::KEY_d] = Selector::Direction::Right;
-
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_b);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_n);
-        }
-
-        if (number == 1)
-        {
-            _directionKeys[ci::app::KeyEvent::KEY_UP] = Selector::Direction::Up;
-            _directionKeys[ci::app::KeyEvent::KEY_DOWN] = Selector::Direction::Down;
-            _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
-            _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
-
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_COMMA);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_PERIOD);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_SLASH);
-        }
-
-
-        if (number == 3)
-        {
-            _directionKeys[ci::app::KeyEvent::KEY_UP] = Selector::Direction::Up;
-            _directionKeys[ci::app::KeyEvent::KEY_DOWN] = Selector::Direction::Down;
-            _directionKeys[ci::app::KeyEvent::KEY_LEFT] = Selector::Direction::Left;
-            _directionKeys[ci::app::KeyEvent::KEY_RIGHT] = Selector::Direction::Right;
-
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_z);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_x);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_c);
-            _actionKeys.push_back(ci::app::KeyEvent::KEY_v);
-        }
-
-    }
-
-    Selector::Direction wantsDirection() override
-    { 
-        for (auto &direction : _directionKeys)
-            if (MX::Window::current().keyboard()->key(direction.first))
-                return direction.second;
-
-        return Selector::Direction::None; 
-    }
-
-    bool wantsToUseAction() override
-    {
-        for (auto actionKey : _actionKeys)
-        {
-            if (MX::Window::current().keyboard()->key(actionKey))
-                return true;
-        }
-        return false;
-    }
-
-    void Update() override
-    {
-        auto dir = wantsDirection();
-
-        int index = 0;
-        for (auto actionKey : _actionKeys)
-        {
-            if (MX::Window::current().keyboard()->key(actionKey))
-                if (!UseAction(index))
-                {
-                    
-                }
-            index++;
-        }
-
-    }
-
-    std::map<int, Selector::Direction> _directionKeys;
-    std::vector<int> _actionKeys;
-};
-
-
 Player::Player(int number)
 {
     _number = number;
@@ -150,19 +56,16 @@ Player::Player(int number)
     auto g12 = Context<Level>::Lock(_level);
 
     _controlSchema.SetupForPlayer(number);
-
-    _controlSchema.useSkill.onTrigger.connect([&](int index)
+    _controlSchema.useSkill.whileOn([&](unsigned index) 
     {
-        actions().UseAction(index);
+        return [&, index]() { actions().UseAction(index); };
     });
 
-    _controlSchema.direction.target.onValueChanged.connect([&](auto &v, auto &o) 
+    _controlSchema.direction.onTick.connect([&](auto &v) 
     {
         if (!_controlSchema.useSkill.anyIsOn())
             _level->selector()->Move(v);
     });
-
-    //_controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(ActionCreator::createSwap());
     _actions.Add(ActionCreator::createFireball());
@@ -197,7 +100,7 @@ void Player::Update()
     auto g12 = Context<Level>::Lock(_level);
     _actions.Update();
 
-    _queue.Run();
+    _controlSchema.Run();
     /*
     if (!_controller->wantsToUseAction())
         _level->selector()->Move(_controller->wantsDirection());
