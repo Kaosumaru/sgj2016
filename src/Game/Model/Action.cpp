@@ -109,15 +109,10 @@ void Action::reportPlayerLost()
     player._lost = true;
 }
 
-Selector::Direction Action::wantsDirection()
-{
-    auto &player = Context<Player>::current();
-    return player.controller()->wantsDirection();
-}
 glm::ivec2 Action::wantsDelta()
 {
     auto &player = Context<Player>::current();
-    return player.controller()->wantsDelta();
+    return player.schema().direction.target;
 }
 
 bool ActionList::UseAction(int index)

@@ -203,7 +203,7 @@ void LevelView::Draw(float x, float y)
 
 void LevelView::Run()
 {
-    int scroll = _level->movementRule()->cooldownTImer().percent() * 64.0f;
+    int scroll = _level->movementRule()->cooldownTimer().percent() * 64.0f;
     SetVerticalScroll(scroll);
     MX::Widgets::ScriptLayouterWidget::Run();
 }

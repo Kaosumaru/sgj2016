@@ -8,7 +8,7 @@
 #include "Utils/MXQuad.h"
 #include "Script/Class/MXScriptSoundClass.h"
 #include "Devices/MXKeyboard.h"
-#include "Game/ControlSchema/ControlSchema.h"
+
 
 
 #include "HTML/MXHTMLRendererCairo.h"
@@ -17,11 +17,36 @@ using namespace BH;
 namespace bs2 = boost::signals2;
 
 
-class PlayerControlSchema : public MX::Game::ControlSchema
+void PlayerControlSchema::SetupForPlayer(int number)
 {
-    MX::Game::TargetDirection direction;
-    MX::Game::ActionList useSkill;
-};
+    using namespace MX::Game;
+    if (number == 0)
+    {
+        direction.bindKeys(ci::app::KeyEvent::KEY_w, ci::app::KeyEvent::KEY_s, ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_d);
+
+        useSkill.bindKey(0, ci::app::KeyEvent::KEY_v);
+        useSkill.bindKey(1, ci::app::KeyEvent::KEY_b);
+        useSkill.bindKey(2, ci::app::KeyEvent::KEY_n);
+    }
+    else if (number == 1)
+    {
+        direction.bindKeys(ci::app::KeyEvent::KEY_UP, ci::app::KeyEvent::KEY_DOWN, ci::app::KeyEvent::KEY_LEFT, ci::app::KeyEvent::KEY_RIGHT);
+
+        useSkill.bindKey(0, ci::app::KeyEvent::KEY_COMMA);
+        useSkill.bindKey(1, ci::app::KeyEvent::KEY_PERIOD);
+        useSkill.bindKey(2, ci::app::KeyEvent::KEY_SLASH);
+    }
+    else
+    {
+        direction.bindKeys(ci::app::KeyEvent::KEY_UP, ci::app::KeyEvent::KEY_DOWN, ci::app::KeyEvent::KEY_LEFT, ci::app::KeyEvent::KEY_RIGHT);
+
+        useSkill.bindKey(0, ci::app::KeyEvent::KEY_z);
+        useSkill.bindKey(1, ci::app::KeyEvent::KEY_x);
+        useSkill.bindKey(2, ci::app::KeyEvent::KEY_c);
+        useSkill.bindKey(2, ci::app::KeyEvent::KEY_n);
+    }
+}
+
 
 
 bool Controller::UseAction(int index)
@@ -124,7 +149,20 @@ Player::Player(int number)
     auto g1 = Context<Player>::Lock(this);
     auto g12 = Context<Level>::Lock(_level);
 
-    _controller = std::make_shared<KeyboardController>(number);
+    _controlSchema.SetupForPlayer(number);
+
+    _controlSchema.useSkill.onTrigger.connect([&](int index)
+    {
+        actions().UseAction(index);
+    });
+
+    _controlSchema.direction.target.onValueChanged.connect([&](auto &v, auto &o) 
+    {
+        if (!_controlSchema.useSkill.anyIsOn())
+            _level->selector()->Move(v);
+    });
+
+    //_controller = std::make_shared<KeyboardController>(number);
 
     _actions.Add(ActionCreator::createSwap());
     _actions.Add(ActionCreator::createFireball());
@@ -159,8 +197,11 @@ void Player::Update()
     auto g12 = Context<Level>::Lock(_level);
     _actions.Update();
 
+    _queue.Run();
+    /*
     if (!_controller->wantsToUseAction())
         _level->selector()->Move(_controller->wantsDirection());
     _controller->Update();
+    */
     _level->Update();
 }

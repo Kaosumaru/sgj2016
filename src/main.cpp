@@ -39,7 +39,7 @@ using CurrentManager = BH::GuiManager;
 #endif
 
 
-unsigned _width = 1980, _height = 1080;
+unsigned _width = 1980, _height = 800;
 
 #ifndef MX_GAME_RELEASE
 bool _fullscreen = false;

@@ -66,7 +66,6 @@ namespace BH
             return _manaSource->_current >= _manaCost;
         }
 
-        Selector::Direction wantsDirection();
         glm::ivec2 wantsDelta();
 
         virtual bool Do();
@@ -76,7 +75,7 @@ namespace BH
                 Do();
         }
 
-        auto& cooldownTImer() { return _cooldownTimer; }
+        auto& cooldownTimer() { return _cooldownTimer; }
 
 
         template<typename T>
@@ -141,7 +140,7 @@ namespace BH
         {
             {
                 auto pos1 = selectorPosition();
-                auto direction = wantsDirection();
+                auto direction = wantsDelta();
 
                 if (pos1 != _lastPosition || direction != _lastDirection)
                 {
@@ -167,9 +166,9 @@ namespace BH
             if (!levelContainsPosition(pos1) || !levelContainsPosition(pos2))
                 return false;
 
-            auto direction = wantsDirection();
+            auto direction = wantsDelta();
 
-            if (direction == Selector::Direction::None)
+            if (direction == glm::ivec2{ 0,0 })
                 return false;
 
 
@@ -183,7 +182,7 @@ namespace BH
 
             //dont allow to swap up/down with empty spaces
             {
-                if (/*direction == Selector::Direction::Up ||*/ direction == Selector::Direction::Down)
+                if (/*direction == Selector::Direction::Up ||*/ direction == glm::ivec2{ 0,1 })
                 {
                     if (!gem1 || !gem2)
                         return false;
@@ -200,7 +199,7 @@ namespace BH
         }
 
         glm::ivec2 _lastPosition = { -1,-1 };
-        Selector::Direction _lastDirection = Selector::Direction::None;
+        glm::ivec2 _lastDirection = { 0, 0 };
     };
 
     class DestroyGemAction : public Action

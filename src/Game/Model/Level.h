@@ -41,12 +41,9 @@ namespace BH
         auto pos() { return (glm::ivec2) position; }
         SignalizingVariable<glm::ivec2> position = glm::ivec2{ 0,6 };
 
-        bool Move(Direction direction);
+        bool Move(const glm::ivec2& direction);
         void ForceMove(Direction direction);
 
-    protected:
-        Direction _lastDirection = Direction::None;
-        MX::Time::ManualStopWatchAbsolute   _moveCooldown;
     };
 
 

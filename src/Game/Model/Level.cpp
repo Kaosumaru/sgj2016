@@ -17,23 +17,13 @@
 namespace bs2 = boost::signals2;
 using namespace BH;
 
-bool Selector::Move(Direction direction)
+bool Selector::Move(const glm::ivec2& delta)
 {
-    if (direction == Selector::Direction::None)
+    if (delta == glm::ivec2{0, 0})
     {
-        _lastDirection = direction;
         return false;
     }
-        
 
-    static const float speed = 0.10f;
-
-
-    if (_lastDirection != Selector::Direction::None)
-    if (!_moveCooldown.Tick())
-        return false;
-
-    auto delta = deltaFromDirection(direction);
     auto new_position = pos() + delta;
 
     auto &level = Context<Level>::current();
@@ -45,12 +35,6 @@ bool Selector::Move(Direction direction)
 
     position = new_position;
 
-    if (_lastDirection == Selector::Direction::None)
-        _moveCooldown.Start(speed*2);
-    else
-        _moveCooldown.Start(speed);
-
-    _lastDirection = direction;
     return true;
 }
 

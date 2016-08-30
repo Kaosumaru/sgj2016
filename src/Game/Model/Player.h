@@ -7,9 +7,22 @@
 #include "Action.h"
 #include "Level.h"
 #include "Mana.h"
+#include "Game/ControlScheme/MXControlScheme.h"
 
 namespace BH
 {
+
+    class PlayerControlSchema : public MX::Game::ControlScheme
+    {
+    public:
+        using MX::Game::ControlScheme::ControlScheme;
+
+        void SetupForPlayer(int number);
+
+        MX::Game::TargetDirection<glm::ivec2> direction{ this };
+        MX::Game::ActionList<MX::Game::Action, 4> useSkill{ this };
+    };
+
     class Controller
     {
     public:
@@ -40,7 +53,8 @@ namespace BH
 
         auto &actions() { return _actions; }
         auto &level() { return _level; }
-        auto &controller() { return _controller; }
+        //auto &controller() { return _controller; }
+        auto &schema() { return _controlSchema; }
         auto &stats() { return _stats; }
 
         auto selectorPosition()
@@ -56,9 +70,12 @@ namespace BH
     protected:
         int                 _number = 0;
         Stats               _stats;
-        Controller::pointer _controller;
+        //Controller::pointer _controller;
+        
         Level::pointer _level = std::make_shared<Level>();
         ActionList _actions;
+        MX::FunctorsQueue _queue;
+        PlayerControlSchema _controlSchema{ &_queue };
     };
 }
 
