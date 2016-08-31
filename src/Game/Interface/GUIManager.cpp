@@ -35,6 +35,79 @@ using namespace std;
 
 
 
+class LogField : public MX::Widgets::ScriptLayouterWidget
+{
+public:
+    class ScrollToLast : public MX::Widgets::Strategy::Strategy
+    {
+    public:
+        ScrollToLast(float speed)
+        {
+            _speed = speed;
+        }
+
+        bool runnable() override { return true; }
+        bool Run()
+        {
+            if (!_widget->linked())
+                return true;
+
+            bool shouldScroll = false;
+            _widget->for_each_child([&](const std::shared_ptr<Widget>& widget)
+            {
+                float size = widget->dimensions().y;
+                float childY = widget->geometry.position.y;
+                float parentY = _widget->geometry.position.y;
+                if (!size)
+                    return;
+                if (childY + size >= parentY)
+                {
+                    if (childY + size >= parentY + _widget->dimensions().y - _widget->margins().bottom)
+                        shouldScroll = true;
+                    return;
+                }
+                   
+                _widget->SetVerticalScroll(_widget->scroll().y - size);
+                widget->Unlink();
+            });
+
+            if (!shouldScroll)
+                return true;
+
+            float scrollY = _widget->scroll().y;
+            scrollY += _speed;
+            _widget->SetVerticalScroll(scrollY);
+
+            return true;
+        }
+    protected:
+        Time::FloatPerSecond _speed;
+    };
+
+    LogField() : _scrollToLast(60.0f)
+    {
+        AddStrategy(_scrollToLast);
+
+#ifdef _DEBUG
+        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_q].connect([&]() 
+        {
+            AddText(L"Text lorem ipsum lala lala lala lala");
+        });
+#endif
+    }
+
+
+    void AddText(const std::wstring& text)
+    {
+        auto item = MX::make_shared<MX::Widgets::Label>();
+        item->SetHTML(true);
+        item->SetText(text);
+        AddNamedWidget("Item", item);
+    }
+protected:
+    ScrollToLast _scrollToLast;
+};
+
 
 class MMenuScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
@@ -60,10 +133,18 @@ public:
 
         addButton("Button.Game")->onClicked.connect([&]() { OnGame(); });
         addButton("Button.Exit")->onClicked.connect([&]() { OnExit(); });
+
+        CreateTextField();
     }
 
 
 protected:
+
+    void CreateTextField()
+    {
+        auto field = MX::make_shared<LogField>();
+        _bgLayouter->AddNamedWidget("Field", field);
+    }
 
     void OnGame()
     {

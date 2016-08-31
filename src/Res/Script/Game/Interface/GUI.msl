@@ -10,6 +10,16 @@
 			Width: 0
 		}
 
+		MonoTextDrawer: Drawer.TextImage()
+		{
+			Color: [1 1 1]
+			Font.Face: "Joystix Monospace"
+			Font.Name: "Font/Joystix.ttf"
+			Font.Size: 18
+			Width: -1
+			Pos: 7
+		}
+
 		Label.Drawer: Drawer.TextImage()
 		{
 			Prototype: &GUI.TextDrawer

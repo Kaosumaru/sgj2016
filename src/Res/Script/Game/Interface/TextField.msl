@@ -1,0 +1,45 @@
+{
+	GUI.TextField:
+	{
+		BG: { Class:Image.Slice9Image Path:"Interface/BG/box.png" Margins: [30,30,30,30]}
+
+		Item.Drawer: Drawer.Composite.Layouter(
+			Size.Min: [1,"=&Widget.Text.Height"]
+			//DefaultSize.Drawers: [&GUI.MonoTextDrawer]
+			ClipSize.Drawers: [&GUI.MonoTextDrawer]
+		)
+		[
+			//Drawer.Color( Color:[0 1 0 0.3] )
+			&GUI.MonoTextDrawer
+		]
+
+/*
+		Drawer: Drawer.Composite.Layouter( Size: [400,300] Margins: [30,30,30,30])
+		[
+			Drawer.QuadImage()[ &(TextField).BG ]
+		]
+*/
+
+		Drawer: Drawer.Proxy.Surface()
+		{
+			Drawer: Drawer.Composite.Layouter( Size: [400,300] Margins: [30,30,30,30])
+			[
+				Drawer.QuadImage()[ &(TextField).BG ]
+			]
+			InhibitNormalDrawing: true
+		}
+
+		Layouter: Layouter.Vertical(
+			Size.Min: [1,1]
+			Size.Max: [-1,-1]
+			Fill: true
+			Margins: [30,30,30,30]
+			Drawer: &(TextField).Drawer
+			Drawers: [ [&(TextField).Item.Drawer [Item]] ]
+			)
+		[
+
+		]
+	}
+
+}
