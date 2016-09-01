@@ -85,6 +85,7 @@ include_directories ("${PROJECT_SOURCE_DIR}/")
 add_folder(Game)
 add_folder(Game/Interface)
 add_folder(Game/Main)
+add_folder(Game/Main/Events)
 
 find_package(Boost REQUIRED)
 include_directories( ${Boost_INCLUDE_DIRS} )
