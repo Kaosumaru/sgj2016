@@ -1,0 +1,10 @@
+{
+	Game.Events:
+	{
+		List1:
+		[
+			&(Events).Taxes
+			&(Events).Religion
+		]
+	}
+}

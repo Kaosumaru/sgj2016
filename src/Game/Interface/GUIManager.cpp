@@ -25,7 +25,7 @@
 #include "Game/GameInitializer.h"
 #include "Game/Main/MainGame.h"
 #include "Widgets/Animations/MXAnimations.h"
-
+#include "Game/Model/Game.h"
 
 namespace bs2 = boost::signals2;
 
@@ -133,18 +133,10 @@ public:
 
         addButton("Button.Game")->onClicked.connect([&]() { OnGame(); });
         addButton("Button.Exit")->onClicked.connect([&]() { OnExit(); });
-
-        CreateTextField();
     }
 
 
 protected:
-
-    void CreateTextField()
-    {
-        auto field = MX::make_shared<LogField>();
-        _bgLayouter->AddNamedWidget("Field", field);
-    }
 
     void OnGame()
     {
@@ -160,6 +152,117 @@ protected:
 };
 
 
+class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
+{
+    std::shared_ptr<LogField> _logField;
+    std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
+    std::shared_ptr<Game::Game> _game;
+public:
+    MGameScene()
+    {
+        ScriptObjectString script("Game.Game");
+        _game = std::make_shared<Game::Game>(script);
+
+        {
+            auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+            bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
+            bg->SetLayouter("GUI.Game.Layouter");
+            AddActor(bg);
+            _bgLayouter = bg;
+        }
+
+        CreateTextField();
+        CreateStatsField();
+
+
+        PrepareGame();
+
+        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_LEFT].connect(boost::bind(&MGameScene::selectResponse, this, 0));
+        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_RIGHT].connect(boost::bind(&MGameScene::selectResponse, this, 1));
+    }
+
+
+protected:
+    void CreateStatsField()
+    {
+        auto label = MX::make_shared<MX::Widgets::AutoLabel>();
+        label->SetHTML(true);
+        label->SetStringBuilder([this]()
+        {
+            auto stats = _game->stats();
+            std::wstringstream ss;
+            
+            for (auto& item : stats.stats())
+            {
+                auto& statName = item.first;
+                auto& stat = item.second;
+                ss << MX::loc(statName) << " " << stat->_current.directValueAccess() << "/" << stat->_max.directValueAccess();
+                ss << "<br/>";
+            }
+                
+            return ss.str();
+        });
+        label->connect_signals(_game->stats().statChanged);
+        _bgLayouter->AddNamedWidget("Stats", label);
+    }
+
+    void CreateTextField()
+    {
+        auto field = MX::make_shared<LogField>();
+        _bgLayouter->AddNamedWidget("Field", field);
+        _logField = field;
+    }
+
+    void PrepareGame()
+    {
+        _game->onNextEvent.connect([&](auto& e) { onNewEvent(e); });
+        _game->onText.connect([&](auto& e) { onText(e); });
+        _game->onEventDone.connect([&]() { onEventDone(); });
+        _game->onGameOver.connect([&]() { onGameOver(); });
+        _game->nextEvent();
+    }
+
+    void onNewEvent(const Game::GameEvent::pointer& event)
+    {
+        _logField->AddText(event->text());
+
+#ifdef _DEBUG
+        //TODO
+        std::wstringstream ss;
+        int i = 0;
+        for (auto& response : event->responses())
+        {
+            ss << ++i << ". " << response->text() << "    ";
+        }
+        _logField->AddText(ss.str());
+#endif
+    }
+
+    void onEventDone()
+    {
+        _game->nextEvent();
+    }
+
+    void onGameOver()
+    {
+        //TODO
+        _logField->AddText(MX::loc("Text.GameOver"));
+    }
+
+    void onText(const std::wstring& text)
+    {
+        _logField->AddText(text);
+    }
+
+    void selectResponse(unsigned index)
+    {
+        auto event = _game->currentEvent();
+        if (!event || event->responses().size() <= index)
+            return;
+        auto response = event->responses()[index];
+        event->RespondWith(response);
+    }
+};
 
 
 GuiManager::GuiManager()
@@ -170,7 +273,8 @@ GuiManager::GuiManager()
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_u].connect(boost::bind(&GuiManager::reloadScripts, this));
 #endif
 
-	PushScene(MX::make_shared<MMenuScene>());
+	//PushScene(MX::make_shared<MMenuScene>());
+    PushScene(MX::make_shared<MGameScene>());
 }
 
 

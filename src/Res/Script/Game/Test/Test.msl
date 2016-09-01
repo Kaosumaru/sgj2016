@@ -8,11 +8,20 @@
 			[
 				Game.Response.Yes( )
 				{
-					Selected:Game.Gain(){ Stat:Money Amount:10 }
+					Selected:	Events()
+					[
+						Game.Gain(){ Stat:Money Amount:10 }
+						Game.Text()["People aren't too happy, though."]
+					]
+
 				}
 				Game.Response.No()
 				{
-					Selected:Game.Gain(){ Stat:Popularity Amount:10 }
+					Selected:	Events()
+					[
+						Game.Gain(){ Stat:Popularity Amount:10 }
+						Game.Text()["People aren't too happy, though."]
+					]
 				}
 			]
 		}
@@ -27,11 +36,10 @@
 					Text: "Cthulhu"
 					Selected: Events()
 					[
-						Game.Gain(){ Stat:Insanity Amount:10 }
+						Game.Gain(){ Stat:Madness Amount:10 }
+						Game.Text()["There is something irresistible in worshiping deity that wants to devour you."]
 						//Game.AddEvents()[ Game.Events.Cthulhu ]
 					]
-
-					Selected.Message: "There is something unresistable in worshiping deity that wants to devour you."
 				}
 				Game.Response()
 				{
@@ -39,9 +47,9 @@
 					Selected: Events()
 					[
 						Game.Gain(){ Stat:Popularity Amount:10 }
+						Game.Text()["Unicorns are cute."]
 						//Game.AddEvents()[ Game.Events.PinkUnicorn ]
 					]
-					Selected.Message: "Unicorns are cute."
 				}
 			]
 

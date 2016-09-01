@@ -1,0 +1,26 @@
+{
+	Game.Game:
+	{
+		Stats!:
+		{
+			Money: [30,100]
+			Popularity: [30,100]
+			Religion: [30,100]
+			Madness: [30,100]
+		}
+
+		EventsLists:
+		[
+			&Game.Events.List1
+		]
+
+		Rules:
+		[
+			Event.If( Condition:"=Game.Stat('Money') <= 0" )
+			[
+				Game.Text()["Money = 0"]
+				Game.Over()
+			]
+		]
+	}
+}

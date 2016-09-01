@@ -1,0 +1,8 @@
+{
+	Text:
+	{
+		GameOver: "Game Over!"
+		Yes: "Yes"
+		No: "No"		
+	}
+}

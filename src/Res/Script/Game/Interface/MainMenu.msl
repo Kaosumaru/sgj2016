@@ -54,7 +54,6 @@
 		[
 			Table()
 			[
-				Layout( n:Field p:5 )
 				Layout( n:Button.Game p:1 )
 				Layout( n:Button.Exit p:3 )
 			]

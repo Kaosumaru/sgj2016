@@ -1,0 +1,28 @@
+{
+	GUI.Game:
+	{
+
+		Drawer: Drawer.Composite.Layouter()
+		[
+
+		]
+
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(Game).Drawer
+			Layouters: [ [&GUI.TextField.Layouter [Field]] ]
+			Drawers: [ [&GUI.MonoTextDrawer [Stats]] ]
+			)
+		[
+			Table()
+			[
+				tr()[Layout( n:Field p:5 )]
+				tr()[Layout( n:Stats )]
+			]
+		]
+
+
+
+	}
+
+}
