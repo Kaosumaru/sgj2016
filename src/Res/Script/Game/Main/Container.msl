@@ -1,0 +1,25 @@
+{
+	GUI.Game.Container:
+	{
+
+		Drawer: Drawer.Composite.Layouter( Size:[400,700] )
+		[
+			Drawer.Color( Color:[0 0 1 0.3] )
+		]
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(Container).Drawer
+			Layouters:
+			[
+				[&GUI.Game.Item.Layouter [Item]]
+			]	
+			)
+		[
+
+		]
+
+
+
+	}
+
+}

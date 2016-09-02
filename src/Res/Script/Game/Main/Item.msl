@@ -1,0 +1,26 @@
+{
+	GUI.Game.Item:
+	{
+
+		Drawer: Drawer.Composite.Layouter( Size:[64,64] )
+		[
+			Drawer.Composite.Switch( Condition:"=Widget.Property('Type')")
+			[
+				[1    Drawer.Color( Color:[1 0 0 0.3] )]
+				[2    Drawer.Color( Color:[0 1 0 0.3] )]
+				[3    Drawer.Color( Color:[1 0 1 0.3] )]
+			]
+		]
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(Item).Drawer
+			)
+		[
+
+		]
+
+
+
+	}
+
+}

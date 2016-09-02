@@ -10,14 +10,15 @@
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(Game).Drawer
-			Layouters: [ [&GUI.TextField.Layouter [Field]] ]
-			Drawers: [ [&GUI.MonoTextDrawer [Stats]] ]
+			Layouters:
+			[
+				[&GUI.Game.Container.Layouter [Container]]
+			]
 			)
 		[
 			Table()
 			[
-				tr()[Layout( n:Field p:5 )]
-				tr()[Layout( n:Stats )]
+				Layout( n:Container p:2 )
 			]
 		]
 

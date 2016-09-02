@@ -13,10 +13,6 @@
 #include "Scene/Script/MXEvent.h"
 
 #include "Script/MXScriptClassParser.h"
-
-
-#include "Game/Model/Events.h"
-#include "Game/Model/Game.h"
 #include "RPN/Function.h"
 
 namespace bs2 = boost::signals2;
@@ -46,29 +42,21 @@ void BH::GameInitializer::Init()
 
 
 
-
+    /*
     {
         using namespace Game;
         ScriptClassParser::AddCreator(L"Game.Event", new OutsideScriptClassCreatorContructor<GameEvent>());
-
         ScriptClassParser::AddCreator(L"Game.Response", new OutsideScriptClassCreatorContructor<Response>());
-
-
-
-        EventsInit::Init();
+        //EventsInit::Init();
     }
-    
+    */
     AfterScriptParse();
 }
 
 
 void BH::GameInitializer::AfterScriptParse()
 {
-    RPN::Functions::AddLambda("Game.Stat", [](const std::string& stat)
-    {
-        auto &game = Context<Game::Game>::current();
-        return game.stats().amountOf(stat);
-    });
+
 }
 
 void BH::GameInitializer::ReloadScripts(bool reset)
