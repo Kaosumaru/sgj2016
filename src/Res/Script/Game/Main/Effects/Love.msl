@@ -14,7 +14,7 @@
 						[
 							Command.ExecuteEvent()
 							[
-								Event.Sprite.CreateSprite()[ &Test.Emoji.Catch ]
+								Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Love.Catch ]
 							]
 							{
 								Object: Command.Queue
@@ -37,8 +37,99 @@
 						]
 					}
 				]
-			}
+				Catch: Particles.SimpleSystem()
+				{
+					Object: Sprite.Scene.Transform
+					On.Run:
+					[
+						{Object: Command.UnlinkIfEmpty}
+					]
+					Children:
+					[
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.Circle
+								Direction: [-0.125, 0.125]
+								Speed: 0
+								Life: [0.6, 0.65]
+								Radius: 10
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								
+								Start.Color: [0.0, 0.0, 0.0, 1.0]
+								Start.Scale: [1.5, 1.5]
 
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [1.75, 1.75]
+								Image:  &Game.Emojis.Images.Heart
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: 1
+							}
+						}
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.Circle
+								Direction: [-0.125, 0.125]
+								Speed: [20, 70]
+								Life: [0.4, 0.65]
+								Radius: 35
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								AngularVelocity: [-1, 1],
+								
+								Start.Color: [0.0, 0.0, 0.0, 3.0]
+								Start.Scale: [0.3, 0.3]
+
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [0.65, 0.65]
+								Image:  &Game.Emojis.Images.Heart
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [5, 8]
+							}
+						}
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.Circle
+								Direction: [0.0, 1.0]
+								Speed: [150, 300]
+								Life: [0.20, 0.35]
+								Radius: 5
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								Start.Color: [0.0, 0.0, 0.0, 1.5]
+								Start.Scale: [0.2, 0.2]
+
+								End.Color: [1.50, 1.5, 1.50, 0.0]
+								End.Scale: [0.4, 0.4]
+								Image:  &Game.Emojis.Images.Star
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [7,15]
+							}
+						}
+					]
+				}
+			}
 		}
 	}
 }

@@ -12,6 +12,10 @@
 						Object: Command.Set 
 						Commands:
 						[
+							Command.ExecuteEvent()
+							[
+								Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Love.Catch ]
+							]
 							{
 								Object: Command.Queue
 								Commands:
