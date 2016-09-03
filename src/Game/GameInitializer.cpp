@@ -16,6 +16,7 @@
 #include "RPN/Function.h"
 
 #include "Game/Main/MainGame.h"
+#include "Game/Main/GameCommands.h"
 
 
 namespace bs2 = boost::signals2;
@@ -46,6 +47,7 @@ void BH::GameInitializer::Init()
 
 
     BH::GameInit::Initialize();
+    BH::GameCommandsInit::Initialize();
     /*
     {
         using namespace Game;
