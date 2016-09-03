@@ -148,16 +148,15 @@ protected:
     void CreateStatsField()
     {
         auto label = MX::make_shared<MX::Widgets::AutoLabel>();
-        label->SetHTML(true);
+        label->SetHTML(false);
         label->SetStringBuilder([this]()
         {
             std::wstringstream ss;
-            ss << "Time: " << _gameScene->time << "<br/>";
-            ss << "Points: " << _gameScene->points << "<br/>";
-            ss << "Combo: " << _gameScene->combo << "<br/>";
+            ss << "Time: " << _gameScene->time << " ";
+            ss << "Points: " << _gameScene->points << " ";
             return ss.str();
         });
-        //label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
+        label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
         _bgLayouter->AddNamedWidget("Stats", label);
     }
 

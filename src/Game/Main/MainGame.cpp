@@ -105,7 +105,6 @@ public:
     void Draw(float x, float y) override
     {
         MX::ScImageSpriteActor::Draw(x, y);
-        _shape->DebugDraw();
     }
 
     void OnLinkedToScene() override
@@ -183,7 +182,6 @@ public:
     void Draw(float x, float y) override
     {
         MX::ScImageSpriteActor::Draw(x, y);
-        _shape->DebugDraw();
     }
 
     void SetSize(float size)
