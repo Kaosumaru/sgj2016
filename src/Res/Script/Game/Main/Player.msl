@@ -7,8 +7,9 @@
 			{
 				Actors:
 				[
-					[&Game.Emojis.Love, 1]
-					[&Game.Emojis.Crying, 10]
+					[&Game.Emojis.Love, 5]
+					[&Game.Emojis.Anger, 10]
+					[&Game.Emojis.Crying, 20]
 				]
 			}
 			Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }

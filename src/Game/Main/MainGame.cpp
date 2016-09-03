@@ -180,8 +180,8 @@ public:
             return;
         _alive = false;
 
+        script.onRun.Clear();
         script.onRun += onDeath;
-       // this->onr
 
         if (_shape)
             _shape->Unlink();

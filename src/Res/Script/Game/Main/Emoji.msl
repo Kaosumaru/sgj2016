@@ -27,7 +27,7 @@
 			Points: -20
 			On.Run:
 			[
-				Command.Sinusoide( frequency:1 width:100 )[]
+				Command.Sinusoide( Frequency:2 Width:100 TimeOffset:5 )[]
 			]
 		}
 
