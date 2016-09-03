@@ -29,7 +29,25 @@
 			Size: 28
 			Acceleration: 20
 			Speed: 100
-			On.Death: [Command.Rotate(){ Speed: 1.0 }]
+			On.Death: 
+			[
+				//Command.Rotate(){ Speed: 1.0 }
+				{
+					Object: Command.Queue 
+					Commands:
+					[	
+						{
+							Object: Command.Set
+							Commands:
+							[
+								{Object: Command.WarpScale Scale:[0.0, 0.0] Time:0.25},
+								{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 1.0] Color2:[1.0, 1.0, 1.0, 0.0] Time:0.25}
+							]
+						}
+						{Object: Command.Unlink}
+					]
+				}
+			]
 		}
 
 		Love: &Game.Emojis.Emoji()
