@@ -61,10 +61,18 @@
 				Path: "Particle/Star.png"
 				Pivot: [36, 36]
 			}
-			Tear: Image.Image()
+			Tear:
 			{
-				Path: "Particle/Tear.png"
-				Pivot: [36, 36]
+				LeftTurn: Image.Image()
+				{
+					Path: "Particle/TearLeftTurn.png"
+					Pivot: [-36, 36]
+				}
+				RightTurn: Image.Image()
+				{
+					Path: "Particle/TearRightTurn.png"
+					Pivot: [108, 36]
+				}
 			}
 
 		}
