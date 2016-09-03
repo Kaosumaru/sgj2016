@@ -1,15 +1,27 @@
 {
 	GUI.MainMenu:
 	{
+		Logo:
+		{
+			Class: Image.Image
+			Path: Interface/logo.png
+		}
+
 		Drawer: Drawer.Composite.Layouter()
 		[
+			Drawer.Color( Color:[0.87 0.85 0.92 1] )[]
+
+			Destination( y1:100 )
+			[
+				Drawer.Image() { Image: &GUI.MainMenu.Logo Pos:8 }
+			]
 
 		]
 
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(MainMenu).Drawer
-			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Exit]] ]
+			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Options Button.Exit]] ]
 			Layouters: [ [&GUI.TextField.Layouter [Field]] ]
 			)
 		[
@@ -17,10 +29,12 @@
 			[
 				tr()[]
 				tr()[]
-				tr()
+				tr( h:200 )
 				[
-					Layout( n:Button.Game p:8 )
-					Layout( n:Button.Exit p:2 )
+					//Drawer.Color( Color:[1 1 1 1] )[]
+					tr()[Layout( n:Button.Game p:5 )]
+					tr()[Layout( n:Button.Options p:5 )]
+					tr()[Layout( n:Button.Exit p:5 )]
 				]
 				tr( h:60 )[]
 			]

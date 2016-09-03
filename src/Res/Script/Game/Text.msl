@@ -3,6 +3,13 @@
 	{
 		GameOver: "Game Over!"
 		Yes: "Yes"
-		No: "No"		
+		No: "No"
+	}
+
+	Button:
+	{
+		Game: "New Game"
+		Options: Options
+		Exit: Exit
 	}
 }
