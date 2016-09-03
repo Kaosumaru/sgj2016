@@ -1,0 +1,39 @@
+{
+	Game.Emojis:
+	{
+		Effects:
+		{
+			Crying:
+			{
+				Death: 
+				[
+					Command.Rotate(){ Speed: 5.0 }
+					{
+						Object: Command.Set 
+						Commands:
+						[
+							{
+								Object: Command.Queue
+								Commands:
+								[
+									{Object: Command.WarpScale Scale:[0.8, 0.8] Time:0.1},
+									{Object: Command.WarpScale Scale:[0.0, 0.0] Time:0.2},
+									{Object: Command.Unlink}
+								]
+							}
+							{
+								Object: Command.Queue
+								Commands:
+								[
+									{Object: Command.LerpColor, "Color1":[1.0, 0.5, 0.5, 1.0] Color2:[1.0, 0.5, 0.5, 0.75] Time:0.1}
+									{Object: Command.LerpColor, "Color1":[1.0, 0.5, 0.5, 0.75] Color2:[1.0, 0.5, 0.5, 0.0] Time:0.2}
+								]
+							}
+							
+						]
+					}
+				]
+			}
+		}
+	}
+}

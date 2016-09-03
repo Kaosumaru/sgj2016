@@ -1,0 +1,44 @@
+{
+	Game.Emojis:
+	{
+		Effects:
+		{
+			Love: 
+			{
+				Death:
+				[
+					Command.Rotate(){ Speed: 5.0 }
+					{
+						Object: Command.Set 
+						Commands:
+						[
+							Command.ExecuteEvent()
+							[
+								Event.Sprite.CreateSprite()[ &Test.Emoji.Catch ]
+							]
+							{
+								Object: Command.Queue
+								Commands:
+								[
+									{Object: Command.WarpScale Scale:[1.3, 1.3] Time:0.1},
+									{Object: Command.WarpScale Scale:[0.0, 0.0] Time:0.2},
+									{Object: Command.Unlink}
+								]
+							}
+							{
+								Object: Command.Queue
+								Commands:
+								[
+									{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 1.0] Color2:[1.0, 1.0, 1.0, 0.75] Time:0.1}
+									{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 0.75] Color2:[1.0, 1.0, 1.0, 0.0] Time:0.2}
+								]
+							}
+							
+						]
+					}
+				]
+			}
+
+		}
+	}
+}
