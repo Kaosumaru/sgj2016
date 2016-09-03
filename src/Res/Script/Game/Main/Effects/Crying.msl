@@ -14,7 +14,7 @@
 						[
 							Command.ExecuteEvent()
 							[
-								Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Love.Catch ]
+								Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Crying.Catch ]
 							]
 							{
 								Object: Command.Queue
@@ -37,6 +37,266 @@
 						]
 					}
 				]
+				Catch: Particles.SimpleSystem()
+				{
+					Object: Sprite.Scene.Transform
+					On.Run:
+					[
+						{Object: Command.UnlinkIfEmpty}
+					]
+					Children:
+					[
+						{
+							Object: Particles.SimpleSystem
+							On.Run:
+							[
+								{
+									Object: Command.Queue
+									Commands:
+									[
+										{Object: Command.Wait Time:0.2}
+										{Object: Command.MoveTo Position: [-30.0, 0] Time: 0.075}
+										{Object: Command.Wait Time:0.375}
+										{Object: Command.Unlink}
+									]
+								}
+							]
+							
+							Emitter:
+							{
+								Object: Particles.Emitter.Point
+								Direction: [0.25, 0.25]
+								Speed: 0
+								Life: [0.6, 0.65]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								
+								Start.Color: [0.0, 0.0, 0.0, 1.0]
+								Start.Scale: [1.5, 1.5]
+
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [1.75, 1.75]
+								Image:  &Game.Emojis.Images.BrokenHeart.One
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: 1
+							}
+						}
+						{
+							Object: Particles.SimpleSystem
+							On.Run:
+							[
+								{
+									Object: Command.Queue
+									Commands:
+									[
+										{Object: Command.Wait Time:0.2}
+										{Object: Command.MoveTo Position: [30.0, 0] Time: 0.075}
+										{Object: Command.Wait Time:0.375}
+										{Object: Command.Unlink}
+									]
+								}
+							]
+							
+							Emitter:
+							{
+								Object: Particles.Emitter.Point
+								Direction: [0.25, 0.25]
+								Speed: 0
+								Life: [0.6, 0.65]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								
+								Start.Color: [0.0, 0.0, 0.0, 1.0]
+								Start.Scale: [1.5, 1.5]
+
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [1.75, 1.75]
+								Image:  &Game.Emojis.Images.BrokenHeart.Two
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: 1
+							}
+						}
+						
+						
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.Circumference
+								Direction: [0.7, 0.8],
+								CreationAngle: [0.55, 0.95],
+								Speed: [25, 150]
+								Life: [0.2, 0.3]
+								Radius: 15
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								
+								Start.Color: [0.0, 0.0, 0.0, 3.0]
+								Start.Scale: [0.3, 0.3]
+
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [0.65, 0.65]
+								Image:  &Game.Emojis.Images.BrokenHeart.One
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [3, 6]
+							}
+						}
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.Circumference
+								Direction: [0.2, 0.3],
+								CreationAngle: [0.05, 0.45],
+								Speed: [25, 150]
+								Life: [0.2, 0.3]
+								Radius: 15
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								
+								Start.Color: [0.0, 0.0, 0.0, 3.0]
+								Start.Scale: [0.3, 0.3]
+
+								End.Color: [1.0, 1.0, 1.0, 0.0]
+								End.Scale: [0.65, 0.65]
+								Image:  &Game.Emojis.Images.BrokenHeart.Two
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [3, 6]
+							}
+						}
+						
+						
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.PointRotation
+								Direction: [-0.35, -0.2]
+								Speed: [50, 200]
+								Life: [0.2, 0.4]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								AngularVelocity: [-6, -3]
+								Start.Color: [0.0, 0.0, 0.0, 1.5]
+								Start.Scale: [0.4, 0.4]
+
+								End.Color: [1.50, 1.5, 1.50, 0.0]
+								End.Scale: [0.6, 0.6]
+								Image:  &Game.Emojis.Images.Tear.LeftTurn
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [2,4]
+							}
+						}
+						
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.PointRotation
+								Direction: [0.2, 0.35]
+								Speed: [50, 200]
+								Life: [0.2, 0.4]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								AngularVelocity: [3, 6]
+								Start.Color: [0.0, 0.0, 0.0, 1.5]
+								Start.Scale: [0.4, 0.4]
+
+								End.Color: [1.50, 1.5, 1.50, 0.0]
+								End.Scale: [0.6, 0.6]
+								Image:  &Game.Emojis.Images.Tear.RightTurn
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [2,4]
+							}
+						}
+						
+						
+						
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.PointRotation
+								Direction: [-0.35, -0.2]
+								Speed: [150, 300]
+								Life: [0.1, 0.3]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								AngularVelocity: [-4, -2]
+								Start.Color: [0.0, 0.0, 0.0, 1.5]
+								Start.Scale: [0.2, 0.2]
+
+								End.Color: [1.50, 1.5, 1.50, 0.0]
+								End.Scale: [0.35, 0.35]
+								Image:  &Game.Emojis.Images.Tear.LeftTurn
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [4,5]
+							}
+						}
+						
+						{
+							Object: Particles.SimpleSystem
+							Emitter:
+							{
+								Object: Particles.Emitter.PointRotation
+								Direction: [0.2, 0.35]
+								Speed: [150, 300]
+								Life: [0.1, 0.3]
+							},
+							Creator:
+							{
+								Object: Particles.Creator.Image
+								AngularVelocity: [2, 4]
+								Start.Color: [0.0, 0.0, 0.0, 1.5]
+								Start.Scale: [0.2, 0.2]
+
+								End.Color: [1.50, 1.5, 1.50, 0.0]
+								End.Scale: [0.35, 0.35]
+								Image:  &Game.Emojis.Images.Tear.RightTurn
+							},
+							Generator:
+							{
+								Object: Particles.Generator.AllAtOnce
+								ParticleNumber: [4,5]
+							}
+						}
+					]
+				}
 			}
 		}
 	}
