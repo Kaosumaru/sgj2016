@@ -1,35 +1,6 @@
 {
 	Game.Emojis:
 	{
-		Images:
-		{
-			Love:
-			{
-				Class: Image.Image
-				Path: Emojis/0.png
-				Pivot: [36,36]
-			}
-			Smile:
-			{
-				Class: Image.Image
-				Path: Emojis/2.png
-				Pivot: [36,36]
-			}
-			Crying:
-			{
-				Class: Image.Image
-				Path: Emojis/6.png
-				Pivot: [36,36]
-			}
-			Anger:
-			{
-				Class: Image.Image
-				Path: Emojis/7.png
-				Pivot: [36,36]
-			}
-
-		}
-
 		Emoji: Game.Emoji()
 		{
 			Size: 28
@@ -41,72 +12,14 @@
 		{
 			Image: &(Emojis).Images.Love
 			Points:10
-			On.Death: 
-			[
-				Command.Rotate(){ Speed: 5.0 }
-				{
-					Object: Command.Set 
-					Commands:
-					[
-						Command.ExecuteEvent()
-						[
-							//Game.Events.CreateSprite(){ Sprite:&Test.Emoji.Catch Layer:Overlay }
-						]
-						{
-							Object: Command.Queue
-							Commands:
-							[
-								{Object: Command.WarpScale Scale:[1.3, 1.3] Time:0.1},
-								{Object: Command.WarpScale Scale:[0.0, 0.0] Time:0.2},
-								{Object: Command.Unlink}
-							]
-						}
-						{
-							Object: Command.Queue
-							Commands:
-							[
-								{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 1.0] Color2:[1.0, 1.0, 1.0, 0.75] Time:0.1}
-								{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 0.75] Color2:[1.0, 1.0, 1.0, 0.0] Time:0.2}
-							]
-						}
-						
-					]
-				}
-			]
+			On.Death: &Game.Emojis.Effects.Love.Death
 
 		}
 		Crying: &Game.Emojis.Emoji()
 		{
 			Image: &(Emojis).Images.Crying
 			Points: -20
-			On.Death: 
-			[
-				Command.Rotate(){ Speed: 5.0 }
-				{
-					Object: Command.Set 
-					Commands:
-					[
-						{
-							Object: Command.Queue
-							Commands:
-							[
-								{Object: Command.WarpScale Scale:[0.8, 0.8] Time:0.1},
-								{Object: Command.WarpScale Scale:[0.0, 0.0] Time:0.2},
-								{Object: Command.Unlink}
-							]
-						}
-						{
-							Object: Command.Queue
-							Commands:
-							[
-								{Object: Command.LerpColor, "Color1":[1.0, 0.5, 0.5, 1.0] Color2:[1.0, 0.5, 0.5, 0.75] Time:0.1}
-								{Object: Command.LerpColor, "Color1":[1.0, 0.5, 0.5, 0.75] Color2:[1.0, 0.5, 0.5, 0.0] Time:0.2}
-							]
-						}
-						
-					]
-				}
-			]
+			On.Death: &Game.Emojis.Effects.Crying.Death
 		}
 		Anger: &Game.Emojis.Emoji()
 		{
