@@ -126,6 +126,9 @@ protected:
 
 		if (firstFrame)
 		{
+            ci::gl::enableVerticalSync(false);
+            MX::App::current().disableFrameRate();
+
 			firstFrame = false;
 			RenderFirstFrame();
 			return;

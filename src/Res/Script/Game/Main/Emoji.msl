@@ -1,0 +1,30 @@
+{
+	Game.Emojis:
+	{
+		Images:
+		{
+			Love:
+			{
+				Class: Image.Image
+				Path: Emojis/0.png
+				Pivot: [36,36]
+			}
+			Smile:
+			{
+				Class: Image.Image
+				Path: Emojis/2.png
+				Pivot: [36,36]
+			}
+
+		}
+
+		Test: Game.Emoji()
+		{
+			Image: &(Emojis).Images.Love
+
+			Size: 28
+			Speed: 100
+			Acceleration: 20
+		}
+	}
+}

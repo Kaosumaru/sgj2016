@@ -26,6 +26,7 @@
 #include "Game/Main/MainGame.h"
 #include "Widgets/Animations/MXAnimations.h"
 #include "Game/Model/Model.h"
+#include "Game/Main/MainGame.h"
 
 namespace bs2 = boost::signals2;
 
@@ -112,10 +113,15 @@ protected:
 class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
-    std::shared_ptr<Stepmania::Game> _game;
+    std::shared_ptr<BH::MainGame> _gameScene;
 public:
     MGameScene()
     {
+        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MGameScene::onExit, this));
+
+        _gameScene = std::make_shared<BH::MainGame>();
+        AddActor(_gameScene);
+
         {
             auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
             bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
@@ -123,26 +129,22 @@ public:
             AddActor(bg);
             _bgLayouter = bg;
         }
-        loadGame();
         CreateStatsField();
     }
 
-    void Run()
+    void onExit()
     {
-        MX::FullscreenDisplayScene::Run();
-        _game->Run();
+        if (_removed)
+            return;
+        
+        auto manager = SpriteSceneStackManager::manager_of(this);
+        if (!manager)
+            return;
+        manager->PopScene();
+        _removed = true;
     }
 
 protected:
-    void loadGame()
-    {
-        ScriptObjectString script("TestTrack");
-        auto game = std::make_shared<Stepmania::Game>();
-        _game = game;
-    }
-
-
-
     void CreateStatsField()
     {
         auto label = MX::make_shared<MX::Widgets::AutoLabel>();
@@ -150,14 +152,16 @@ protected:
         label->SetStringBuilder([this]()
         {
             std::wstringstream ss;
-            ss << "Time: " << _game->time << "<br/>";
-            ss << "Points: " << _game->points << "<br/>";
-            ss << "Combo: " << _game->combo << "<br/>";
+            ss << "Time: " << _gameScene->time << "<br/>";
+            ss << "Points: " << _gameScene->points << "<br/>";
+            ss << "Combo: " << _gameScene->combo << "<br/>";
             return ss.str();
         });
-        label->connect_signals(_game->points.onValueChanged, _game->time.onValueChanged);
+        label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
         _bgLayouter->AddNamedWidget("Stats", label);
     }
+
+    bool _removed = false;
 };
 
 
@@ -214,8 +218,8 @@ GuiManager::GuiManager()
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_u].connect(boost::bind(&GuiManager::reloadScripts, this));
 #endif
 
-	PushScene(MX::make_shared<MMenuScene>());
-    //PushScene(MX::make_shared<MGameScene>());
+	//PushScene(MX::make_shared<MMenuScene>());
+    PushScene(MX::make_shared<MGameScene>());
 }
 
 

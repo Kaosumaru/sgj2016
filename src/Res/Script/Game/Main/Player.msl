@@ -1,0 +1,10 @@
+{
+	Game.Player:
+	{
+		P1: Game.Player()
+		{
+			Image: &Game.Emojis.Images.Smile
+			Size: 28
+		}
+	}
+}

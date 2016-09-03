@@ -22,6 +22,10 @@
 
 #include "Game/GameInitializer.h"
 #include "Game/DebugCheats.h"
+#include "Scene/Sprites/MXScriptableSpriteActor.h"
+
+#include "Collision/Shape/MXSignalizingShape.h"
+
 
 namespace bs2 = boost::signals2;
 
@@ -29,17 +33,237 @@ using namespace MX;
 using namespace BH;
 using namespace std;
 
-MainGame::MainGame() : DisplaySceneTimer(MX::Window::current().display()->size())
+
+
+void MainGame::Run()
 {
-    _cheats = CreateCheats();
-    Context<BaseGraphicScene>::SetCurrent(*this);
-
-
-    MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MainGame::onExit, this));
+    MX::FullscreenDisplayScene::Run();
+    time = MX::Time::Timer::current().total_seconds();
 }
 
 void MainGame::onExit()
 {
-    SpriteSceneStackManager::manager_of(this)->PopScene(std::make_shared<MoveBitmapTransition>(false));
+
+}
+
+class PlayerActor;
+class EmojiActor;
+
+class EmojiShape : public MX::Collision::SignalizingCircleShape
+{
+public:
+    EmojiShape(EmojiActor* emoji) : _emoji(emoji) { SetClassID(ClassID<EmojiShape>::id()); };
+    EmojiActor* emoji() { return _emoji; }
+protected:
+    EmojiActor* _emoji;
+};
+
+class PlayerShape : public MX::Collision::SignalizingCircleShape
+{
+public:
+    PlayerShape(PlayerActor* player) : _player(player) { SetClassID(ClassID<PlayerShape>::id()); };
+    PlayerActor* player() { return _player; }
+protected:
+    PlayerActor* _player;
+};
+
+
+
+class EmojiActor : public MX::ScImageSpriteActor
+{
+public:
+    EmojiActor(const EmojiActor& other) : MX::ScImageSpriteActor(other)
+    {
+        SetSize(other._size);
+        _points = other._points;
+        _speed = other._speed;
+        _acceleration = other._acceleration;
+    }
+
+    EmojiActor(LScriptObject& script) : MX::ScImageSpriteActor(script)
+    {
+        script.load_property(_points, "Points");
+        script.load_property(_size, "Size");
+        script.load_property(_speed, "Speed");
+        script.load_property(_acceleration, "Acceleration");
+        SetSize(_size);
+    }
+
+    void Run() override
+    {
+        MX::ScImageSpriteActor::Run();
+
+        geometry.position.y += _speed;
+        _speed = _speed.getOriginalValue() + _acceleration;
+
+        _shape->SetPosition(geometry.position);
+    }
+
+    void Draw(float x, float y) override
+    {
+        MX::ScImageSpriteActor::Draw(x, y);
+        _shape->DebugDraw();
+    }
+
+    void OnLinkedToScene() override
+    {
+        MX::ScImageSpriteActor::OnLinkedToScene();
+        if (!MainGame::isCurrent())
+            return;
+        MainGame::current().obstaclesArea()->AddShape(ClassID<PlayerActor>::id(), _shape);
+    }
+
+    void OnUnlinkedFromScene() override
+    {
+        MX::ScImageSpriteActor::OnUnlinkedFromScene();
+        if (_shape)
+            _shape->Unlink();
+    }
+
+    std::shared_ptr<ScriptableSpriteActor> cloneSprite() override
+    {
+        return std::make_shared<EmojiActor>(*this);
+    }
+
+    void SetSize(float size)
+    {
+        _size = size;
+        auto circle = MX::make_shared<EmojiShape>(this);
+        circle->Set(geometry.position, _size);
+        _shape = circle;
+
+        if (!MainGame::isCurrent())
+            return;
+        MainGame::current().obstaclesArea()->AddShape(ClassID<EmojiActor>::id(), _shape);
+    }
+
+
+    auto &points()
+    {
+        return _points;
+    }
+protected:
+    int _points = 10;
+    std::shared_ptr<MX::Collision::SignalizingCircleShape> _shape;
+    float                _size = 10;
+    Time::FloatPerSecond _acceleration = 0.0f;
+    Time::FloatPerSecond _speed = 0.0f;
+};
+
+
+class PlayerActor : public MX::ScImageSpriteActor
+{
+public:
+    auto& game()
+    {
+        return MainGame::current();
+    }
+
+    PlayerActor(const PlayerActor& other) : MX::ScImageSpriteActor(other)
+    {
+        SetSize(other._size);
+    }
+
+    PlayerActor(LScriptObject& script) : MX::ScImageSpriteActor(script)
+    {
+        script.load_property(_size, "Size");
+        SetSize(_size);
+    }
+
+    void Run() override
+    {
+        MX::ScImageSpriteActor::Run();
+
+        auto &mousePos = MX::Window::current().mouse()->position();
+        geometry.position.x = mousePos.x;
+        geometry.position.y = 600;
+        
+        _shape->SetPosition(geometry.position);
+    }
+
+    void Draw(float x, float y) override
+    {
+        MX::ScImageSpriteActor::Draw(x, y);
+        _shape->DebugDraw();
+    }
+
+    void SetSize(float size)
+    {
+        _size = size;
+        auto circle = MX::make_shared<PlayerShape>(this);
+        circle->Set(geometry.position, _size);
+        _shape = circle;
+
+        
+        circle->with<EmojiShape>()->onCollided.connect([&](const Collision::Shape::pointer& shape, auto...)
+        {
+            auto emojiShape = std::static_pointer_cast<EmojiShape>(shape);
+            if (!emojiShape)
+                return;
+            collidedWith(emojiShape->emoji());
+        });
+    }
+
+    void OnLinkedToScene() override
+    {
+        MX::ScImageSpriteActor::OnLinkedToScene();
+        if (!MainGame::isCurrent())
+            return;
+        MainGame::current().obstaclesArea()->AddShape(ClassID<PlayerActor>::id(), _shape);
+    }
+
+    void OnUnlinkedFromScene() override
+    {
+        MX::ScImageSpriteActor::OnUnlinkedFromScene();
+        if (_shape)
+            _shape->Unlink();
+    }
+
+    void collidedWith(EmojiActor* emoji)
+    {
+        game().points = game().points + emoji->points();
+        emoji->Unlink();
+        
+    }
+
+    std::shared_ptr<ScriptableSpriteActor> cloneSprite() override
+    {
+        return std::make_shared<PlayerActor>(*this);
+    }
+
+    std::shared_ptr<MX::Collision::SignalizingCircleShape> _shape;
+    float                _size = 10;
+};
+
+
+MainGame::MainGame()
+{
+    auto size = MX::Window::current().display()->size();
+    MX::Rectangle rect(size.x, size.y);
+    rect.Expand(400);
+    _obstaclesArea = MX::make_shared<Collision::QuadtreeWeakLayeredArea>(rect, true);
+    _obstaclesArea->DefineLayerCollision(ClassID<PlayerActor>::id(), ClassID<EmojiActor>::id());
+
+    MainGame::SetCurrent(*this);
+    _cheats = BH::CreateCheats();
+    Context<BaseGraphicScene>::SetCurrent(*this);
+
+
+    ScriptObjectString script("Game.Player");
+
+    std::shared_ptr<PlayerActor> player;
+    script.load_property(player, "P1");
+
+    if (player)
+        AddActor(player);
+
+    
+
+}
+
+void GameInit::Initialize()
+{
+    ScriptClassParser::AddCreator(L"Game.Player", new OutsideScriptClassCreatorContructor<PlayerActor>());
+    ScriptClassParser::AddCreator(L"Game.Emoji", new OutsideScriptClassCreatorContructor<EmojiActor>());
 }
 

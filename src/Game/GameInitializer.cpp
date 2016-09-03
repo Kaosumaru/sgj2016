@@ -15,6 +15,9 @@
 #include "Script/MXScriptClassParser.h"
 #include "RPN/Function.h"
 
+#include "Game/Main/MainGame.h"
+
+
 namespace bs2 = boost::signals2;
 
 using namespace MX;
@@ -42,6 +45,7 @@ void BH::GameInitializer::Init()
 
 
 
+    BH::GameInit::Initialize();
     /*
     {
         using namespace Game;

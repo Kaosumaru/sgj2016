@@ -27,37 +27,6 @@ namespace Stepmania
     };
 
 
-    class Game
-    {
-    public:
-        Game()
-        {
-            _controls.SetupForPlayer(0);
-        }
-
-        void Start()
-        {
-
-        }
-
-        void Run()
-        {
-            _controls.Run();
-            time = MX::Time::Timer::current().total_seconds();
-        }
-
-      
-
-
-        float tolerance = 1.0f;
-        SignalizingVariable<int> points = 0;
-        SignalizingVariable<float> time = 0.0f;
-        SignalizingVariable<int> combo = 0;
-
-
-    protected:
-        Stepmania::PlayerControlSchema _controls;
-    };
 
 }
 
