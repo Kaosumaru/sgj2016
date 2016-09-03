@@ -5,11 +5,11 @@
 		{
 			Crying:
 			{
-				Death: 
+				Death:
 				[
 					Command.Rotate(){ Speed: 5.0 }
 					{
-						Object: Command.Set 
+						Object: Command.Set
 						Commands:
 						[
 							Command.ExecuteEvent()
@@ -33,11 +33,11 @@
 									{Object: Command.LerpColor, "Color1":[1.0, 0.5, 0.5, 0.75] Color2:[1.0, 0.5, 0.5, 0.0] Time:0.2}
 								]
 							}
-							
+
 						]
 					}
 				]
-				Catch: Particles.SimpleSystem()
+				Catch:
 				{
 					Object: Sprite.Scene.Transform
 					On.Run:
@@ -48,6 +48,7 @@
 					[
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							On.Run:
 							[
 								{
@@ -61,7 +62,7 @@
 									]
 								}
 							]
-							
+
 							Emitter:
 							{
 								Object: Particles.Emitter.Point
@@ -72,7 +73,7 @@
 							Creator:
 							{
 								Object: Particles.Creator.Image
-								
+
 								Start.Color: [0.0, 0.0, 0.0, 1.0]
 								Start.Scale: [1.5, 1.5]
 
@@ -88,6 +89,7 @@
 						}
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							On.Run:
 							[
 								{
@@ -101,7 +103,7 @@
 									]
 								}
 							]
-							
+
 							Emitter:
 							{
 								Object: Particles.Emitter.Point
@@ -112,7 +114,7 @@
 							Creator:
 							{
 								Object: Particles.Creator.Image
-								
+
 								Start.Color: [0.0, 0.0, 0.0, 1.0]
 								Start.Scale: [1.5, 1.5]
 
@@ -126,10 +128,11 @@
 								ParticleNumber: 1
 							}
 						}
-						
-						
+
+
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.Circumference
@@ -142,7 +145,7 @@
 							Creator:
 							{
 								Object: Particles.Creator.Image
-								
+
 								Start.Color: [0.0, 0.0, 0.0, 3.0]
 								Start.Scale: [0.3, 0.3]
 
@@ -158,6 +161,7 @@
 						}
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.Circumference
@@ -170,7 +174,7 @@
 							Creator:
 							{
 								Object: Particles.Creator.Image
-								
+
 								Start.Color: [0.0, 0.0, 0.0, 3.0]
 								Start.Scale: [0.3, 0.3]
 
@@ -184,10 +188,11 @@
 								ParticleNumber: [3, 6]
 							}
 						}
-						
-						
+
+
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.PointRotation
@@ -212,9 +217,10 @@
 								ParticleNumber: [2,4]
 							}
 						}
-						
+
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.PointRotation
@@ -239,11 +245,12 @@
 								ParticleNumber: [2,4]
 							}
 						}
-						
-						
-						
+
+
+
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.PointRotation
@@ -268,9 +275,10 @@
 								ParticleNumber: [4,5]
 							}
 						}
-						
+
 						{
 							Object: Particles.SimpleSystem
+							AdditiveBlending: false
 							Emitter:
 							{
 								Object: Particles.Emitter.PointRotation
