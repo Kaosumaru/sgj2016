@@ -61,6 +61,15 @@
 										{Object: Command.Unlink}
 									]
 								}
+								{
+									Object: Command.Queue
+									Commands:
+									[
+										{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 0.0] Color2:[1.0, 1.0, 1.0, 1.0] Time:0.2}
+										{Object: Command.Wait Time:0.25}
+										{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 1.0] Color2:[1.0, 1.0, 1.0, 0.0] Time:0.2}
+									]
+								}
 							]
 
 							Emitter:
@@ -74,11 +83,11 @@
 							{
 								Object: Particles.Creator.Image
 
-								Start.Color: [0.0, 0.0, 0.0, 1.0]
-								Start.Scale: [1.5, 1.5]
+								Start.Color: [1.0, 1.0, 1.0, 1.0]
+								Start.Scale: [0.5, 0.5]
 
-								End.Color: [1.0, 1.0, 1.0, 0.0]
-								End.Scale: [1.75, 1.75]
+								End.Color: [1.0, 1.0, 1.0, 1.0]
+								End.Scale: [0.65, 0.65]
 								Image:  &Game.Emojis.Images.BrokenHeart.One
 							},
 							Generator:
@@ -102,6 +111,15 @@
 										{Object: Command.Unlink}
 									]
 								}
+								{
+									Object: Command.Queue
+									Commands:
+									[
+										{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 0.0] Color2:[1.0, 1.0, 1.0, 1.0] Time:0.2}
+										{Object: Command.Wait Time:0.25}
+										{Object: Command.LerpColor, "Color1":[1.0, 1.0, 1.0, 1.0] Color2:[1.0, 1.0, 1.0, 0.0] Time:0.2}
+									]
+								}
 							]
 
 							Emitter:
@@ -115,11 +133,11 @@
 							{
 								Object: Particles.Creator.Image
 
-								Start.Color: [0.0, 0.0, 0.0, 1.0]
-								Start.Scale: [1.5, 1.5]
+								Start.Color: [1.0, 1.0, 1.0, 1.0]
+								Start.Scale: [0.5, 0.5]
 
-								End.Color: [1.0, 1.0, 1.0, 0.0]
-								End.Scale: [1.75, 1.75]
+								End.Color: [1.0, 1.0, 1.0, 1.0]
+								End.Scale: [0.65, 0.65]
 								Image:  &Game.Emojis.Images.BrokenHeart.Two
 							},
 							Generator:
@@ -140,17 +158,17 @@
 								CreationAngle: [0.55, 0.95],
 								Speed: [25, 150]
 								Life: [0.2, 0.3]
-								Radius: 15
+								Radius: 25
 							},
 							Creator:
 							{
 								Object: Particles.Creator.Image
 
-								Start.Color: [0.0, 0.0, 0.0, 3.0]
-								Start.Scale: [0.3, 0.3]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.0, 1.0, 1.0, 0.0]
-								End.Scale: [0.65, 0.65]
+								End.Scale: [0.325, 0.325]
 								Image:  &Game.Emojis.Images.BrokenHeart.One
 							},
 							Generator:
@@ -169,17 +187,17 @@
 								CreationAngle: [0.05, 0.45],
 								Speed: [25, 150]
 								Life: [0.2, 0.3]
-								Radius: 15
+								Radius: 25
 							},
 							Creator:
 							{
 								Object: Particles.Creator.Image
 
-								Start.Color: [0.0, 0.0, 0.0, 3.0]
-								Start.Scale: [0.3, 0.3]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.0, 1.0, 1.0, 0.0]
-								End.Scale: [0.65, 0.65]
+								End.Scale: [0.325, 0.325]
 								Image:  &Game.Emojis.Images.BrokenHeart.Two
 							},
 							Generator:
@@ -204,8 +222,8 @@
 							{
 								Object: Particles.Creator.Image
 								AngularVelocity: [-6, -3]
-								Start.Color: [0.0, 0.0, 0.0, 1.5]
-								Start.Scale: [0.4, 0.4]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.50, 1.5, 1.50, 0.0]
 								End.Scale: [0.6, 0.6]
@@ -232,8 +250,8 @@
 							{
 								Object: Particles.Creator.Image
 								AngularVelocity: [3, 6]
-								Start.Color: [0.0, 0.0, 0.0, 1.5]
-								Start.Scale: [0.4, 0.4]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.50, 1.5, 1.50, 0.0]
 								End.Scale: [0.6, 0.6]
@@ -262,8 +280,8 @@
 							{
 								Object: Particles.Creator.Image
 								AngularVelocity: [-4, -2]
-								Start.Color: [0.0, 0.0, 0.0, 1.5]
-								Start.Scale: [0.2, 0.2]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.50, 1.5, 1.50, 0.0]
 								End.Scale: [0.35, 0.35]
@@ -290,8 +308,8 @@
 							{
 								Object: Particles.Creator.Image
 								AngularVelocity: [2, 4]
-								Start.Color: [0.0, 0.0, 0.0, 1.5]
-								Start.Scale: [0.2, 0.2]
+								Start.Color: [1.0, 1.0, 1.0, 1.5]
+								Start.Scale: [0.0, 0.0]
 
 								End.Color: [1.50, 1.5, 1.50, 0.0]
 								End.Scale: [0.35, 0.35]

@@ -33,17 +33,22 @@
 				Pivot: [36, 36]
 			}
 			
+			HeartBorderless: Image.Image()
+			{
+				Path: Particle/Heart.png
+				Pivot: [72, 72]
+			}
 			BrokenHeart:
 			{
 				One: Image.Image()
 				{
 					Path: "Particle/BrokenHeartOne.png"
-					Pivot: [36, 36]
+					Pivot: [72, 72]
 				}
 				Two: Image.Image()
 				{
 					Path: "Particle/BrokenHeartTwo.png"
-					Pivot: [36, 36]
+					Pivot: [72, 72]
 				}
 			}
 			Lightning: Image.Image()
