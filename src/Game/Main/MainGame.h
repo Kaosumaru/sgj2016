@@ -21,16 +21,27 @@ namespace BH
         void Run() override;
 
         auto& obstaclesArea() { return _obstaclesArea; }
+        float levelTime = 30;
 
         SignalizingVariable<int> points = 0;
+        SignalizingVariable<int> maxPoints = 100;
+
         SignalizingVariable<int> time = 0;
+        SignalizingVariable<int> remainingTime = levelTime;
         SignalizingVariable<int> combo = 0;
+
+        
+
+        void GainPoints(int points);
     protected:
         void onExit();
 
         std::shared_ptr<MX::Collision::SimplestWeakArea> _obstaclesArea;
         std::shared_ptr<struct CheatObject> _cheats;
         std::shared_ptr<MX::ActorFactory> _factory;
+
+        void GameOver(bool win);
+        bool _gameActive = true;
     };
     
 

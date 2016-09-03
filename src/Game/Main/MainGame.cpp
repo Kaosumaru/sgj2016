@@ -39,11 +39,39 @@ void MainGame::Run()
 {
     MX::FullscreenDisplayScene::Run();
     time = MX::Time::Timer::current().total_seconds();
+
+    if (!_gameActive)
+        return;
+
+    int newTime = levelTime - time;
+    if (newTime < 0)
+    {
+        GameOver(false);
+        newTime = 0;
+    }
+        
+    remainingTime = newTime;
+}
+
+void MainGame::GainPoints(int p)
+{
+    points = points + p;
+
+    if (points > maxPoints)
+        GameOver(true);
 }
 
 void MainGame::onExit()
 {
 
+}
+
+void MainGame::GameOver(bool win)
+{
+    if (!_gameActive)
+        return;
+    Pause(true);
+    _gameActive = false;
 }
 
 class PlayerActor;
@@ -218,7 +246,7 @@ public:
 
     void collidedWith(EmojiActor* emoji)
     {
-        game().points = game().points + emoji->points();
+        game().GainPoints(emoji->points());
         emoji->Unlink();
         
     }
@@ -282,6 +310,9 @@ MainGame::MainGame()
     script.load_property(_factory, "Enemies.Factory");
     if (_factory)
         AddActor(_factory);
+
+    script.load_property(levelTime, "Time");
+    remainingTime = levelTime;
 
 }
 

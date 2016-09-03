@@ -7,17 +7,28 @@
 			//Drawer.Color( Color:[0 0 0 1] )
 		]
 
+		Progress.Drawer: Drawer.Composite.Layouter( Size: [175 54] )
+		[
+			Drawer.Color( Color:[0.1 0.1 0.1 1] )
+			Clip( x2:"=&Widget.Progress * &Area.Width" )
+			[
+				Drawer.Color( Color:[1 1 1 1] )
+			]
+		]
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(Game).Drawer
-			Drawers: [ [&GUI.MonoTextDrawer [Stats]] ]
+			Drawers: [
+				[&GUI.MonoTextDrawer [Stats]]
+				[&(Game).Progress.Drawer [Progress]]
+			]
 			Layouters:
 			[
 
 			]
 			)
 		[
-
+			Layout( n:Progress p:9 )
 		]
 
 

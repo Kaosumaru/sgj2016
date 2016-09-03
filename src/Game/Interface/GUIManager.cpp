@@ -110,6 +110,26 @@ protected:
 };
 
 
+class ProgressBar : public  MX::Widgets::Widget
+{
+public:
+    ProgressBar(const std::shared_ptr<BH::MainGame>& game)
+    {
+        AddStrategy(_progressStrategy);
+
+        game->points.onValueChanged.connect([=](auto...) 
+        {
+            SetProgress((float)game->points / (float)game->maxPoints);
+        });
+    }
+
+    void SetProgress(float progress) { _progressStrategy.progress().Set(progress); }
+    auto progress() { return _progressStrategy.progress().value(); }
+
+protected:
+    MX::Strategies::Drawable::Progress _progressStrategy;
+};
+
 class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
@@ -130,6 +150,7 @@ public:
             _bgLayouter = bg;
         }
         CreateStatsField();
+        _bgLayouter->AddNamedWidget("Progress", std::make_shared<ProgressBar>(_gameScene));
     }
 
     void onExit()
@@ -152,7 +173,7 @@ protected:
         label->SetStringBuilder([this]()
         {
             std::wstringstream ss;
-            ss << "Time: " << _gameScene->time << " ";
+            ss << "Time: " << _gameScene->remainingTime << " ";
             ss << "Points: " << _gameScene->points << " ";
             return ss.str();
         });
