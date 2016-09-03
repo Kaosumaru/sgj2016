@@ -37,9 +37,18 @@
 			}
 		]
 
+		PhoneSmall:
+		{
+			Class: Image.Image
+			Path: Interface/phone_small.png
+			Pivot: [17.5,30]
+		}
+
 		Player.P1: Game.Player()
 		{
-			Image: &Game.Emojis.Images.Smile
+			Image: &Game.PhoneSmall
+			Width: 35
+			Height: 60
 			Size: 28
 		}
 	}

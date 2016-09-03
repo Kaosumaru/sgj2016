@@ -86,7 +86,7 @@ protected:
     EmojiActor* _emoji;
 };
 
-class PlayerShape : public MX::Collision::SignalizingCircleShape
+class PlayerShape : public MX::Collision::SignalizingRectangleShape
 {
 public:
     PlayerShape(PlayerActor* player) : _player(player) { SetClassID(ClassID<PlayerShape>::id()); };
@@ -209,13 +209,15 @@ public:
 
     PlayerActor(const PlayerActor& other) : MX::ScImageSpriteActor(other)
     {
-        SetSize(other._size);
+        SetSize(other._width, other._height);
     }
 
     PlayerActor(LScriptObject& script) : MX::ScImageSpriteActor(script)
     {
-        script.load_property(_size, "Size");
-        SetSize(_size);
+        script.load_property(_width, "Width");
+        script.load_property(_height, "Height");
+        SetSize(_width, _height);
+
     }
 
     void Run() override
@@ -226,7 +228,7 @@ public:
         geometry.position.x = mousePos.x;
         geometry.position.y = 600;
         
-        _shape->SetPosition(geometry.position);
+        onMoved();
     }
 
     void Draw(float x, float y) override
@@ -234,21 +236,26 @@ public:
         MX::ScImageSpriteActor::Draw(x, y);
     }
 
-    void SetSize(float size)
+    void SetSize(float w, float h)
     {
-        _size = size;
-        auto circle = MX::make_shared<PlayerShape>(this);
-        circle->Set(geometry.position, _size);
-        _shape = circle;
+        _width = w;
+        _height = h;
+        auto rect = MX::make_shared<PlayerShape>(this);
+        _shape = rect;
 
         
-        circle->with<EmojiShape>()->onCollided.connect([&](const Collision::Shape::pointer& shape, auto...)
+        rect->with<EmojiShape>()->onCollided.connect([&](const Collision::Shape::pointer& shape, auto...)
         {
             auto emojiShape = std::static_pointer_cast<EmojiShape>(shape);
             if (!emojiShape)
                 return;
             collidedWith(emojiShape->emoji());
         });
+    }
+
+    void onMoved()
+    {
+        _shape->Set(geometry.position.x - _width / 2.0f, geometry.position.y - _height / 2.0f, geometry.position.x + _width / 2.0f, geometry.position.y + _height / 2.0f);
     }
 
     void OnLinkedToScene() override
@@ -278,8 +285,9 @@ public:
         return std::make_shared<PlayerActor>(*this);
     }
 
-    std::shared_ptr<MX::Collision::SignalizingCircleShape> _shape;
-    float                _size = 10;
+    std::shared_ptr<MX::Collision::SignalizingRectangleShape> _shape;
+    float _width = 35.0f;
+    float _height = 60.0f;
 };
 
 
