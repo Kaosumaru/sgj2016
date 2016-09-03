@@ -251,6 +251,7 @@ protected:
         auto trackInfo = std::make_shared<Stepmania::TrackInfo>(script);
         auto game = std::make_shared<Stepmania::Game>(trackInfo);
         prepareForGame(game);
+        game->Start();
         _game = game;
     }
 
@@ -269,6 +270,9 @@ protected:
             std::wstringstream ss;
             ss << "Time: " << _game->time << "<br/>";
             ss << "Points: " << _game->points << "<br/>";
+            ss << "Combo: " << _game->combo << "<br/>";
+            ss << "Late: " << _game->lateKeys << "<br/>";
+            ss << "Miss: " << _game->totalMiss << "<br/>";
             return ss.str();
         });
         label->connect_signals(_game->points.onValueChanged, _game->time.onValueChanged);

@@ -9,7 +9,8 @@
 #include "Script/Class/MXScriptSoundClass.h"
 #include "Devices/MXKeyboard.h"
 
-
+#include "Game/Resources/MXPaths.h"
+#include "Game/Resources/MXResources.h"
 
 using namespace Stepmania;
 
@@ -24,4 +25,9 @@ void PlayerControlSchema::SetupForPlayer(int number)
         tapKey.bindKey(2, ci::app::KeyEvent::KEY_c);
         tapKey.bindKey(3, ci::app::KeyEvent::KEY_v);
     }
+}
+
+void TrackInfo::Start()
+{
+    MX::Sound::StreamManager::get().SetCurrent(MX::Resources::get().loadStream(_trackFile));
 }

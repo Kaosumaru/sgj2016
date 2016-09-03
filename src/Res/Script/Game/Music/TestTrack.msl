@@ -2,7 +2,7 @@
 	TestTrack!:
 	{
 		Name: "Test1"
-		File: "TrackOgg"
+		TrackFile: "Music/music1.ogg"
 
 		Keys:
 		[

@@ -41,10 +41,12 @@ namespace Stepmania
             int type = 0;
             float time = 0.0f;
             SignalizingVariable<bool> active = true;
+            SignalizingVariable<bool> missed = false;
 
-            void Hit()
+            bool Hit()
             {
                 active = false;
+                return true;
             }
         };
 
@@ -93,6 +95,17 @@ namespace Stepmania
             }
         }
 
+        KeyData::pointer getKeyBefore(float timePoint, int trackIndex)
+        {
+            auto& track = _tracks[trackIndex];
+            auto it = track.lower_bound(timePoint);
+
+            if (it == track.begin())
+                return nullptr;
+            it--;
+            return it->second;
+        }
+
         KeyData::pointer getNearestKey(float timePoint, float threshold, int trackIndex)
         {
             auto& track = _tracks[trackIndex];
@@ -111,6 +124,8 @@ namespace Stepmania
 
             return nullptr;
         }
+
+        void Start();
     protected:
         std::string _trackFile;
         std::string _name;
@@ -133,13 +148,15 @@ namespace Stepmania
 
         void Start()
         {
-
+            _trackInfo->Start();
         }
 
         void Run()
         {
             _controls.Run();
             time = MX::Time::Timer::current().total_seconds();
+
+            calculateLateKeys();
         }
 
         void PlayerPress(int keyIndex)
@@ -156,20 +173,58 @@ namespace Stepmania
             Hit(key);
         }
 
-        SignalizingVariable<float> points = 0.0f;
-        SignalizingVariable<float> time   = 0.0f;
+        float tolerance = 1.0f;
+        SignalizingVariable<int> points = 0;
+        SignalizingVariable<float> time = 0.0f;
+        SignalizingVariable<int> combo = 0;
+        SignalizingVariable<int> lateKeys = 0;
+        SignalizingVariable<int> totalMiss = 0;
 
         auto& trackInfo() { return _trackInfo; }
         auto& controls() { return _controls; }
     protected:
-        void Miss()
+        void calculateLateKeys()
         {
+            float deathLine = time - tolerance;
+            for (int i = 0; i < TrackInfo::MaxKeys; i++)
+            {
+                auto key = _trackInfo->getKeyBefore(deathLine, i);
+                if (key && key->active)
+                    Miss(key);
+            }
+        }
+
+        void Miss(const TrackInfo::KeyData::pointer& data = nullptr)
+        {
+            if (data && data->missed)
+                return;
+
             //TODO
+            if (data)
+            {
+                lateKeys++;
+                data->missed = true;
+            }
+            else
+                totalMiss++;
+
+            combo = 0;
         }
 
         void Hit(const TrackInfo::KeyData::pointer& data)
         {
-            data->Hit();
+            bool wasActive = data->active;
+            if (!data->Hit())
+            {
+                Miss();
+                return;
+            }
+            
+            if (!wasActive)
+                return;
+
+            combo++;
+            points = points + combo;
             //TODO
         }
 
