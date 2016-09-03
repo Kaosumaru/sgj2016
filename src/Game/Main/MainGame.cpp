@@ -329,9 +329,11 @@ MainGame::MainGame()
     if (player)
         AddActor(player);
 
-    script.load_property(_factory, "Enemies.Factory");
-    if (_factory)
-        AddActor(_factory);
+    std::list<SpriteActorPtr> arr;
+    script.load_property(arr, "Actors");
+
+    for (auto &actor : arr)
+        AddActor(actor);
 
     script.load_property(levelTime, "Time");
     remainingTime = levelTime;

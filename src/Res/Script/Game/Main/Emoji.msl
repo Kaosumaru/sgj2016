@@ -8,20 +8,26 @@
 			Speed: 100
 		}
 
+		BadEmoji: Game.Emoji()
+		{
+			Size: 28
+			Acceleration: 20
+			Speed: 100
+			On.Death: &Game.Emojis.Effects.Crying.Death
+		}
+
 		Love: &Game.Emojis.Emoji()
 		{
 			Image: &(Emojis).Images.Love
 			Points:10
 			On.Death: &Game.Emojis.Effects.Love.Death
-
 		}
-		Crying: &Game.Emojis.Emoji()
+		Crying: &Game.Emojis.BadEmoji()
 		{
 			Image: &(Emojis).Images.Crying
 			Points: -20
-			On.Death: &Game.Emojis.Effects.Crying.Death
 		}
-		Anger: &Game.Emojis.Emoji()
+		Anger: &Game.Emojis.BadEmoji()
 		{
 			Image: &(Emojis).Images.Anger
 			Points: -20
