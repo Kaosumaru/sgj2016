@@ -14,16 +14,15 @@
 
 			Drawer: Drawer.Composite.Layouter( Size: [210,66] )
 			[
-				/*
 				Drawer.Composite.ButtonState()
 				{
-					Default.Image: &(Button).Image
-					Normal.Color:[1,1,1,1]
-					Hover.Color:[1,1,1,1.2]
-					Pressed.Color:[1,1,1,0.5]
-				}*/
+					Default.Drawer: &(Button).TextDrawer
+					Normal.Drawer: &(Button).TextDrawer
+					Hover.Drawer: &GUI.Button.TextDrawer() { Color: [0.93, 0.52, 0.71] }
+					Pressed.Drawer: &GUI.Button.TextDrawer() { Color: [0.59, 0.33, 0.45] }
+				}
 
-				&(Button).TextDrawer
+				//
 			]
 
 		}

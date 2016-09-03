@@ -133,12 +133,22 @@ protected:
 class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
+    std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _fgLayouter;
     std::shared_ptr<BH::MainGame> _gameScene;
 public:
     MGameScene()
     {
         MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MGameScene::onExit, this, true));
         MX::Window::current().keyboard()->on_key_down.connect(boost::bind(&MGameScene::onExit, this, false));
+
+
+        {
+            auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+            bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
+            bg->SetLayouter("GUI.GameBG.Layouter");
+            AddActor(bg);
+            _bgLayouter = bg;
+        }
 
         _gameScene = std::make_shared<BH::MainGame>();
         AddActor(_gameScene);
@@ -148,10 +158,12 @@ public:
             bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
             bg->SetLayouter("GUI.Game.Layouter");
             AddActor(bg);
-            _bgLayouter = bg;
+            _fgLayouter = bg;
+            CreateStatsField();
+            _fgLayouter->AddNamedWidget("Progress", std::make_shared<ProgressBar>(_gameScene));
         }
-        CreateStatsField();
-        _bgLayouter->AddNamedWidget("Progress", std::make_shared<ProgressBar>(_gameScene));
+
+
 
         _gameScene->onGameOver.connect([&](bool win) 
         {
@@ -170,7 +182,7 @@ public:
         auto manager = SpriteSceneStackManager::manager_of(this);
         if (!manager)
             return;
-        manager->PopScene();
+        manager->PopScene(std::make_shared<MoveBitmapTransition>(false));
         _removed = true;
     }
 
@@ -178,7 +190,7 @@ protected:
     void CreateGameOver(bool win)
     {
         auto winInfo = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
-        _bgLayouter->AddNamedWidget("WinInfo", winInfo);
+        _fgLayouter->AddNamedWidget("WinInfo", winInfo);
     }
 
     void CreateStatsField()
@@ -193,7 +205,7 @@ protected:
             return ss.str();
         });
         label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
-        _bgLayouter->AddNamedWidget("Stats", label);
+        _fgLayouter->AddNamedWidget("Stats", label);
     }
 
     bool _removed = false;
@@ -223,6 +235,7 @@ public:
         };
 
         addButton("Button.Game")->onClicked.connect([&]() { OnGame(); });
+        addButton("Button.Options")->onClicked.connect([&]() {  });
         addButton("Button.Exit")->onClicked.connect([&]() { OnExit(); });
     }
 

@@ -21,7 +21,7 @@
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(MainMenu).Drawer
-			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Exit]] ]
+			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Options Button.Exit]] ]
 			Layouters: [ [&GUI.TextField.Layouter [Field]] ]
 			)
 		[
@@ -29,10 +29,12 @@
 			[
 				tr()[]
 				tr()[]
-				tr()
+				tr( h:200 )
 				[
-					Layout( n:Button.Game p:8 )
-					Layout( n:Button.Exit p:2 )
+					//Drawer.Color( Color:[1 1 1 1] )[]
+					tr()[Layout( n:Button.Game p:5 )]
+					tr()[Layout( n:Button.Options p:5 )]
+					tr()[Layout( n:Button.Exit p:5 )]
 				]
 				tr( h:60 )[]
 			]
