@@ -20,6 +20,9 @@ namespace Stepmania
         using MX::Game::ControlScheme::ControlScheme;
 
         void SetupForPlayer(int number);
+
+        MX::Game::Action save{ this };
+        MX::Game::ActionList<MX::Game::Action, 4> createKey{ this };
         MX::Game::ActionList<MX::Game::Action, 4> tapKey{ this };
     };
 
@@ -125,7 +128,19 @@ namespace Stepmania
             return nullptr;
         }
 
+        void CreateKey(float timePoint, int index)
+        {
+            timePoint = floorf(timePoint * 10) / 10;
+            auto &t = track(index);
+            auto data = std::make_shared<KeyData>(timePoint, index);
+            t[timePoint] = data;
+            onCreateKey(data);
+        }
+
+        void Save(const std::string& path);
         void Start();
+
+        MX::Signal<void(const KeyData::pointer& key)> onCreateKey;
     protected:
         std::string _trackFile;
         std::string _name;
@@ -140,9 +155,18 @@ namespace Stepmania
             _trackInfo = trackInfo;
             _controls.SetupForPlayer(0);
 
+            _controls.save.onTrigger.connect([&]()
+            {
+                _trackInfo->Save("c:/sgj/test.msl");
+            });
             _controls.tapKey.onTrigger.connect([&](int index) 
             {
                 PlayerPress(index);
+            });
+
+            _controls.createKey.onTrigger.connect([&](int index)
+            {
+                PlayerCreate(index);
             });
         }
 
@@ -172,6 +196,12 @@ namespace Stepmania
 
             Hit(key);
         }
+
+        void PlayerCreate(int keyIndex)
+        {
+            _trackInfo->CreateKey(time, keyIndex);
+        }
+
 
         float tolerance = 1.0f;
         SignalizingVariable<int> points = 0;

@@ -183,6 +183,7 @@ public:
     {
         _game = game;
         _trackInfo = trackInfo;
+        _trackInfo->onCreateKey.connect([&](auto key) { CreateItemFromKey(key); });
         auto &tracks = trackInfo->tracks();
 
         for (auto& track : tracks)
