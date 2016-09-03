@@ -2,9 +2,16 @@
 	GUI.GameBG:
 	{
 
+		BG:
+		{
+			Class: Image.Image
+			Path: Interface/BG.png
+		}
+
 		Drawer: Drawer.Composite.Layouter()
 		[
-			Drawer.Color( Color:[0.87 0.85 0.92 1] )[]
+			Drawer.StretchedImage() [ &(GameBG).BG ]
+			//Drawer.Color( Color:[0.87 0.85 0.92 1] )[]
 		]
 
 		Layouter: Layouter.Drawer(

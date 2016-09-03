@@ -50,6 +50,8 @@
 			Width: 35
 			Height: 60
 			Size: 28
+			Y:600
+			MaxX:500
 		}
 	}
 }

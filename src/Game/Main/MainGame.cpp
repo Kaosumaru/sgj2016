@@ -225,6 +225,8 @@ public:
 
     PlayerActor(LScriptObject& script) : MX::ScImageSpriteActor(script)
     {
+        script.load_property(_y, "Y");
+        script.load_property(_maxX, "MaxX");
         script.load_property(_width, "Width");
         script.load_property(_height, "Height");
         SetSize(_width, _height);
@@ -244,8 +246,16 @@ public:
 
         auto &mousePos = MX::Window::current().mouse()->position();
         geometry.position.x = mousePos.x;
-        geometry.position.y = 600;
+        geometry.position.y = _y;
         
+        if (geometry.position.x < _width / 2.0f)
+            geometry.position.x = _width / 2.0f;
+
+        auto maxWidth = _maxX - _width / 2.0f;
+
+        if (geometry.position.x > maxWidth)
+            geometry.position.x = maxWidth;
+
         onMoved();
     }
 
@@ -304,6 +314,9 @@ public:
     }
 
     std::shared_ptr<MX::Collision::SignalizingRectangleShape> _shape;
+
+    float _y = 600.0f;
+    float _maxX = 500.0f;
     float _width = 35.0f;
     float _height = 60.0f;
 };
