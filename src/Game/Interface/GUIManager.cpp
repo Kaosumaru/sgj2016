@@ -137,7 +137,8 @@ class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 public:
     MGameScene()
     {
-        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MGameScene::onExit, this));
+        MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_ESCAPE].connect(boost::bind(&MGameScene::onExit, this, true));
+        MX::Window::current().keyboard()->on_key_down.connect(boost::bind(&MGameScene::onExit, this, false));
 
         _gameScene = std::make_shared<BH::MainGame>();
         AddActor(_gameScene);
@@ -151,10 +152,18 @@ public:
         }
         CreateStatsField();
         _bgLayouter->AddNamedWidget("Progress", std::make_shared<ProgressBar>(_gameScene));
+
+        _gameScene->onGameOver.connect([&](bool win) 
+        {
+            CreateGameOver(win);
+        });
     }
 
-    void onExit()
+    void onExit(bool forceExit)
     {
+        if (!forceExit && _gameScene->gameActive())
+            return;
+
         if (_removed)
             return;
         
@@ -166,6 +175,12 @@ public:
     }
 
 protected:
+    void CreateGameOver(bool win)
+    {
+        auto winInfo = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+        _bgLayouter->AddNamedWidget("WinInfo", winInfo);
+    }
+
     void CreateStatsField()
     {
         auto label = MX::make_shared<MX::Widgets::AutoLabel>();
