@@ -27,6 +27,45 @@
 				Path: Emojis/7.png
 				Pivot: [36,36]
 			}
+			Heart: Image.Image()
+			{
+				Path: "Emojis/10.png"
+				Pivot: [36, 36]
+			}
+			
+			BrokenHeart:
+			{
+				One: Image.Image()
+				{
+					Path: "Particle/BrokenHeartOne.png"
+					Pivot: [36, 36]
+				}
+				Two: Image.Image()
+				{
+					Path: "Particle/BrokenHeartTwo.png"
+					Pivot: [36, 36]
+				}
+			}
+			Lightning: Image.Image()
+			{
+				Path: "Particle/Lightning.png"
+				Pivot: [36, 36]
+			}
+			Cloud: Image.Image()
+			{
+				Path: "Particle/Cloud.png"
+				Pivot: [36, 36]
+			}
+			Star: Image.Image()
+			{
+				Path: "Particle/Star.png"
+				Pivot: [36, 36]
+			}
+			Tear: Image.Image()
+			{
+				Path: "Particle/Tear.png"
+				Pivot: [36, 36]
+			}
 
 		}
 	}
