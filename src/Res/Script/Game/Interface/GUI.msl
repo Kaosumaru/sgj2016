@@ -4,8 +4,8 @@
 		TextDrawer: Drawer.TextImage()
 		{
 			Color: [0.573, 0.702, 0.725]
-			Font.Face: "Iceland"
-			Font.Name: "Font/Iceland-Regular.ttf"
+			Font.Face: "Chewy"
+			Font.Name: "Font/Chewy.ttf"
 			Font.Size: 18
 			Width: 0
 		}
@@ -13,8 +13,8 @@
 		MonoTextDrawer: Drawer.TextImage()
 		{
 			Color: [1 1 1]
-			Font.Face: "Joystix Monospace"
-			Font.Name: "Font/Joystix.ttf"
+			Font.Face: "Chewy"
+			Font.Name: "Font/Chewy.ttf"
 			Font.Size: 18
 			Width: -1
 			Pos: 7
