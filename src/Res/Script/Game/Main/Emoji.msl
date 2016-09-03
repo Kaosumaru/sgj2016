@@ -21,6 +21,12 @@
 				Path: Emojis/6.png
 				Pivot: [36,36]
 			}
+			Anger:
+			{
+				Class: Image.Image
+				Path: Emojis/7.png
+				Pivot: [36,36]
+			}
 
 		}
 
@@ -40,6 +46,11 @@
 		Crying: &Game.Emojis.Emoji()
 		{
 			Image: &(Emojis).Images.Crying
+			Points: -20
+		}
+		Anger: &Game.Emojis.Emoji()
+		{
+			Image: &(Emojis).Images.Anger
 			Points: -20
 		}
 
