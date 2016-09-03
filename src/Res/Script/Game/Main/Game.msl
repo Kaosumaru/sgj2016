@@ -2,6 +2,19 @@
 	GUI.Game:
 	{
 
+		Phone:
+		{
+			Class: Image.Image
+			Path: Interface/phone.png
+		}
+
+		PhoneSmall:
+		{
+			Class: Image.Image
+			Path: Interface/phone_small.png
+			Pivot: [35,60]
+		}
+
 		Drawer: Drawer.Composite.Layouter()
 		[
 			//Drawer.Color( Color:[0 0 0 1] )
@@ -16,9 +29,9 @@
 			]
 		]
 
-		WinInfo.Drawer: Drawer.Composite.Layouter( Size: [300 500] )
+		WinInfo.Drawer: Drawer.Composite.Layouter( Size: [284 493] )
 		[
-			Drawer.Color( Color:[0.1 0.1 0.1 1] )
+			Drawer.Image()[ &GUI.Game.Phone ]
 		]
 
 		Layouter: Layouter.Drawer(
