@@ -57,7 +57,7 @@ void MainGame::GainPoints(int p)
 {
     points = points + p;
 
-    if (points > maxPoints)
+    if (points >= maxPoints)
         GameOver(true);
 }
 
@@ -72,6 +72,7 @@ void MainGame::GameOver(bool win)
         return;
     Pause(true);
     _gameActive = false;
+    onGameOver(win);
 }
 
 class PlayerActor;
