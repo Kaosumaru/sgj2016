@@ -3,10 +3,10 @@
 	{
 		Button:
 		{
-			TextDrawer:
+			TextDrawer: &GUI.TextDrawer()
 			{
-				Prototype: &GUI.TextDrawer
-				Font.Size: 20
+				Color: [0.12, 0.09, 0.30]
+				Font.Size: 40
 				Center: true
 			}
 
@@ -14,13 +14,14 @@
 
 			Drawer: Drawer.Composite.Layouter( Size: [210,66] )
 			[
+				/*
 				Drawer.Composite.ButtonState()
 				{
 					Default.Image: &(Button).Image
 					Normal.Color:[1,1,1,1]
 					Hover.Color:[1,1,1,1.2]
 					Pressed.Color:[1,1,1,0.5]
-				}
+				}*/
 
 				&(Button).TextDrawer
 			]

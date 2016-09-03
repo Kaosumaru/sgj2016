@@ -253,8 +253,8 @@ GuiManager::GuiManager()
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_u].connect(boost::bind(&GuiManager::reloadScripts, this));
 #endif
 
-	//PushScene(MX::make_shared<MMenuScene>());
-    PushScene(MX::make_shared<MGameScene>());
+	PushScene(MX::make_shared<MMenuScene>());
+    //PushScene(MX::make_shared<MGameScene>());
 }
 
 

@@ -1,8 +1,20 @@
 {
 	GUI.MainMenu:
 	{
+		Logo:
+		{
+			Class: Image.Image
+			Path: Interface/logo.png
+		}
+
 		Drawer: Drawer.Composite.Layouter()
 		[
+			Drawer.Color( Color:[0.87 0.85 0.92 1] )[]
+
+			Destination( y1:100 )
+			[
+				Drawer.Image() { Image: &GUI.MainMenu.Logo Pos:8 }
+			]
 
 		]
 
