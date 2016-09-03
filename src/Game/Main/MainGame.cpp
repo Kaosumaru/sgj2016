@@ -34,27 +34,6 @@ using namespace BH;
 using namespace std;
 
 
-class SinusoideCommand : public Command
-{
-public:
-    SinusoideCommand(LScriptObject& script)
-    {
-        script.load_property(_speed, "Speed");
-    }
-
-
-    bool operator () ()
-    {
-        ScriptableSpriteActor::current().geometry.angle += _speed;
-        return true;
-    }
-
-    Command::pointer clone() { return MX::make_shared<RotateCommand>(_speed.getOriginalValue()); }
-protected:
-    Time::FloatPerSecond _speed;
-};
-
-
 void MainGame::Run()
 {
     MX::FullscreenDisplayScene::Run();

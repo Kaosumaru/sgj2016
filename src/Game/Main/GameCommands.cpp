@@ -37,32 +37,34 @@ using namespace std;
 class SinusoideCommand : public Command
 {
 public:
-    SinusoideCommand(const SinusoideCommand& other) : _speed(other._speed)
+    SinusoideCommand(const SinusoideCommand& other) : _frequency(other._frequency), _width(other._width)
     {
     }
 
     SinusoideCommand(LScriptObject& script)
     {
-        script.load_property(_speed, "Speed");
+        script.load_property(_frequency, "Frequency");
+        script.load_property(_width, "Width");
     }
 
 
     bool operator () ()
     {
-        ScriptableSpriteActor::current().geometry.angle += _speed;
+        //ScriptableSpriteActor::current().geometry.angle += _speed;
         return true;
     }
 
     Command::pointer clone() { return MX::make_shared<SinusoideCommand>(*this); }
 protected:
-    Time::FloatPerSecond _speed;
+    float _frequency = 1;
+    float _width = 1;
 };
 
 
 
 void GameCommandsInit::Initialize()
 {
-    ScriptClassParser::AddCreator(L"Command", new OutsideScriptClassCreatorContructor<SinusoideCommand>());
+    ScriptClassParser::AddCreator(L"Command.Sinusoide", new OutsideScriptClassCreatorContructor<SinusoideCommand>());
 
 }
 

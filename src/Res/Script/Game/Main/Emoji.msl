@@ -112,6 +112,10 @@
 		{
 			Image: &(Emojis).Images.Anger
 			Points: -20
+			On.Run:
+			[
+				Command.Sinusoide( frequency:1 width:100 )[]
+			]
 		}
 
 
