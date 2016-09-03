@@ -10,6 +10,7 @@
 
 		Layouter: Layouter.Drawer(
 			Drawer: &(Game).Drawer
+			Drawers: [ [&GUI.MonoTextDrawer [Stats]] ]
 			Layouters:
 			[
 				[&GUI.Game.Container.Layouter [Container]]
@@ -19,6 +20,11 @@
 			Table()
 			[
 				Layout( n:Container p:2 )
+			]
+
+			Destination( w:400 h:200 p:1 )
+			[
+				Layout( n:Stats )
 			]
 		]
 

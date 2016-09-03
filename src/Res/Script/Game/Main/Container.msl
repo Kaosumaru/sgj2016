@@ -5,6 +5,14 @@
 		Drawer: Drawer.Composite.Layouter( Size:[400,700] )
 		[
 			Drawer.Color( Color:[0 0 1 0.3] )
+
+			Table()
+			[
+				tr()[]
+				tr( h:64 )[Drawer.Color( Color:[1 1 1 0.1] )]
+				tr( h:64 )[]
+			]
+
 		]
 
 		Layouter: Layouter.Drawer(
@@ -12,7 +20,7 @@
 			Layouters:
 			[
 				[&GUI.Game.Item.Layouter [Item]]
-			]	
+			]
 			)
 		[
 
