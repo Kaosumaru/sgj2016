@@ -1,0 +1,33 @@
+{
+	Game.Emojis:
+	{
+		Images:
+		{
+			Love:
+			{
+				Class: Image.Image
+				Path: Emojis/0.png
+				Pivot: [36,36]
+			}
+			Smile:
+			{
+				Class: Image.Image
+				Path: Emojis/2.png
+				Pivot: [36,36]
+			}
+			Crying:
+			{
+				Class: Image.Image
+				Path: Emojis/6.png
+				Pivot: [36,36]
+			}
+			Anger:
+			{
+				Class: Image.Image
+				Path: Emojis/7.png
+				Pivot: [36,36]
+			}
+
+		}
+	}
+}
