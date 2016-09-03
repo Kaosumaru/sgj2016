@@ -157,7 +157,7 @@ protected:
             ss << "Combo: " << _gameScene->combo << "<br/>";
             return ss.str();
         });
-        label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
+        //label->connect_signals(_gameScene->points.onValueChanged, _gameScene->time.onValueChanged);
         _bgLayouter->AddNamedWidget("Stats", label);
     }
 

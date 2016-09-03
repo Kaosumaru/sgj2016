@@ -7,7 +7,7 @@
 #include "Utils/MXLine.h"
 #include "Utils/MXQuad.h"
 #include "Script/Class/MXScriptSoundClass.h"
-
+#include "Scene/Generators/MXActorDecorator.h"
 
 #include "HTML/MXHTMLRendererCairo.h"
 #include "HTML/MXFTFont.h"
@@ -97,6 +97,9 @@ public:
         _speed = _speed.getOriginalValue() + _acceleration;
 
         _shape->SetPosition(geometry.position);
+
+        if (geometry.position.y > 1200)
+            Unlink();
     }
 
     void Draw(float x, float y) override
@@ -110,7 +113,7 @@ public:
         MX::ScImageSpriteActor::OnLinkedToScene();
         if (!MainGame::isCurrent())
             return;
-        MainGame::current().obstaclesArea()->AddShape(ClassID<PlayerActor>::id(), _shape);
+        MainGame::current().obstaclesArea()->AddShape(_shape);
     }
 
     void OnUnlinkedFromScene() override
@@ -131,10 +134,6 @@ public:
         auto circle = MX::make_shared<EmojiShape>(this);
         circle->Set(geometry.position, _size);
         _shape = circle;
-
-        if (!MainGame::isCurrent())
-            return;
-        MainGame::current().obstaclesArea()->AddShape(ClassID<EmojiActor>::id(), _shape);
     }
 
 
@@ -209,7 +208,7 @@ public:
         MX::ScImageSpriteActor::OnLinkedToScene();
         if (!MainGame::isCurrent())
             return;
-        MainGame::current().obstaclesArea()->AddShape(ClassID<PlayerActor>::id(), _shape);
+        MainGame::current().obstaclesArea()->AddShape(_shape);
     }
 
     void OnUnlinkedFromScene() override
@@ -236,33 +235,62 @@ public:
 };
 
 
+
+class EmojiSpawnDecorator : public MX::ActorDecorator
+{
+public:
+    EmojiSpawnDecorator() {}
+    EmojiSpawnDecorator(LScriptObject& script) : ActorDecorator(script)
+    {
+        script.load_property(_pos, "Pos");
+    }
+
+    EmojiSpawnDecorator(const EmojiSpawnDecorator& other) : ActorDecorator(other)
+    {
+        _pos = other._pos;
+    }
+
+    void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor)
+    {
+        actor->geometry.position.y = -100;
+        actor->geometry.position.x = Random::randomRange(_pos);
+    }
+
+    ActorDecorator::pointer clone() { return MX::make_shared<EmojiSpawnDecorator>(*this); }
+    std::pair<float, float> _pos;
+};
+
 MainGame::MainGame()
 {
     auto size = MX::Window::current().display()->size();
     MX::Rectangle rect(size.x, size.y);
     rect.Expand(400);
-    _obstaclesArea = MX::make_shared<Collision::QuadtreeWeakLayeredArea>(rect, true);
-    _obstaclesArea->DefineLayerCollision(ClassID<PlayerActor>::id(), ClassID<EmojiActor>::id());
+    _obstaclesArea = MX::make_shared<Collision::SimplestWeakArea>();
+    //_obstaclesArea->DefineLayerCollision(ClassID<PlayerActor>::id(), ClassID<EmojiActor>::id());
 
     MainGame::SetCurrent(*this);
     _cheats = BH::CreateCheats();
     Context<BaseGraphicScene>::SetCurrent(*this);
 
 
-    ScriptObjectString script("Game.Player");
+    ScriptObjectString script("Game");
 
     std::shared_ptr<PlayerActor> player;
-    script.load_property(player, "P1");
+    script.load_property(player, "Player.P1");
 
     if (player)
         AddActor(player);
 
-    
+    script.load_property(_factory, "Enemies.Factory");
+    if (_factory)
+        AddActor(_factory);
 
 }
 
 void GameInit::Initialize()
 {
+    ScriptClassParser::AddCreator(L"Scene.ActorFactory.Decorator.EmojiSpawn", new OutsideScriptClassCreatorContructor<EmojiSpawnDecorator>());
+
     ScriptClassParser::AddCreator(L"Game.Player", new OutsideScriptClassCreatorContructor<PlayerActor>());
     ScriptClassParser::AddCreator(L"Game.Emoji", new OutsideScriptClassCreatorContructor<EmojiActor>());
 }

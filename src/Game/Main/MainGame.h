@@ -6,6 +6,7 @@
 #include "Utils/MXUtils.h"
 #include "Collision/Quadtree/MXQuadtree.h"
 #include "Utils/MXSignalizingVariable.h"
+#include "Scene/Generators/MXActorFactory.h"
 
 namespace bs2 = boost::signals2;
 
@@ -27,8 +28,9 @@ namespace BH
     protected:
         void onExit();
 
-        std::shared_ptr<MX::Collision::LayeredArea> _obstaclesArea;
+        std::shared_ptr<MX::Collision::SimplestWeakArea> _obstaclesArea;
         std::shared_ptr<struct CheatObject> _cheats;
+        std::shared_ptr<MX::ActorFactory> _factory;
     };
     
 

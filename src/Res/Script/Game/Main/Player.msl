@@ -1,7 +1,20 @@
 {
-	Game.Player:
+	Game:
 	{
-		P1: Game.Player()
+		Enemies.Factory: Scene.ActorFactory()
+		{
+			Creator: Scene.ActorFactory.Creator.Random()
+			{
+				Actors: [[&Game.Emojis.Test, 4]]
+			}
+			Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }
+			Decorators:
+			[
+				Scene.ActorFactory.Decorator.EmojiSpawn( Pos:[100,500] ){}
+			]
+		}
+
+		Player.P1: Game.Player()
 		{
 			Image: &Game.Emojis.Images.Smile
 			Size: 28
