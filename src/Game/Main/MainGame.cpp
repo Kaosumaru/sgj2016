@@ -69,7 +69,7 @@ void MainGame::GameOver(bool win)
 {
     if (!_gameActive)
         return;
-    Pause(true);
+    //Pause(true);
     _gameActive = false;
     onGameOver(win);
 }
@@ -100,6 +100,12 @@ protected:
 class EmojiActor : public MX::ScImageSpriteActor
 {
 public:
+    auto& game()
+    {
+        return MainGame::current();
+    }
+
+
     EmojiActor(const EmojiActor& other) : MX::ScImageSpriteActor(other)
     {
         SetSize(other._size);
@@ -121,6 +127,11 @@ public:
 
     void Run() override
     {
+        if (!game().gameActive())
+        {
+            return;
+        }
+
         MX::ScImageSpriteActor::Run();
 
         if (!_alive)
@@ -223,6 +234,13 @@ public:
     void Run() override
     {
         MX::ScImageSpriteActor::Run();
+
+        if (!game().gameActive())
+        {
+            static Time::FloatPerSecond speed = 500.0f;
+            geometry.position.y += speed;
+            return;
+        }
 
         auto &mousePos = MX::Window::current().mouse()->position();
         geometry.position.x = mousePos.x;
@@ -345,6 +363,13 @@ MainGame::MainGame()
 
     script.load_property(levelTime, "Time");
     remainingTime = levelTime;
+
+#ifdef _DEBUG
+    MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_q].connect([&]() 
+    {
+        GameOver(false);
+    });
+#endif
 
 }
 

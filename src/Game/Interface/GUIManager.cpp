@@ -134,6 +134,7 @@ class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _fgLayouter;
+    std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _winLayouter;
     std::shared_ptr<BH::MainGame> _gameScene;
 public:
     MGameScene()
@@ -163,6 +164,14 @@ public:
             _fgLayouter->AddNamedWidget("Progress", std::make_shared<ProgressBar>(_gameScene));
         }
 
+        {
+            auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+            bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
+            bg->SetLayouter("GUI.GameWin.Layouter");
+            AddActor(bg);
+            _winLayouter = bg;
+        }
+
 
 
         _gameScene->onGameOver.connect([&](bool win) 
@@ -186,11 +195,29 @@ public:
         _removed = true;
     }
 
+    void Run() override
+    {
+        MX::FullscreenDisplayScene::Run();
+
+        auto scrollY = _winLayouter->scroll().y;
+
+        if (scrollY >= 0.0f)
+        {
+            _winLayouter->SetVerticalScroll(0.0f);
+            return;
+        }
+
+        static Time::FloatPerSecond speed = 500.0f;
+        scrollY += speed;
+        _winLayouter->SetVerticalScroll(scrollY);
+    }
+
 protected:
     void CreateGameOver(bool win)
     {
         auto winInfo = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
-        _fgLayouter->AddNamedWidget("WinInfo", winInfo);
+        _winLayouter->SetVerticalScroll(-1000);
+        _winLayouter->AddNamedWidget("WinInfo", winInfo);
     }
 
     void CreateStatsField()

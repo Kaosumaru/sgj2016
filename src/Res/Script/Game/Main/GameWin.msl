@@ -1,0 +1,30 @@
+{
+	GUI.GameWin:
+	{
+
+		Phone:
+		{
+			Class: Image.Image
+			Path: Interface/phone.png
+		}
+
+		WinInfo.Drawer: Drawer.Composite.Layouter( Size: [284 493] )
+		[
+			Drawer.Image()[ &GUI.GameWin.Phone ]
+		]
+
+		Layouter: Layouter.Drawer(
+			Drawer: &(GameWin).Drawer
+			Drawers: [
+				[&(GameWin).WinInfo.Drawer [WinInfo]]
+			]
+			)
+		[
+			Layout( n:WinInfo p:5 )
+		]
+
+
+
+	}
+
+}

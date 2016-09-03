@@ -1,20 +1,6 @@
 {
 	GUI.Game:
 	{
-
-		Phone:
-		{
-			Class: Image.Image
-			Path: Interface/phone.png
-		}
-
-		PhoneSmall:
-		{
-			Class: Image.Image
-			Path: Interface/phone_small.png
-			Pivot: [35,60]
-		}
-
 		Drawer: Drawer.Composite.Layouter()
 		[
 			//Drawer.Color( Color:[0 0 0 1] )
@@ -28,18 +14,11 @@
 				Drawer.Color( Color:[1 1 1 1] )
 			]
 		]
-
-		WinInfo.Drawer: Drawer.Composite.Layouter( Size: [284 493] )
-		[
-			Drawer.Image()[ &GUI.Game.Phone ]
-		]
-
 		Layouter: Layouter.Drawer(
 			Drawer: &(Game).Drawer
 			Drawers: [
 				[&GUI.MonoTextDrawer [Stats]]
 				[&(Game).Progress.Drawer [Progress]]
-				[&(Game).WinInfo.Drawer [WinInfo]]
 			]
 			Layouters:
 			[
@@ -47,7 +26,6 @@
 			]
 			)
 		[
-			Layout( n:WinInfo p:5 )
 			Layout( n:Progress p:9 )
 		]
 
