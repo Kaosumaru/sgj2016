@@ -39,23 +39,48 @@ class SinusoideCommand : public Command
 public:
     SinusoideCommand(const SinusoideCommand& other) : _frequency(other._frequency), _width(other._width)
     {
+        _timeOffset = other._timeOffset;
+        offset = Random::randomRange(_timeOffset);
     }
 
     SinusoideCommand(LScriptObject& script)
     {
         script.load_property(_frequency, "Frequency");
         script.load_property(_width, "Width");
+        script.load_property(_timeOffset, "TimeOffset");
+
+        offset = Random::randomRange(_timeOffset);
     }
 
 
     bool operator () ()
     {
-        //ScriptableSpriteActor::current().geometry.angle += _speed;
+        if (_firstTime)
+        {
+            _firstTime = false;
+            _timeStamp = Time::Timer::current().total_seconds();
+        }
+
+        auto t = sin( (time() + offset) * _frequency ) * _width;
+
+        auto delta = t - _oldX;
+        _oldX = t;
+        ScriptableSpriteActor::current().geometry.position.x += delta;
         return true;
     }
 
     Command::pointer clone() { return MX::make_shared<SinusoideCommand>(*this); }
+
+    float time()
+    {
+        return Time::Timer::current().total_seconds() - _timeStamp;
+    }
 protected:
+    float offset = 0.0f;
+    float _oldX = 0.0f;
+    float _timeStamp = 0.0f;
+    float _timeOffset = 0.0f;
+    bool _firstTime = true;
     float _frequency = 1;
     float _width = 1;
 };

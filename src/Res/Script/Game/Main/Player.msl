@@ -1,22 +1,41 @@
 {
 	Game:
 	{
-		Enemies.Factory: Scene.ActorFactory()
-		{
-			Creator: Scene.ActorFactory.Creator.Random()
+		Actors:
+		[
+			Scene.ActorFactory()
 			{
-				Actors:
+				Creator: Scene.ActorFactory.Creator.Random()
+				{
+					Actors:
+					[
+						[&Game.Emojis.Love, 5]
+					]
+				}
+				Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:0.5 }
+				Decorators:
 				[
-					[&Game.Emojis.Love, 1]
-					[&Game.Emojis.Crying, 10]
+					Scene.ActorFactory.Decorator.EmojiSpawn(){ Pos:[100,500] }
 				]
 			}
-			Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }
-			Decorators:
-			[
-				Scene.ActorFactory.Decorator.EmojiSpawn( Pos:[100,500] ){}
-			]
-		}
+
+			Scene.ActorFactory()
+			{
+				Creator: Scene.ActorFactory.Creator.Random()
+				{
+					Actors:
+					[
+						[&Game.Emojis.Anger, 10]
+						[&Game.Emojis.Crying, 20]
+					]
+				}
+				Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }
+				Decorators:
+				[
+					Scene.ActorFactory.Decorator.EmojiSpawn(){ Pos:[100,500] }
+				]
+			}
+		]
 
 		Player.P1: Game.Player()
 		{
