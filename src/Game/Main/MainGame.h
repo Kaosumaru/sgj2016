@@ -30,7 +30,9 @@ namespace BH
         SignalizingVariable<int> remainingTime = levelTime;
         SignalizingVariable<int> combo = 0;
 
+        MX::Signal<void(bool)> onGameOver;
         
+        auto gameActive() { return _gameActive; }
 
         void GainPoints(int points);
     protected:
