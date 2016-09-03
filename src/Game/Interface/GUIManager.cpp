@@ -109,6 +109,58 @@ protected:
 };
 
 
+class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
+{
+    std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
+    std::shared_ptr<Stepmania::Game> _game;
+public:
+    MGameScene()
+    {
+        {
+            auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
+            bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
+            bg->SetLayouter("GUI.Game.Layouter");
+            AddActor(bg);
+            _bgLayouter = bg;
+        }
+        loadGame();
+        CreateStatsField();
+    }
+
+    void Run()
+    {
+        MX::FullscreenDisplayScene::Run();
+        _game->Run();
+    }
+
+protected:
+    void loadGame()
+    {
+        ScriptObjectString script("TestTrack");
+        auto game = std::make_shared<Stepmania::Game>();
+        _game = game;
+    }
+
+
+
+    void CreateStatsField()
+    {
+        auto label = MX::make_shared<MX::Widgets::AutoLabel>();
+        label->SetHTML(true);
+        label->SetStringBuilder([this]()
+        {
+            std::wstringstream ss;
+            ss << "Time: " << _game->time << "<br/>";
+            ss << "Points: " << _game->points << "<br/>";
+            ss << "Combo: " << _game->combo << "<br/>";
+            return ss.str();
+        });
+        label->connect_signals(_game->points.onValueChanged, _game->time.onValueChanged);
+        _bgLayouter->AddNamedWidget("Stats", label);
+    }
+};
+
+
 class MMenuScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
 	std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
@@ -140,146 +192,18 @@ protected:
 
     void OnGame()
     {
-        auto game = std::make_shared<MainGame>();
+        auto game = std::make_shared<MGameScene>();
         SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
     }
 
     void OnExit()
     {
-
+         
     }
 
 };
 
 
-class KeyWidget : public MX::Widgets::ScriptLayouterWidget
-{
-public:
-    KeyWidget(const Stepmania::TrackInfo::KeyData::pointer& key)
-    {
-        _key = key;
-        properties().SetValue("Active", 1);
-        _key->active.onValueChanged.connect([&](bool a, bool b) 
-        {
-            properties().SetValue("Active", 0);
-        });
-        properties().SetValue("Type", (float)key->type);
-    }
-
-    void Draw(float x, float y) override
-    {
-        MX::Widgets::ScriptLayouterWidget::Draw(x, y);
-    }
-protected:
-    Stepmania::TrackInfo::KeyData::pointer _key;
-};
-
-class KeysContainer : public MX::Widgets::ScriptLayouterWidget
-{
-public:
-    float sizeOfSecondinPixels = 64.0f;
-
-    KeysContainer(const std::shared_ptr<Stepmania::Game>& game, const std::shared_ptr<Stepmania::TrackInfo>& trackInfo)
-    {
-        _game = game;
-        _trackInfo = trackInfo;
-        _trackInfo->onCreateKey.connect([&](auto key) { CreateItemFromKey(key); });
-        auto &tracks = trackInfo->tracks();
-
-        for (auto& track : tracks)
-        {
-            for (auto& item : track)
-                CreateItemFromKey(item.second);
-        }
-    }
-
-    void Run() override
-    {
-        MX::Widgets::ScriptLayouterWidget::Run();
-
-        float secondsLate = 2;
-        float scrollY = -(_game->time - secondsLate) * sizeOfSecondinPixels - _height;
-        SetVerticalScroll(scrollY);
-    }
-
-protected:
-    void CreateItemFromKey(const std::shared_ptr<Stepmania::TrackInfo::KeyData>& key)
-    {
-        auto itemWidget = std::make_shared<KeyWidget>(key);
-        AddNamedWidget("Item", itemWidget);
-
-        itemWidget->SetPosition(0.0f, 0.0f, 64.0f, 64.0f);
-
-        float y = -key->time * 64.0f;
-        float x = key->type * 64.0f;
-        itemWidget->SetPosition(x, y);
-    }
-
-    std::shared_ptr<Stepmania::Game> _game;
-    Time::FloatPerSecond             _speed = sizeOfSecondinPixels;
-    std::shared_ptr<Stepmania::TrackInfo> _trackInfo;
-};
-
-
-class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
-{
-    std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
-    std::shared_ptr<Stepmania::Game> _game;
-public:
-    MGameScene()
-    {
-        {
-            auto bg = MX::make_shared<MX::Widgets::ScriptLayouterWidget>();
-            bg->AddStrategy(MX::make_shared<MX::Strategies::FillInParent>());
-            bg->SetLayouter("GUI.Game.Layouter");
-            AddActor(bg);
-            _bgLayouter = bg;
-        }
-        loadGame();
-        CreateStatsField();
-    }
-
-    void Run()
-    {
-        MX::FullscreenDisplayScene::Run();
-        _game->Run();
-    }
-
-protected:
-    void loadGame()
-    {
-        ScriptObjectString script("TestTrack");
-        auto trackInfo = std::make_shared<Stepmania::TrackInfo>(script);
-        auto game = std::make_shared<Stepmania::Game>(trackInfo);
-        prepareForGame(game);
-        game->Start();
-        _game = game;
-    }
-
-    void prepareForGame(const std::shared_ptr<Stepmania::Game>& game)
-    {
-        auto container = MX::make_shared<KeysContainer>(game, game->trackInfo());
-        _bgLayouter->AddNamedWidget("Container", container);
-    }
-
-    void CreateStatsField()
-    {
-        auto label = MX::make_shared<MX::Widgets::AutoLabel>();
-        label->SetHTML(true);
-        label->SetStringBuilder([this]()
-        {
-            std::wstringstream ss;
-            ss << "Time: " << _game->time << "<br/>";
-            ss << "Points: " << _game->points << "<br/>";
-            ss << "Combo: " << _game->combo << "<br/>";
-            ss << "Late: " << _game->lateKeys << "<br/>";
-            ss << "Miss: " << _game->totalMiss << "<br/>";
-            return ss.str();
-        });
-        label->connect_signals(_game->points.onValueChanged, _game->time.onValueChanged);
-        _bgLayouter->AddNamedWidget("Stats", label);
-    }
-};
 
 
 GuiManager::GuiManager()
@@ -290,8 +214,8 @@ GuiManager::GuiManager()
     MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_u].connect(boost::bind(&GuiManager::reloadScripts, this));
 #endif
 
-	//PushScene(MX::make_shared<MMenuScene>());
-    PushScene(MX::make_shared<MGameScene>());
+	PushScene(MX::make_shared<MMenuScene>());
+    //PushScene(MX::make_shared<MGameScene>());
 }
 
 

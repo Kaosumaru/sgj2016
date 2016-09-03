@@ -1,48 +1,9 @@
 {
 	GUI.MainMenu:
 	{
-		ShaderDrawer: Drawer.Color.Shader()
-		{
-			Shader: Shader.Uniform.Timed()
-			{
-				VertexPath: Shaders/instanced.vertex
-				FragmentPath: Shaders/menu/star.fragment
-
-				Name: StarShader
-
-				Defines:
-				[
-				]
-
-				Debug: true
-				Debug.Uniforms:
-				[
-					GL.Uniform.Float( n:time_m v:1 step:0.01)
-				]
-			}
-
-			Uniforms:
-			[
-				GL.Uniform.Int( n:iChannel0 v:1 )
-				GL.Uniform.Int( n:iChannel1 v:2 )
-				GL.Uniform.Int( n:iChannel2 v:3 )
-			]
-
-			Samplers:
-			[
-				Image.Image( Path: "ShaderData/tex02.jpg", Mipmap: true, Wrap: true )
-				Image.Image( Path: "ShaderData/tex09.jpg", Mipmap: true, Wrap: true )
-				Image.Image( Path: "ShaderData/tex3.jpg", Mipmap: true, Wrap: true )
-			],
-		}
-
-
 		Drawer: Drawer.Composite.Layouter()
 		[
-			Drawer.Composite.Blender( Blender:{ Op:Add Src:Alpha Dest:One } )
-			[
-				//&(MainMenu).ShaderDrawer
-			]
+
 		]
 
 
@@ -54,8 +15,14 @@
 		[
 			Table()
 			[
-				Layout( n:Button.Game p:1 )
-				Layout( n:Button.Exit p:3 )
+				tr()[]
+				tr()[]
+				tr()
+				[
+					Layout( n:Button.Game p:8 )
+					Layout( n:Button.Exit p:2 )
+				]
+				tr( h:60 )[]
 			]
 		]
 
