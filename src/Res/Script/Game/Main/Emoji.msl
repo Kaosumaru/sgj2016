@@ -15,16 +15,34 @@
 				Path: Emojis/2.png
 				Pivot: [36,36]
 			}
+			Crying:
+			{
+				Class: Image.Image
+				Path: Emojis/6.png
+				Pivot: [36,36]
+			}
 
 		}
 
-		Test: Game.Emoji()
+		Emoji: Game.Emoji()
+		{
+			Size: 28
+			Acceleration: 20
+			Speed: 100
+			On.Death: [Command.Rotate(){ Speed: 1.0 }]
+		}
+
+		Love: &Game.Emojis.Emoji()
 		{
 			Image: &(Emojis).Images.Love
-
-			Size: 28
-			Speed: 100
-			Acceleration: 20
+			Points:10
 		}
+		Crying: &Game.Emojis.Emoji()
+		{
+			Image: &(Emojis).Images.Crying
+			Points: -20
+		}
+
+
 	}
 }

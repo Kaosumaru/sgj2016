@@ -35,6 +35,12 @@ namespace BH
         auto gameActive() { return _gameActive; }
 
         void GainPoints(int points);
+        float progress()
+        {
+            if (points < 0)
+                return 0.0f;
+            return (float)points / (float)maxPoints;
+        }
     protected:
         void onExit();
 

@@ -107,10 +107,12 @@ public:
         _points = other._points;
         _speed = other._speed;
         _acceleration = other._acceleration;
+        onDeath += other.onDeath;
     }
 
     EmojiActor(LScriptObject& script) : MX::ScImageSpriteActor(script)
     {
+        script.load_property(onDeath, "On.Death");
         script.load_property(_points, "Points");
         script.load_property(_size, "Size");
         script.load_property(_speed, "Speed");
@@ -121,6 +123,9 @@ public:
     void Run() override
     {
         MX::ScImageSpriteActor::Run();
+
+        if (!_alive)
+            return;
 
         geometry.position.y += _speed;
         _speed = _speed.getOriginalValue() + _acceleration;
@@ -169,7 +174,24 @@ public:
     {
         return _points;
     }
+
+    void Die()
+    {
+        if (!_alive)
+            return;
+        _alive = false;
+
+        script.onRun += onDeath;
+       // this->onr
+
+        if (_shape)
+            _shape->Unlink();
+        _shape = nullptr;
+    }
+
+    CommandSignal onDeath;
 protected:
+    bool _alive = true;
     int _points = 10;
     std::shared_ptr<MX::Collision::SignalizingCircleShape> _shape;
     float                _size = 10;
@@ -248,7 +270,7 @@ public:
     void collidedWith(EmojiActor* emoji)
     {
         game().GainPoints(emoji->points());
-        emoji->Unlink();
+        emoji->Die();
         
     }
 

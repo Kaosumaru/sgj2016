@@ -119,7 +119,7 @@ public:
 
         game->points.onValueChanged.connect([=](auto...) 
         {
-            SetProgress((float)game->points / (float)game->maxPoints);
+            SetProgress(game->progress());
         });
     }
 

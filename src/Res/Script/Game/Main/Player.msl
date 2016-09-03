@@ -5,7 +5,11 @@
 		{
 			Creator: Scene.ActorFactory.Creator.Random()
 			{
-				Actors: [[&Game.Emojis.Test, 4]]
+				Actors:
+				[
+					[&Game.Emojis.Love, 1]
+					[&Game.Emojis.Crying, 10]
+				]
 			}
 			Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }
 			Decorators:
