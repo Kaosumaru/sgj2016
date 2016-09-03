@@ -6,9 +6,18 @@
 		[
 			Drawer.Composite.Switch( Condition:"=Widget.Property('Type')")
 			[
-				[1    Drawer.Color( Color:[1 0 0 0.3] )]
-				[2    Drawer.Color( Color:[0 1 0 0.3] )]
-				[3    Drawer.Color( Color:[1 0 1 0.3] )]
+				[0    Drawer.Color( Color:[1 0 0 0.3] )]
+				[1    Drawer.Color( Color:[0 1 0 0.3] )]
+				[2    Drawer.Color( Color:[1 0 1 0.3] )]
+				[3    Drawer.Color( Color:[0 1 1 0.3] )]
+			]
+
+			Destination( margin:10 )
+			[
+				Drawer.Composite.If( Condition:"=Widget.Property('Active') == 0" )
+				[
+					Drawer.Color( Color:[1 1 1 0.3] )
+				]
 			]
 		]
 

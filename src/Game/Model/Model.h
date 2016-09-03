@@ -2,15 +2,26 @@
 #define BHMODEL
 #include<memory>
 #include<map>
+#include "Script/MXPropertyLoaders.h"
 #include "Scene/Sprites/MXSpriteScene.h"
 #include "Scene/Managers/MXSceneStackManager.h"
 #include "Utils/MXUtils.h"
 #include "Script/MXScriptObject.h"
+#include "Game/ControlScheme/MXControlScheme.h"
 
 namespace bs2 = boost::signals2;
 
-namespace Game
+namespace Stepmania
 {
+
+    class PlayerControlSchema : public MX::Game::ControlScheme
+    {
+    public:
+        using MX::Game::ControlScheme::ControlScheme;
+
+        void SetupForPlayer(int number);
+        MX::Game::ActionList<MX::Game::Action, 4> tapKey{ this };
+    };
 
     class TrackInfo : public MX::ScriptObject
     {
@@ -85,7 +96,18 @@ namespace Game
         KeyData::pointer getNearestKey(float timePoint, float threshold, int trackIndex)
         {
             auto& track = _tracks[trackIndex];
-            auto it = track.lower_bound(timePoint);
+            auto it = track.lower_bound(timePoint - threshold);
+
+            if (it == track.end())
+                return nullptr;
+            
+
+            for (; it != track.end(); it++)
+            {
+                if (it->first > timePoint + threshold)
+                    break;
+                return it->second;
+            }
 
             return nullptr;
         }
@@ -101,6 +123,12 @@ namespace Game
         Game(const TrackInfo::pointer& trackInfo)
         {
             _trackInfo = trackInfo;
+            _controls.SetupForPlayer(0);
+
+            _controls.tapKey.onTrigger.connect([&](int index) 
+            {
+                PlayerPress(index);
+            });
         }
 
         void Start()
@@ -108,9 +136,10 @@ namespace Game
 
         }
 
-        void Step()
+        void Run()
         {
-
+            _controls.Run();
+            time = MX::Time::Timer::current().total_seconds();
         }
 
         void PlayerPress(int keyIndex)
@@ -131,6 +160,7 @@ namespace Game
         SignalizingVariable<float> time   = 0.0f;
 
         auto& trackInfo() { return _trackInfo; }
+        auto& controls() { return _controls; }
     protected:
         void Miss()
         {
@@ -139,10 +169,12 @@ namespace Game
 
         void Hit(const TrackInfo::KeyData::pointer& data)
         {
+            data->Hit();
             //TODO
         }
 
         TrackInfo::pointer _trackInfo;
+        Stepmania::PlayerControlSchema _controls;
     };
 
 }

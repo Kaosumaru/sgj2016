@@ -155,9 +155,14 @@ protected:
 class KeyWidget : public MX::Widgets::ScriptLayouterWidget
 {
 public:
-    KeyWidget(const Game::TrackInfo::KeyData::pointer& key)
+    KeyWidget(const Stepmania::TrackInfo::KeyData::pointer& key)
     {
         _key = key;
+        properties().SetValue("Active", 1);
+        _key->active.onValueChanged.connect([&](bool a, bool b) 
+        {
+            properties().SetValue("Active", 0);
+        });
         properties().SetValue("Type", (float)key->type);
     }
 
@@ -166,7 +171,7 @@ public:
         MX::Widgets::ScriptLayouterWidget::Draw(x, y);
     }
 protected:
-    Game::TrackInfo::KeyData::pointer _key;
+    Stepmania::TrackInfo::KeyData::pointer _key;
 };
 
 class KeysContainer : public MX::Widgets::ScriptLayouterWidget
@@ -174,8 +179,9 @@ class KeysContainer : public MX::Widgets::ScriptLayouterWidget
 public:
     float sizeOfSecondinPixels = 64.0f;
 
-    KeysContainer(const std::shared_ptr<Game::TrackInfo>& trackInfo)
+    KeysContainer(const std::shared_ptr<Stepmania::Game>& game, const std::shared_ptr<Stepmania::TrackInfo>& trackInfo)
     {
+        _game = game;
         _trackInfo = trackInfo;
         auto &tracks = trackInfo->tracks();
 
@@ -190,13 +196,13 @@ public:
     {
         MX::Widgets::ScriptLayouterWidget::Run();
 
-        float scrollY = scroll().y;
-        scrollY -= _speed;
+        float secondsLate = 2;
+        float scrollY = -(_game->time - secondsLate) * sizeOfSecondinPixels - _height;
         SetVerticalScroll(scrollY);
     }
 
 protected:
-    void CreateItemFromKey(const std::shared_ptr<Game::TrackInfo::KeyData>& key)
+    void CreateItemFromKey(const std::shared_ptr<Stepmania::TrackInfo::KeyData>& key)
     {
         auto itemWidget = std::make_shared<KeyWidget>(key);
         AddNamedWidget("Item", itemWidget);
@@ -208,14 +214,16 @@ protected:
         itemWidget->SetPosition(x, y);
     }
 
+    std::shared_ptr<Stepmania::Game> _game;
     Time::FloatPerSecond             _speed = sizeOfSecondinPixels;
-    std::shared_ptr<Game::TrackInfo> _trackInfo;
+    std::shared_ptr<Stepmania::TrackInfo> _trackInfo;
 };
 
 
 class MGameScene : public MX::FullscreenDisplayScene, public bs2::trackable
 {
     std::shared_ptr<MX::Widgets::ScriptLayouterWidget> _bgLayouter;
+    std::shared_ptr<Stepmania::Game> _game;
 public:
     MGameScene()
     {
@@ -227,22 +235,44 @@ public:
             _bgLayouter = bg;
         }
         loadGame();
+        CreateStatsField();
     }
 
+    void Run()
+    {
+        MX::FullscreenDisplayScene::Run();
+        _game->Run();
+    }
 
 protected:
     void loadGame()
     {
         ScriptObjectString script("TestTrack");
-        auto trackInfo = std::make_shared<Game::TrackInfo>(script);
-        auto game = std::make_shared<Game::Game>(trackInfo);
+        auto trackInfo = std::make_shared<Stepmania::TrackInfo>(script);
+        auto game = std::make_shared<Stepmania::Game>(trackInfo);
         prepareForGame(game);
+        _game = game;
     }
 
-    void prepareForGame(const std::shared_ptr<Game::Game>& game)
+    void prepareForGame(const std::shared_ptr<Stepmania::Game>& game)
     {
-        auto container = MX::make_shared<KeysContainer>(game->trackInfo());
+        auto container = MX::make_shared<KeysContainer>(game, game->trackInfo());
         _bgLayouter->AddNamedWidget("Container", container);
+    }
+
+    void CreateStatsField()
+    {
+        auto label = MX::make_shared<MX::Widgets::AutoLabel>();
+        label->SetHTML(true);
+        label->SetStringBuilder([this]()
+        {
+            std::wstringstream ss;
+            ss << "Time: " << _game->time << "<br/>";
+            ss << "Points: " << _game->points << "<br/>";
+            return ss.str();
+        });
+        label->connect_signals(_game->points.onValueChanged, _game->time.onValueChanged);
+        _bgLayouter->AddNamedWidget("Stats", label);
     }
 };
 
