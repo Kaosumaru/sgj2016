@@ -3,8 +3,10 @@
 	{
 		Keys!:
 		{
-			b: Event.Sprite.CreateSprite()[ &Test.NewConcept ]
+			//b: Event.Sprite.CreateSprite()[ &Test.NewConcept ]
 			n: Event.Sprite.CreateSprite()[ &Game.Emojis.Test ]
+			b: Event.Sprite.CreateSprite()[ &Test.Emoji.Catch ]
+			2: Event.Sprite.CreateSprite()[ &Test.Emoji.Miss ]
 		}
 	}
 }
