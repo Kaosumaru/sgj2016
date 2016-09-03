@@ -5,8 +5,8 @@
 		{
 			//b: Event.Sprite.CreateSprite()[ &Test.NewConcept ]
 			n: Event.Sprite.CreateSprite()[ &Game.Emojis.Test ]
-			b: Event.Sprite.CreateSprite()[ &Test.Emoji.Catch ]
-			2: Event.Sprite.CreateSprite()[ &Test.Emoji.Miss ]
+			b: Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Love.Catch ]
+			c: Event.Sprite.CreateSprite()[ &Game.Emojis.Effects.Crying.Catch ]
 		}
 	}
 }
