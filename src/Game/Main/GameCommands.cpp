@@ -37,7 +37,7 @@ using namespace std;
 class SinusoideCommand : public Command
 {
 public:
-    SinusoideCommand(const SinusoideCommand& other) : _frequency(other._frequency), _width(other._width)
+    SinusoideCommand(const SinusoideCommand& other) : _frequency(other._frequency), _width(other._width), _coordinateX(other._coordinateX)
     {
         _timeOffset = other._timeOffset;
         offset = Random::randomRange(_timeOffset);
@@ -48,6 +48,7 @@ public:
         script.load_property(_frequency, "Frequency");
         script.load_property(_width, "Width");
         script.load_property(_timeOffset, "TimeOffset");
+		script.load_property(_coordinateX, "XCoordinate");
 
         offset = Random::randomRange(_timeOffset);
     }
@@ -65,7 +66,10 @@ public:
 
         auto delta = t - _oldX;
         _oldX = t;
-        ScriptableSpriteActor::current().geometry.position.x += delta;
+		if(_coordinateX)
+			ScriptableSpriteActor::current().geometry.position.x += delta;
+		else
+			ScriptableSpriteActor::current().geometry.position.y += delta;
         return true;
     }
 
@@ -83,6 +87,8 @@ protected:
     bool _firstTime = true;
     float _frequency = 1;
     float _width = 1;
+
+	bool _coordinateX = true;
 };
 
 

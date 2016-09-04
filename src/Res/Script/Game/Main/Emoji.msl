@@ -5,7 +5,7 @@
 		{
 			Size: 28
 			Acceleration: 20
-			Speed: 100
+			Speed: 140
 		}
 
 		BadEmoji: Game.Emoji()
@@ -25,18 +25,64 @@
 		Crying: &Game.Emojis.BadEmoji()
 		{
 			Image: &(Emojis).Images.Crying
-			Points: -20
+			Points: -10
 		}
 		Anger: &Game.Emojis.BadEmoji()
 		{
 			Image: &(Emojis).Images.Anger
-			Points: -20
+			Points: -10
 			On.Run:
 			[
-				Command.Sinusoide( Frequency:2 Width:100 TimeOffset:5 )[]
+				Command.Sinusoide( Frequency:1.25 Width:100 TimeOffset:5  )[]
 			]
 		}
-
+		AngerXY: &Game.Emojis.BadEmoji()
+		{
+			Image: &(Emojis).Images.Anger
+			Points: -10
+			On.Run:
+			[
+				Command.Sinusoide( Frequency:1.25 Width:100 TimeOffset:5  )[]
+				Command.Sinusoide( Frequency:1.25 Width:50 TimeOffset:6 XCoordinate:false)[]
+			]
+		}
+		Heart: &Game.Emojis.Emoji()
+		{
+			Image: &(Emojis).Images.Heart
+			Points: 30
+			On.Run:
+			[
+				//Command.Sinusoide( Frequency:1 Width:60 TimeOffset:6 )[]
+				Command.Sinusoide( Frequency:3 Width:50 TimeOffset:6 )[]
+				Command.Sinusoide( Frequency:5 Width:40 TimeOffset:6 )[]
+				Command.Sinusoide( Frequency:7 Width:50 TimeOffset:6 )[]
+				//Command.Sinusoide( Frequency:10 Width:30 TimeOffset:6 )[]
+				Command.Sinusoide( Frequency:5 Width:30 TimeOffset:6 XCoordinate:false)[]
+			]
+			On.Death: &Game.Emojis.Effects.Love.Death
+		}
+		BrokenHeart: &Game.Emojis.BadEmoji()
+		{
+			Image: &(Emojis).Images.BrokenHeart
+			Points: -30
+			On.Run:
+			[
+				//Command.Sinusoide( Frequency:1 Width:60 TimeOffset:10 )[]
+				Command.Sinusoide( Frequency:3 Width:50 TimeOffset:10 )[]
+				Command.Sinusoide( Frequency:5 Width:40 TimeOffset:10 )[]
+				Command.Sinusoide( Frequency:7 Width:50 TimeOffset:10 )[]
+				//Command.Sinusoide( Frequency:10 Width:30 TimeOffset:10 )[]
+				Command.Sinusoide( Frequency:5 Width:30 TimeOffset:6 XCoordinate:false)[]
+			]
+		}
+		Turd: &Game.Emojis.BadEmoji()
+		{
+			Image: &(Emojis).Images.Turd
+			Size: 40
+			Points: -50
+			Speed: 65
+			Acceleration: 12
+		}
 
 	}
 }

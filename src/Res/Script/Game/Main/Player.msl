@@ -9,7 +9,8 @@
 				{
 					Actors:
 					[
-						[&Game.Emojis.Love, 5]
+						[&Game.Emojis.Love, 10]
+						[&Game.Emojis.Heart, 2]
 					]
 				}
 				Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:0.5 }
@@ -25,8 +26,11 @@
 				{
 					Actors:
 					[
-						[&Game.Emojis.Anger, 10]
-						[&Game.Emojis.Crying, 20]
+						[&Game.Emojis.Anger, 3]
+						[&Game.Emojis.AngerXY, 3]
+						[&Game.Emojis.Crying, 8]
+						[&Game.Emojis.BrokenHeart, 2]
+						[&Game.Emojis.Turd, 3]
 					]
 				}
 				Generator: Scene.ActorFactory.Generator.PerSecond(){ PerSecond:2 }

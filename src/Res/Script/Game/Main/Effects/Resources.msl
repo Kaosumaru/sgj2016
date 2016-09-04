@@ -45,6 +45,17 @@
 				Path: "Emojis/10.png"
 				Pivot: [36, 36]
 			}
+			BrokenHeart: Image.Image()
+			{
+				Path: "Emojis/11.png"
+				Pivot: [36, 36]
+			}
+			Turd: Image.Image()
+			{
+				Path: "Emojis/8.png"
+				Pivot: [36, 36]
+			}
+			
 			
 			HeartBorderless: Image.Image()
 			{
