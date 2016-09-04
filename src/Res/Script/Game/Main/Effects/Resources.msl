@@ -1,6 +1,19 @@
 {
 	Game.Emojis:
 	{
+		Sounds:
+		{
+			Kiss1: Sound.Sample()
+			{
+				Path: Sounds/Kiss0.ogg,
+				RandomSpeed: [0.95, 1.05],
+			}
+			Disgust1: Sound.Sample()
+			{
+				Path: Sounds/Disgust0.ogg,
+				RandomSpeed: [0.95, 1.05],
+			}
+		}
 		Images:
 		{
 			Love:

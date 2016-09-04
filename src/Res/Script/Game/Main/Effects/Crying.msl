@@ -42,6 +42,7 @@
 					Object: Sprite.Scene.Transform
 					On.Run:
 					[
+						{Object: Command.PlaySound Sound: &Game.Emojis.Sounds.Disgust1}
 						{Object: Command.UnlinkIfEmpty}
 					]
 					Children:
