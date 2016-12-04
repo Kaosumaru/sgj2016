@@ -53,6 +53,7 @@ protected:
 
     void OnGame()
     {
+		std::cout << "Test" << std::endl;
         //auto game = std::make_shared<MainGame>();
         //SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
     }

@@ -15,15 +15,9 @@
 #include "graphic/renderer/MVP.h"
 #include "graphic/opengl/Utils.h"
 #include "devices/Keyboard.h"
+#include "utils/ListFiles.h"
+#include <iostream>
 
-
-
-#ifndef MX_PLATFORM_XCODE
-#include "windows.h"
-#include "mmsystem.h"
-
-#pragma comment(lib, "winmm.lib")
-#endif
 
 
 #if 0
@@ -66,7 +60,7 @@ protected:
 #endif
 
 #ifdef MX_GAME_PERF_CHEATS
-		res_path = MX_DEBUG_RES_PATH;
+//		res_path = MX_DEBUG_RES_PATH;
 #endif
 #endif
 
@@ -83,16 +77,17 @@ protected:
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
 
+		{
+			auto path = MX::Paths::get().pathToImage("");
+			MX::ListFilesRecursively( path, []( auto &d ) 
+			{
+				std::cout << d.path << " " << d.extension() << std::endl;
+			} );
+		}
+
 		MX::ScriptInitializer::ReloadScripts();
 	}
 
-
-	void OnCleanup()
-	{
-#ifndef MX_PLATFORM_XCODE
-		timeEndPeriod(1);
-#endif
-	} 
 	 
 
 	void OnLoop()
