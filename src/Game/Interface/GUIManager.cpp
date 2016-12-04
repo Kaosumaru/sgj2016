@@ -39,8 +39,7 @@ public:
         auto addButton = [&](const std::string& name)
         {
             auto wstr_name = loc(name);
-            //auto button = std::make_shared<MX::Widgets::LabelButton>(wstr_name);
-			auto button = std::make_shared<MX::Widgets::ButtonWidget>();
+            auto button = std::make_shared<MX::Widgets::LabelButton>(wstr_name);
             _bgLayouter->AddNamedWidget(name, button);
             return button;
         };
