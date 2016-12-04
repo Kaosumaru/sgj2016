@@ -26,7 +26,7 @@
 #endif
 
 
-#if 1
+#if 0
 #include "Game/TestManager.h"
 using CurrentManager = BH::TestManager;
 #else

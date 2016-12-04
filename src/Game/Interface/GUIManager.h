@@ -13,8 +13,6 @@ class GuiManager : public MX::SpriteSceneStackManager, public DeinitSingleton<Gu
 {
 public:
 	GuiManager();
-
-	void reloadScripts();	
 };
     
 }

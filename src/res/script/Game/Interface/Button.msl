@@ -22,7 +22,7 @@
 					Pressed.Color:[1,1,1,0.5]
 				}
 
-				&<Button>.TextDrawer
+				/*&<Button>.TextDrawer*/
 			]
 
 		}
