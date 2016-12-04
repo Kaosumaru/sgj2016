@@ -1,3 +1,4 @@
+#if 0
 #include "GUIManager.h"
 #include "Application/MXApp.h"
 #include "Game/Resources/MXPaths.h"
@@ -100,6 +101,6 @@ void GuiManager::reloadScripts()
 }
 
 
-
+#endif
 
 

@@ -1,6 +1,7 @@
 {
 	GUI.MainMenu:
 	{
+	/*
 		ShaderDrawer: Drawer.Color.Shader()
 		{
 			Shader: Shader.Uniform.Timed()
@@ -35,7 +36,7 @@
 				Image.Image( Path: "ShaderData/tex3.jpg", Mipmap: true, Wrap: true )
 			],
 		}
-
+*/
 
 		Drawer: Drawer.Composite.Layouter()
 		[

@@ -1,41 +1,32 @@
 #include "TestManager.h"
-#include "Game/Resources/MXPaths.h"
-#include "Game/Resources/MXResources.h"
-#include "Script/MXScript.h"
-#include "Script/MXScriptObject.h"
-#include "Application/MXWindow.h"
-#include "Utils/MXLine.h"
-#include "Utils/MXQuad.h"
-#include "Script/Class/MXScriptSoundClass.h"
+#include "Game/Resources/Paths.h"
+#include "Game/Resources/Resources.h"
+#include "script/Script.h"
+#include "script/ScriptObject.h"
+#include "application/Window.h"
 
 
-#include "HTML/MXHTMLRendererCairo.h"
-#include "HTML/MXFTFont.h"
+#include "devices/Mouse.h"
+#include "devices/Keyboard.h"
+#include "application/Window.h"
+#include "game/ScriptInitializer.h"
 
+#include "script/ScriptClassParser.h"
 
-#include "Devices/MXMouse.h"
-#include "Devices/MXKeyboard.h"
-#include "Application/MXWindow.h"
-#include "Graphic/MXDisplay.h"
+#include "DebugCheats.h"
 
-#include "Script/MXScriptClassParser.h"
-
-#include "Game/GameInitializer.h"
-#include "Game/DebugCheats.h"
-
-namespace bs2 = boost::signals2;
 
 using namespace MX;
 using namespace BH;
 using namespace std;
 
-TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().display()->size())
+TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().size())
 {
     _cheats = CreateCheats();
 	_visibility = -1;
 
-	MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_SPACE].connect(boost::bind(&TestManager::reloadScripts, this));
-	MX::Window::current().keyboard()->on_specific_key_down[ci::app::KeyEvent::KEY_r].connect(boost::bind(&TestManager::clearReloadScripts, this));
+	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_SPACE].connect(std::bind(&TestManager::reloadScripts, this), this);
+	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_R].connect(std::bind(&TestManager::clearReloadScripts, this), this);
 
 	reloadScripts();
 
@@ -56,13 +47,15 @@ void TestManager::AddSomething()
 
 void TestManager::clearReloadScripts()
 {
+#ifdef WIP
 	MX::Resources::get().Clear();
+#endif
 	reloadScripts();
 }
 
 void TestManager::reloadScripts()
 {
-    GameInitializer::ReloadScripts();
+	ScriptInitializer::ReloadScripts();
 
     Clear();
 

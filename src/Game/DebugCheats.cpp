@@ -1,8 +1,9 @@
 #include "DebugCheats.h"
-#include "Scene/Script/MXEvent.h"
-#include "Application/MXWindow.h"
-#include "Devices/MXKeyboard.h"
-#include "Scene/Sprites/MXScriptableSpriteActor.h"
+#include "Scene/Script/Event.h"
+#include "Application/Window.h"
+#include "Devices/Keyboard.h"
+#include "Devices/Mouse.h"
+#include "Scene/Sprites/ScriptableSpriteActor.h"
 
 using namespace BH;
 using namespace MX;
@@ -43,7 +44,7 @@ struct DebugNewArenaCheats_Data
     }
 
 
-    MX::Vector2 position() const
+    auto& position() const
     {
         return MX::Window::current().mouse()->position();
     }
@@ -107,7 +108,7 @@ namespace MX
 
 
 
-class DebugNewCheatObject : public CheatObject
+class DebugNewCheatObject : public CheatObject, public MX::SignalTrackable
 {
 public:
     using MapType = std::map<int, DebugNewArenaCheats_Data>;
@@ -115,9 +116,11 @@ public:
     DebugNewCheatObject()
     {
         LoadData();
-        Script::onParsed.connect(boost::bind(&DebugNewCheatObject::LoadData, this));
+        Script::onParsed.static_connect(std::bind(&DebugNewCheatObject::LoadData, this));
 
-        MX::Window::current().keyboard()->on_char.connect(boost::bind(&DebugNewCheatObject::OnKeyDown, this, _1, _2, _3, _4));
+		using namespace std::placeholders;
+
+        MX::Window::current().keyboard()->on_char.connect(std::bind(&DebugNewCheatObject::OnKeyDown, this, _1, _2, _3, _4), this);
     }
 
     void LoadData()

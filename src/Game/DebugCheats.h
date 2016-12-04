@@ -1,13 +1,13 @@
 #ifndef BHDEBUGCHEATS
 #define BHDEBUGCHEATS
 #include<memory>
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Scene/Managers/MXSceneManager.h"
-#include "Utils/MXUtils.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Scene/Managers/SceneManager.h"
+#include "Utils/Utils.h"
 
 namespace BH
 {
-    struct CheatObject : public bs2::trackable
+    struct CheatObject
     {
         virtual ~CheatObject() {}
     };

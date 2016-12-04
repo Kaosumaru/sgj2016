@@ -6,21 +6,16 @@
 //  Copyright (c) 2013 Redefine. All rights reserved.
 //
 
-#include "Utils/MXInclude.h"
-#include "Application/MXApp.h"
-#include "Application/MXApp.h"
-#include "Graphic/MXDisplay.h"
-#include "Graphic/MXBlender.h"
-#include "Graphic/Renderers/MXTextureRenderer.h"
-#include "Game/Resources/MXPaths.h"
-#include "Game/Resources/MXResources.h"
-#include "Sound/MXSample.h"
-#include "Sound/MXStream.h"
-#include "Utils/MXDebugGUIManager.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
+#include "application/application.h"
+#include "application/window.h"
+#include "game/ScriptInitializer.h"
+#include "game/resources/Paths.h"
+#include "game/resources/Resources.h"
+#include "graphic/images/Image.h"
+#include "graphic/renderer/MVP.h"
+#include "graphic/opengl/Utils.h"
+#include "devices/Keyboard.h"
 
-#include "Game/GameInitializer.h"
 
 
 #ifndef MX_PLATFORM_XCODE
@@ -30,7 +25,8 @@
 #pragma comment(lib, "winmm.lib")
 #endif
 
-#if 0
+
+#if 1
 #include "Game/TestManager.h"
 using CurrentManager = BH::TestManager;
 #else
@@ -54,58 +50,42 @@ public:
 protected:
       
 
-	void OnPrepare()
+	void SetResPath()
 	{
-#ifndef MX_GAME_RELEASE
-        auto res_path = MX_DEBUG_RES_PATH;
+#ifdef __EMSCRIPTEN__
+		auto res_path = "/res/";
 #else
-        #if MX_PLATFORM_XCODE
-        auto res_path = MX_DEBUG_RES_PATH;
-        #else
-        auto res_path = "Res/";
-        #endif
+#ifndef MX_GAME_RELEASE
+		auto res_path = MX_DEBUG_RES_PATH;
+#else
+#if MX_PLATFORM_XCODE
+		auto res_path = MX_DEBUG_RES_PATH;
+#else
+		auto res_path = "res/";
+#endif
 #endif
 
 #ifdef MX_GAME_PERF_CHEATS
 		res_path = MX_DEBUG_RES_PATH;
 #endif
-        
-        addAssetDirectory(res_path);
-        MX::Paths::get().SetResourcePath(res_path);
-        MX::Paths::get().SetImagePath(res_path);
-        MX::Paths::get().SetSoundPath(res_path);
-        MX::Paths::get().SetStreamPath(res_path);
-        
-        
-        //#if MX_PLATFORM_XCODE
+#endif
 
-		OpenWindow(_width, _height, _fullscreen);
+		MX::Paths::get().SetResourcePath(res_path);
+		MX::Paths::get().SetImagePath(res_path);
+		MX::Paths::get().SetSoundPath(res_path);
+		MX::Paths::get().SetStreamPath(res_path);
 	}
 
-	bool OnInit()
+	void OnPrepare() override
 	{
-		using namespace ci;
-		using namespace ci::gl;
+		SetResPath();
+		OpenMainWindow(1280, 800, false);
 
-		Sound::StreamManager::get().SetDefaultVolume(0.3f);
-        BH::GameInitializer::Init();
-		//BH::GameGraphicManager::get().PrepareGL();
+		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
 
-#ifndef MX_PLATFORM_XCODE
-		timeBeginPeriod(1);
-#endif
-
-		static bool supported_instancing = ci::gl::isExtensionAvailable("GL_ARB_draw_instanced"); //TODO move it to a better place
-
-		if (!supported_instancing)
-			throw std::exception("Instancing not supported!");
-		
-#ifdef MX_GAME_RELEASE
-		auto cursor = MX::Resources::get().loadCenteredImage(15.0f, 15.0f, "Misc/Crosshair.png");
-		SetCursor(cursor);
-#endif
-		return true;
+		MX::ScriptInitializer::ReloadScripts();
 	}
+
 
 	void OnCleanup()
 	{
@@ -122,76 +102,20 @@ protected:
 
 	void OnRender()
 	{
-		static bool firstFrame = true;
-
-		if (firstFrame)
-		{
-			firstFrame = false;
-			RenderFirstFrame();
-			return;
-		}
-
-
-		using namespace ci;
-		gl::clear(ci::Color(0.0f, 0.0f, 0.0f), false);
+		MX::gl::Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
         
         CurrentManager::get().Draw();
-
-		Graphic::TextureRenderer::current().Flush();
-		MX::DebugGUIManager::get().Draw();
 	}
-
-	void RenderFirstFrame()
-	{
-		using namespace ci;
-        gl::clear(ci::Color(0.0f, 0.0f, 0.0f), false);
-	}
-
 
 public:
 
-	static void prepareSettingsStatic(Settings *settings)
-	{
-		App::prepareSettingsStatic(settings);
-		settings->setTitle(MX_APPLICATION_NAME);
-		settings->setWindowSize(_width, _height);
-		settings->setResizable(false);
-		settings->setFullScreen(_fullscreen);
-	}
+
 };
 
 
-using namespace ci;
-using namespace ci::app;
-
-
-#define CI_RENDERER RendererGl(RendererGl::Options())
-
-#ifdef MX_PLATFORM_XCODE
-
-CINDER_APP(GameApp, CI_RENDERER, &GameApp::prepareSettingsStatic)
-
-#else
-
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{		
-	std::string exc_s;
-	try {
-		cinder::app::RendererRef renderer(new CI_RENDERER);
-		cinder::app::AppMsw::main<GameApp>(renderer, MX_APPLICATION_NAME, &GameApp::prepareSettingsStatic);
-	}
-	catch (std::exception &exc) {
-		exc_s = exc.what();
-	}
-
-
-	if (!exc_s.empty())
-	{
-		std::future<void> fut = std::async([=]() { MessageBoxA(0, exc_s.c_str(), "Error", 0); });
-		fut.get();
-	}
-
-	
-	return 0;																		
+int main(int argc, char* argv[])
+{
+	GameApp app;
+	app.Run();
+	return 0;
 }
-#endif

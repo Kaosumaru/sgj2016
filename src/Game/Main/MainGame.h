@@ -1,25 +1,25 @@
 #ifndef BHMAINGAME
 #define BHMAINGAME
 #include<memory>
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Scene/Managers/MXSceneStackManager.h"
-#include "Utils/MXUtils.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Scene/Managers/SceneStackManager.h"
+#include "Utils/Utils.h"
 
 
-namespace bs2 = boost::signals2;
 
 namespace BH
 {
     
-    class MainGame : public MX::DisplaySceneTimer, public bs2::trackable
+    class MainGame : public MX::DisplaySceneTimer
     {
     public:
         MainGame();
 
     protected:
         void onExit();
-
+#if 0
         std::shared_ptr<struct CheatObject> _cheats;
+#endif
     };
     
 }

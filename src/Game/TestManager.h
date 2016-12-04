@@ -1,13 +1,13 @@
 #ifndef BHTESTMANAGER
 #define BHTESTMANAGER
 #include<memory>
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Scene/Managers/MXSceneManager.h"
-#include "Utils/MXUtils.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Scene/Managers/SceneManager.h"
+#include "Utils/Utils.h"
 
 namespace BH
 {
-class TestManager : public MX::DisplaySceneTimer, public DeinitSingleton<TestManager>
+class TestManager : public MX::DisplaySceneTimer, public DeinitSingleton<TestManager>, public MX::SignalTrackable
 {
 public:
     TestManager();

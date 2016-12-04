@@ -17,8 +17,8 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ProjectData)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/ProjectData/ProjectInfo.txt "${APPLICATION_NAME}\n${APPLICATION_STRING_VERSION}")
 
 #configure build packaging system...
-file(COPY ${PROJECT_SOURCE_DIR}/../Utils/release_make.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ProjectData/)
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/ProjectData/deploy.bat "python release_make.py \"${CMAKE_CURRENT_BINARY_DIR}/\" \"${PROJECT_SOURCE_DIR}/\" \npause")
+#file(COPY ${PROJECT_SOURCE_DIR}/../Utils/release_make.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ProjectData/)
+#file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/ProjectData/deploy.bat "python release_make.py \"${CMAKE_CURRENT_BINARY_DIR}/\" \"${PROJECT_SOURCE_DIR}/\" \npause")
 #end
 
 
@@ -50,108 +50,26 @@ endif(MSVC)
 
 
 
-add_subdirectory(../MXLib_Cinder/MXLib "${CMAKE_CURRENT_BINARY_DIR}/MXLib_Cinder")
+add_subdirectory(../libmx "${CMAKE_CURRENT_BINARY_DIR}/libmx")
+
+add_definitions("${MX_DEFINES}")
 
 if (MSVC)
-configure_msvc_runtime()
+#configure_msvc_runtime()
+add_definitions( "/DMX_PLATFORM_MSVC  /DUNICODE /D_UNICODE" )
+add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4250 /wd4244 /nologo /Zm180" )
 endif(MSVC)
 
-add_subdirectory(../MXLib_Cinder/Cloudbase "${CMAKE_CURRENT_BINARY_DIR}/Cloudbase")
-add_subdirectory(../MXLib_Cinder/LiteHTML "${CMAKE_CURRENT_BINARY_DIR}/LiteHTML")
-add_subdirectory(../MXLib_Cinder/MSL "${CMAKE_CURRENT_BINARY_DIR}/MSL")
+if (EMSCRIPTEN)
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  add_definitions("-std=c++14")
+endif(EMSCRIPTEN)
 
-include_directories ("${MX_INCLUDES}")
+include_directories(${MX_INCLUDES})
+include(CommonFunctions)
 
-set (EXTRA_LIBS ${EXTRA_LIBS} MXLib Cloudbase LiteHTML MSL RPN)
+ADDFILES(source_list "${PROJECT_SOURCE_DIR}/game")
 
-
-include(cotire)
-include(enableC11)
-
-
-
-
-# add the binary tree to the search path for include files
-include_directories("${PROJECT_BINARY_DIR}/")
-include_directories ("${PROJECT_SOURCE_DIR}/../MXLib_Cinder/RPN")
-include_directories ("${PROJECT_SOURCE_DIR}/../MXLib_Cinder/MXLib")
-include_directories ("${PROJECT_SOURCE_DIR}/../MXLib_Cinder/Cloudbase")
-include_directories ("${PROJECT_SOURCE_DIR}/../MXLib_Cinder/LiteHTML")
-include_directories ("${PROJECT_SOURCE_DIR}/")
-
-
-
-##folders
-add_folder(Game)
-add_folder(Game/Interface)
-add_folder(Game/Main)
-
-find_package(Boost REQUIRED)
-include_directories( ${Boost_INCLUDE_DIRS} )
-
-include_directories( ${CINDER_INCLUDE_DIR} )
-link_directories( ${CINDER_LIBRARY_DIR}/msw/x86/ )
-
-include_directories( ${PROJECT_SOURCE_DIR} )
-include_directories( ${PROJECT_SOURCE_DIR}/Game )
-
-
-
-add_definitions(-DASMJIT_STATIC)
-if (APPLE)
-	add_definitions(-DMX_PLATFORM_XCODE)
-
-	if (GAME_RELEASE_XXX)
-
-		FILE(GLOB_RECURSE resFiles "${PROJECT_SOURCE_DIR}/Res/*.*" )
-		add_executable(SGJ2016 MACOSX_BUNDLE  main.cpp ${SRCS} ${resFiles})
-  	  	set_source_files_properties(${resFiles}
-  	      PROPERTIES
-  	        MACOSX_PACKAGE_LOCATION Resources)
-
-	else(GAME_RELEASE_XXX)
-		add_executable(SGJ2016 MACOSX_BUNDLE main.cpp ${SRCS})
-	endif(GAME_RELEASE_XXX)
-
-	SET_TARGET_PROPERTIES(SGJ2016
-	  PROPERTIES
-	  MACOSX_BUNDLE true
-	  MACOSX_BUNDLE_BUNDLE_NAME "SGJ2016"
-	  # MACOSX_BUNDLE_INFO_STRING ""
-	  MACOSX_BUNDLE_BUNDLE_VERSION "1"
-	  MACOSX_BUNDLE_LONG_VERSION_STRING "1"
-	  MACOSX_BUNDLE_SHORT_VERSION_STRING "1"
-	  # MACOSX_BUNDLE_ICON_FILE "${CMAKE_CURRENT_SOURCE_DIR}/sean.icns"
-	  MACOSX_BUNDLE_GUI_IDENTIFIER "SGJ2016"
-	  #MACOSX_BUNDLE_COPYRIGHT "artm"
-	  )
-
-
-
-
-else()
-	set(WIN_RESOURCE_FILE ${PROJECT_SOURCE_DIR}/VS/Resources.rc ${PROJECT_SOURCE_DIR}/VS/resource.h)
-	add_executable(SGJ2016 WIN32  main.cpp ${SRCS} ${WIN_RESOURCE_FILE})
-endif()
-
-
-
-if (MSVC)
-SET_TARGET_PROPERTIES(SGJ2016 PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:\"LIBCMT\"")
-endif(MSVC)
-
-
-target_link_libraries (SGJ2016  ${EXTRA_LIBS})
-target_link_libraries(SGJ2016 ${SDL_LIBRARY_TEMP} )
-target_Link_Libraries(SGJ2016 ${RPN_Deps})
-target_Link_Libraries(SGJ2016 RPN)
-#set_target_properties(SDLTest PROPERTIES COTIRE_UNITY_LINK_LIBRARIES_INIT "COPY")
-
-if (USE_COTIRE)
-	cotire(SGJ2016)
-	target_link_libraries(SGJ2016_unity MXLib_unity)
-	target_link_libraries(SGJ2016_unity Cloudbase)
-	target_link_libraries(SGJ2016_unity LiteHTML)
-	target_link_libraries(SGJ2016_unity MSL)
-	target_link_libraries(SGJ2016_unity ${SDL_LIBRARY_TEMP} )
-endif()
+add_executable(SGJ2016 main.cpp  ${source_list})
+target_link_libraries(SGJ2016 ${MX_LIBS} MSL RPN)
+set_target_properties(SGJ2016 PROPERTIES LINK_FLAGS "${MX_LINK_FLAGS}")
