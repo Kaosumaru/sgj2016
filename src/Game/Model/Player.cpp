@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "Game.h"
+#include "SDL_keycode.h"
 using namespace BH;
 
 
@@ -9,33 +10,31 @@ void PlayerControlSchema::SetupForPlayer(int number)
 {
     using namespace MX::Game;
     direction.SetFirstTickMultiplier(1.3f);
-#if WIP
     if (number == 0)
     {
-        direction.bindKeys(ci::app::KeyEvent::KEY_w, ci::app::KeyEvent::KEY_s, ci::app::KeyEvent::KEY_a, ci::app::KeyEvent::KEY_d);
+        direction.bindKeysWSAD();
 
-        useSkill.bindKey(0, ci::app::KeyEvent::KEY_v);
-        useSkill.bindKey(1, ci::app::KeyEvent::KEY_b);
-        useSkill.bindKey(2, ci::app::KeyEvent::KEY_n);
+		useSkill.bindKey(0, SDL_SCANCODE_V);
+		useSkill.bindKey(1, SDL_SCANCODE_B);
+		useSkill.bindKey(2, SDL_SCANCODE_N);
     }
     else if (number == 1)
     {
-        direction.bindKeys(ci::app::KeyEvent::KEY_UP, ci::app::KeyEvent::KEY_DOWN, ci::app::KeyEvent::KEY_LEFT, ci::app::KeyEvent::KEY_RIGHT);
+		direction.bindKeysArrows();
 
-        useSkill.bindKey(0, ci::app::KeyEvent::KEY_COMMA);
-        useSkill.bindKey(1, ci::app::KeyEvent::KEY_PERIOD);
-        useSkill.bindKey(2, ci::app::KeyEvent::KEY_SLASH);
+        useSkill.bindKey(0, SDL_SCANCODE_COMMA);
+        useSkill.bindKey(1, SDL_SCANCODE_PERIOD);
+        useSkill.bindKey(2, SDL_SCANCODE_SLASH);
     }
     else
     {
-        direction.bindKeys(ci::app::KeyEvent::KEY_UP, ci::app::KeyEvent::KEY_DOWN, ci::app::KeyEvent::KEY_LEFT, ci::app::KeyEvent::KEY_RIGHT);
+        direction.bindKeysArrows();
 
-        useSkill.bindKey(0, ci::app::KeyEvent::KEY_z);
-        useSkill.bindKey(1, ci::app::KeyEvent::KEY_x);
-        useSkill.bindKey(2, ci::app::KeyEvent::KEY_c);
-        useSkill.bindKey(2, ci::app::KeyEvent::KEY_n);
+        useSkill.bindKey(0, SDL_SCANCODE_Z);
+        useSkill.bindKey(1, SDL_SCANCODE_X);
+        useSkill.bindKey(2, SDL_SCANCODE_C);
+        useSkill.bindKey(2, SDL_SCANCODE_N);
     }
-#endif
 }
 
 Player::Player(int number)

@@ -36,7 +36,7 @@ namespace BH
             return deltas[(int)direction];
         }
 
-        auto pos() { return (glm::ivec2) position; }
+        auto pos() { return (glm::ivec2) position.directValueAccess(); }
         SignalizingVariable<glm::ivec2> position = glm::ivec2{ 0,6 };
 
         bool Move(const glm::ivec2& direction);

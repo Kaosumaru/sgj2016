@@ -4,7 +4,7 @@
 #include "glm/vec2.hpp"
 #include "utils/Utils.h"
 #include "utils/SignalizingVariable.h"
-
+#include <cmath>
 namespace BH
 {
     class Gem
@@ -19,7 +19,7 @@ namespace BH
 
         static const int maxType = 5;
 
-        auto position() { return (glm::ivec2)_pos; }
+        auto position() { return (glm::ivec2)_pos.directValueAccess(); }
         auto& pos() { return _pos; }
 
         auto& type() { return _type; }
@@ -66,7 +66,7 @@ namespace BH
                 return 0.0f;
             float max = animationSpeed();
 
-            return sin((max - _exploding) / max);
+            return std::sin((max - _exploding) / max);
         }
 
         bool QueueDestruction()
