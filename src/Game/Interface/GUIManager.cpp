@@ -16,7 +16,7 @@
 
 #include "Devices/Keyboard.h"
 
-//#include "Game/GameInitializer.h"
+#include "Game/GameInitializer.h"
 #include "Game/Main/MainGame.h"
 #include "Widgets/Animations/Animations.h"
 
@@ -82,6 +82,7 @@ GuiManager::GuiManager()
     auto menu = std::make_shared<MMenuScene>();
 	PushScene(menu);
 
+	GameInitializer::Init();
 #ifndef MX_GAME_RELEASE
 //    menu->OnGame(1, false);
 #endif

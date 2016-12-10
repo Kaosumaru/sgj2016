@@ -12,7 +12,6 @@
 
 #include "Script/ScriptClassParser.h"
 
-#include "Game/GameInitializer.h"
 #include "Game/DebugCheats.h"
 
 #include "Widgets/Widget.h"
