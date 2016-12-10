@@ -17,7 +17,7 @@
 #include "Devices/Keyboard.h"
 
 //#include "Game/GameInitializer.h"
-//#include "Game/Main/MainGame.h"
+#include "Game/Main/MainGame.h"
 #include "Widgets/Animations/Animations.h"
 
 
@@ -58,14 +58,12 @@ public:
 
     void OnGame(int players, bool animate = true)
     {
-#if 0
         auto game = std::make_shared<MainGame>(players);
 
         if (animate)
             SpriteSceneStackManager::manager_of(this)->PushScene(game, std::make_shared<MoveBitmapTransition>(true));
         else
             SpriteSceneStackManager::manager_of(this)->PushScene(game, nullptr);
-#endif
     }
 protected:
 
@@ -85,7 +83,7 @@ GuiManager::GuiManager()
 	PushScene(menu);
 
 #ifndef MX_GAME_RELEASE
-    menu->OnGame(1, false);
+//    menu->OnGame(1, false);
 #endif
 }
 

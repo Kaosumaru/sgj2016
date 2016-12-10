@@ -73,7 +73,7 @@ protected:
 	void OnPrepare() override
 	{
 		SetResPath();
-		OpenMainWindow(1280, 800, false);
+		OpenMainWindow(1680, 1024, false);
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
 		MX::ScriptInitializer::ReloadScripts();
