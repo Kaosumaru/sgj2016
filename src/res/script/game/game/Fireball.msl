@@ -6,7 +6,7 @@
 	{
 		BasicLight: Image.Image()
 		{
-			Path: "Misc/basiclight.png"
+			Path: "misc/basiclight.png"
 			Pivot: [128,128]
 		},
 		Fireball:
