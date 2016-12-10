@@ -17,7 +17,7 @@
 
 
 		Layouter: Layouter.Drawer(
-			Drawer: &(Action).Drawer
+			Drawer: &<Action>.Drawer
 			)
 		[
 

@@ -5,11 +5,11 @@
 
 		Drawer: Drawer.Composite.Layouter( Size: [64,64] )
 		[
-			Drawer.StretchedImage( Image:&(Selector).Graphic )
+			Drawer.StretchedImage( Image:&<Selector>.Graphic )
 		]
 
 		Layouter: Layouter.Drawer(
-			Drawer: &(Selector).Drawer
+			Drawer: &<Selector>.Drawer
 			)
 		[
 

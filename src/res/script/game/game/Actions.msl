@@ -9,7 +9,7 @@
 
 		Layouter:   Layouter.Vertical(
 			Spacing: 12
-			Drawer: &(Actions).Drawer
+			Drawer: &<Actions>.Drawer
 		)
 
 	}

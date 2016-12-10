@@ -22,10 +22,10 @@
 			ManaSource: 2
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/ExplosionIconBlue.png	} ]
+					Default: Drawer.Image( Color:[&<Actions>.Flashing &<Actions>.Flashing &<Actions>.Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/ExplosionIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/ExplosionIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[&<Actions>.Flashing &<Actions>.Flashing &<Actions>.Flashing "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/ExplosionIconRed.png	} ] ]
 			]
 
 			Events:
@@ -53,10 +53,10 @@
 
 			Drawer:	Drawer.Composite.Switch(
 					Condition:"=&Player.Number"
-					Default: Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/FreezeIconBlue.png	} ]
+					Default: Drawer.Image( Color:[&<Actions>.Flashing &<Actions>.Flashing &<Actions>.Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/FreezeIconBlue.png	} ]
 				)
 			[
-				[1 Drawer.Image( Color:[&(Actions).Flashing &(Actions).Flashing &(Actions).Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/FreezeIconRed.png	} ] ]
+				[1 Drawer.Image( Color:[&<Actions>.Flashing &<Actions>.Flashing &<Actions>.Flashing  "=0.5 + &Action.CanPay * 0.5"] )[ { Class: Image.Image, Path: interface/FreezeIconRed.png	} ] ]
 			]
 
 			Events:

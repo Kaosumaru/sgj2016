@@ -24,7 +24,7 @@
 
 		Drawer: Drawer.Composite.Layouter()
 		[
-			&(Game).ShaderDrawer
+			&<Game>.ShaderDrawer
 		]
 
 

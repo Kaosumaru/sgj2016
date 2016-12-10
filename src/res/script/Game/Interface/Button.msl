@@ -16,13 +16,13 @@
 			[
 				Drawer.Composite.ButtonState()
 				{
-					Default.Image: &(Button).Image
+					Default.Image: &<Button>.Image
 					Normal.Color:[1,1,1,1]
 					Hover.Color:[1,1,1,1.2]
 					Pressed.Color:[1,1,1,0.5]
 				}
 
-				&(Button).TextDrawer
+				&<Button>.TextDrawer
 			]
 
 		}

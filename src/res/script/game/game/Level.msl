@@ -16,17 +16,17 @@
 			[
 				Drawer.Composite.Switch(
 						Condition:"=&Player.Number"
-						Default: Drawer.QuadImage()[ &(Level).BlueFrame.Image ]
+						Default: Drawer.QuadImage()[ &<Level>.BlueFrame.Image ]
 					)
 				[
-					[1 Drawer.QuadImage()[ &(Level).RedFrame.Image ] ]
+					[1 Drawer.QuadImage()[ &<Level>.RedFrame.Image ] ]
 				]
 			]
 		]
 
 		Drawer:  Drawer.Proxy.Surface()
 		{
-			Drawer: &(Level).Drawer2
+			Drawer: &<Level>.Drawer2
 			InhibitNormalDrawing: true
 
 			PostDrawer:Drawer.Composite.Layouter()
@@ -35,7 +35,7 @@
 
 				Shift( Margin:10 )
 				[
-					&(Level).Frame.Drawer
+					&<Level>.Frame.Drawer
 				]
 
 			]
@@ -43,7 +43,7 @@
 
 
 		Layouter: Layouter.Drawer(
-			Drawer: &(Level).Drawer
+			Drawer: &<Level>.Drawer
 			)
 		[
 
