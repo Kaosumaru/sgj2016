@@ -4,8 +4,7 @@
 		TextDrawer: Drawer.TextImage()
 		{
 			Color: [0.573, 0.702, 0.725]
-			Font.Face: "Iceland"
-			Font.Name: "Font/Iceland-Regular.ttf"
+			Font.Name: "font/arial.ttf"
 			Font.Size: 18
 			Width: 0
 		}
