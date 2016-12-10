@@ -76,15 +76,6 @@ protected:
 		OpenMainWindow(1280, 800, false);
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
-
-		{
-			auto path = MX::Paths::get().pathToImage("");
-			MX::ListFilesRecursively( path, []( auto &d ) 
-			{
-				std::cout << d.path << " " << d.extension() << std::endl;
-			} );
-		}
-
 		MX::ScriptInitializer::ReloadScripts();
 	}
 

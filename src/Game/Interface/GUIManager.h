@@ -1,12 +1,9 @@
 #ifndef BHMGUIMANAGER
 #define BHMGUIMANAGER
 #include<memory>
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Scene/Managers/MXSceneStackManager.h"
-#include "Utils/MXUtils.h"
-
-
-namespace bs2 = boost::signals2;
+#include "Scene/Sprites/SpriteScene.h"
+#include "Scene/Managers/SceneStackManager.h"
+#include "Utils/Utils.h"
 
 namespace BH
 {
@@ -15,8 +12,6 @@ class GuiManager : public MX::SpriteSceneStackManager, public DeinitSingleton<Gu
 {
 public:
 	GuiManager();
-
-	void reloadScripts();	
 };
     
 }

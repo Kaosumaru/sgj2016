@@ -24,7 +24,8 @@
 
 		Drawer: Drawer.Composite.Layouter()
 		[
-			&<Game>.ShaderDrawer
+			//&<Game>.ShaderDrawer
+			Drawer.Color() { Color:[1 0 1 0.3] }
 		]
 
 
