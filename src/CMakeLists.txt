@@ -65,6 +65,7 @@ if (EMSCRIPTEN)
   add_definitions("-std=c++14")
 endif(EMSCRIPTEN)
 
+include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${MX_INCLUDES})
 include(CommonFunctions)
 
