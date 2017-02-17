@@ -10,7 +10,7 @@
 				Center: true
 			}
 
-			Image: { Class: Image.Slice9Image, Path:"interface/widgets/OptionsButton.png", Margins: [10,10, 10, 10],	}
+			Image: { Class: Image.Slice9Image, Path:"interface/widgets/OptionsButton.png", Margins: [10,10, 10, 10]	}
 
 			Drawer: Drawer.Composite.Layouter( Size: [210,66] )
 			[

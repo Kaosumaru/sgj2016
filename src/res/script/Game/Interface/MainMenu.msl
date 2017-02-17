@@ -33,7 +33,7 @@
 				Image.Image( Path: "ShaderData/tex02.jpg", Mipmap: true, Wrap: true )
 				Image.Image( Path: "ShaderData/tex09.jpg", Mipmap: true, Wrap: true )
 				Image.Image( Path: "ShaderData/tex3.jpg", Mipmap: true, Wrap: true )
-			],
+			]
 		}
 
 		ShaderDrawer2: Drawer.Color.Shader()
@@ -94,7 +94,7 @@
 			Drawers: [ [&GUI.Button.Drawer [Button.Game Button.Game2 Button.Exit]] ]
 			)
 		[
-			Table()
+			Table( y2:-100 )
 			[
 				Layout( n:Button.Game p:1 )
 				Layout( n:Button.Game2 p:2 )

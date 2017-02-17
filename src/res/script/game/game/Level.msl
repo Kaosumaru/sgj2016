@@ -7,8 +7,8 @@
 		]
 
 
-		BlueFrame.Image: { Class: Image.Slice9Image, Path:"interface/BlueFrame.png", Margins: [20,20, 20, 20],	}
-		RedFrame.Image: { Class: Image.Slice9Image, Path:"interface/RedFrame.png", Margins: [20,20, 20, 20],	}
+		BlueFrame.Image: { Class: Image.Slice9Image, Path:"interface/BlueFrame.png", Margins: [20,20, 20, 20]	}
+		RedFrame.Image: { Class: Image.Slice9Image, Path:"interface/RedFrame.png", Margins: [20,20, 20, 20]	}
 
 		Frame.Drawer: Drawer.Composite.Layouter()
 		[

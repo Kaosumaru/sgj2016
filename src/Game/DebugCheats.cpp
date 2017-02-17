@@ -120,7 +120,7 @@ public:
 
 		using namespace std::placeholders;
 
-        MX::Window::current().keyboard()->on_char.connect(std::bind(&DebugNewCheatObject::OnKeyDown, this, _1, _2, _3, _4), this);
+        MX::Window::current().keyboard()->on_char.connect(std::bind(&DebugNewCheatObject::OnKeyDown, this, _1), this);
     }
 
     void LoadData()
@@ -159,7 +159,7 @@ public:
         return 0;
     }
 
-    void OnKeyDown(int unichar, int keycode, unsigned modifiers, bool repeated)
+    void OnKeyDown(int unichar)
     {
         auto it = _eventsKeys.find(unichar);
         if (it == _eventsKeys.end())

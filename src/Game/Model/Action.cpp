@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "Player.h"
-
+#include "widgets/Drawers/Drawer.h"
 
 using namespace BH;
 
@@ -15,9 +15,7 @@ Action::Action(const std::string& objectName) : MX::ScriptObjectString(objectNam
     load_property(_manaCost, "ManaCost");
     load_property(_doEvents, "Events");
     load_property(_gemEvents, "Gem.Events");
-#if WIP
     load_property(_drawer, "Drawer");
-#endif
 
     int manaSource = -1;
     load_property(manaSource, "ManaSource");
